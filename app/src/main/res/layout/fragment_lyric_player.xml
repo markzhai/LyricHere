@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.markzhai.lyrichere.ui.LyricPlayerActivity$PlaceholderFragment">
 
-    <markzhai.lyrichere.app.ui.LyricView
+    <com.markzhai.lyrichere.ui.LyricView
         android:id="@+id/textLyric"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

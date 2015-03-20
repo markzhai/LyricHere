@@ -1,31 +1,37 @@
 Lyric Here
 ==========
-Lyric Player.
+A music player focused on user experience of lyric.
 
-Description
-----
-Play lyric and download.
+Pre-requisites
+--------------
 
-### Existing Music Players
-* Poweramp.
-* Google Play Music.
+- Android SDK v21
 
-### TODO LIST
-1. Refactor UI to android 5.0
-2. Floating window
-3. Download from server(well, i myself will build the server side)
+Screenshots
+-----------
 
-Notes
-----
-Apache Tika源码研究（一）
-http://www.cnblogs.com/chenying99/archive/2013/03/07/2947296.html
+![Browse local music file](screenshots/Screenshot_2015-03-20-17-07-26.jpg)
+![Fullscreen music player](screenshots/Screenshot_2015-03-20-17-07-30.jpg)
+![Lyric explorer](screenshots/Screenshot_2015-03-20-17-09-38.jpg)
+![Lyric player](screenshots/Screenshot_2015-03-20-17-11-09.jpg)
+![Lyric encoding picker](screenshots/Screenshot_2015-03-20-17-11-28.jpg)
 
-https://www.google.com.hk/webhp?sourceid=chrome-instant&ion=1&espv=2&es_th=1&ie=UTF-8#q=tika+%E8%AF%86%E5%88%AB&safe=off
+Existing Music Players
+-------
 
-java GBK UTF-8编码与自动识别与统一(乱码问题
-http://my.oschina.net/tdONEmadao/blog/199250
+- Poweramp.
+- Google Play Music.
 
-Release
-----
-1.01 实现Explorer中Recent功能
-1.00 初步发布
+TODO LIST
+-------
+
+- Better implementation for Music player.
+- Download from server(well, i myself will build the server side)
+- Add support lyric file encoding auto-recognize.
+
+CHANGELOG
+-------
+
+- Add music player, refactor UI to material design.
+- Add recent played lyric feature.
+- A lyric player which can play local lrc files.

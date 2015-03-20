@@ -1,21 +1,9 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.0'
-    }
-}
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
-repositories {
-    jcenter()
-}
-
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    buildToolsVersion "21.1.2"
 
     lintOptions {
         checkReleaseBuilds false
@@ -33,6 +21,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+}
+
+repositories {
+    jcenter()
+    flatDir {
+        dirs 'libs'
     }
 }
 

@@ -35,10 +35,10 @@ public class MediaNotificationManager extends BroadcastReceiver {
     private static final int NOTIFICATION_ID = 412;
     private static final int REQUEST_CODE = 100;
 
-    public static final String ACTION_PAUSE = "com.example.android.uamp.pause";
-    public static final String ACTION_PLAY = "com.example.android.uamp.play";
-    public static final String ACTION_PREV = "com.example.android.uamp.prev";
-    public static final String ACTION_NEXT = "com.example.android.uamp.next";
+    public static final String ACTION_PAUSE = "com.markzhai.lyrichere.pause";
+    public static final String ACTION_PLAY = "com.markzhai.lyrichere.play";
+    public static final String ACTION_PREV = "com.markzhai.lyrichere.prev";
+    public static final String ACTION_NEXT = "com.markzhai.lyrichere.next";
     public static final String ACTION_STOP_CASTING = "com.exmaple.android.uamp.stop_cast";
 
     private final MusicService mService;

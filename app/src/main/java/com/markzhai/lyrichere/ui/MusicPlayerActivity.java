@@ -19,16 +19,14 @@ import com.markzhai.lyrichere.utils.LogHelper;
 public class MusicPlayerActivity extends BaseActivity implements MediaBrowserFragment.MediaFragmentListener {
 
     private static final String TAG = LogHelper.makeLogTag(MusicPlayerActivity.class);
-    private static final String SAVED_MEDIA_ID = "com.example.android.uamp.MEDIA_ID";
+    private static final String SAVED_MEDIA_ID = "com.markzhai.lyrichere.MEDIA_ID";
 
-    public static final String EXTRA_PLAY_QUERY = "com.example.android.uamp.PLAY_QUERY";
-    public static final String EXTRA_START_FULLSCREEN =
-            "com.example.android.uamp.EXTRA_START_FULLSCREEN";
+    public static final String EXTRA_PLAY_QUERY = "com.markzhai.lyrichere.PLAY_QUERY";
+    public static final String EXTRA_START_FULLSCREEN = "com.markzhai.lyrichere.EXTRA_START_FULLSCREEN";
 
     // Optionally used with @{link EXTRA_START_FULLSCREEN} to carry a session token,
     // speeding up the mediacontroller connection.
-    public static final String EXTRA_CURRENT_MEDIA_DESCRIPTION =
-            "com.example.android.uamp.CURRENT_MEDIA_DESCRIPTION";
+    public static final String EXTRA_CURRENT_MEDIA_DESCRIPTION = "com.markzhai.lyrichere.CURRENT_MEDIA_DESCRIPTION";
 
     private String mSearchQuery;
 

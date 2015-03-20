@@ -10,11 +10,11 @@ Pre-requisites
 Screenshots
 -----------
 
-![Browse local music file](screenshots/Screenshot_2015-03-20-17-07-26.jpg)
-![Fullscreen music player](screenshots/Screenshot_2015-03-20-17-07-30.jpg)
-![Lyric explorer](screenshots/Screenshot_2015-03-20-17-09-38.jpg)
-![Lyric player](screenshots/Screenshot_2015-03-20-17-11-09.jpg)
-![Lyric encoding picker](screenshots/Screenshot_2015-03-20-17-11-28.jpg)
+![Browse local music file](screenshots/Screenshot_2015-03-20-17-07-26.jpg "Browse local music file")
+![Fullscreen music player](screenshots/Screenshot_2015-03-20-17-07-30.jpg "Fullscreen music player")
+![Lyric explorer](screenshots/Screenshot_2015-03-20-17-09-38.jpg "Lyric explorer")
+![Lyric player](screenshots/Screenshot_2015-03-20-17-11-09.jpg "Lyric player")
+![Lyric encoding picker](screenshots/Screenshot_2015-03-20-17-11-28.jpg "Lyric encoding picker")
 
 Existing Music Players
 -------

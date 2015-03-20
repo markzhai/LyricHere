@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/playback_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:animateLayoutChanges="true"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/error_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/error_message_background"
+            android:gravity="center"
+            android:paddingBottom="@dimen/error_vertical_padding"
+            android:paddingLeft="@dimen/error_horizontal_padding"
+            android:paddingRight="@dimen/error_horizontal_padding"
+            android:paddingTop="@dimen/error_vertical_padding"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            tools:text="Connectivity error!"/>
+    </android.support.v7.widget.CardView>
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/playback_error">
+    </ListView>
+</RelativeLayout>

@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="markzhai.lyrichere.app.ui.LyricExplorerActivity">
+    <item
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/action_search"
+        app:actionViewClass="com.markzhai.lyrichere.ui.LyricSearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
+</menu>

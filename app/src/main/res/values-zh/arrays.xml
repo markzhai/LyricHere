@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="defaultEncoding">
+        <item name="1">UTF-8</item>
+        <item name="2">GBK</item>
+        <item name="3">Big5</item>
+        <item name="4">Shift JIS</item>
+    </string-array>
+    <string-array name="defaultEncodingValues">
+        <item name="1">UTF-8</item>
+        <item name="2">GBK</item>
+        <item name="3">Big5</item>
+        <item name="4">MS932</item>
+    </string-array>
+</resources>

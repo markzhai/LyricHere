@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name" translatable="false">Lyric Here</string>
+
+    <!-- Music Player -->
+    <string name="random_queue_title" translatable="false">Random music</string>
+    <!-- notification -->
+    <string name="stop_casting" translatable="false">Stop Casting</string>
+    <string name="label_pause" translatable="false">Pause</string>
+    <string name="label_play" translatable="false">Play</string>
+    <string name="label_previous" translatable="false">Previous</string>
+    <string name="label_next" translatable="false">Next</string>
+    <string name="media_route_menu_title">Play on…</string>
+
+    <string name="favorite">Favorite</string>
+    <string name="error_no_metadata">Unable to retrieve metadata.</string>
+    <string name="browse_genres">Genres</string>
+    <string name="browse_genre_subtitle">Songs by genre</string>
+    <string name="browse_musics_by_genre_subtitle">%1$s songs</string>
+    <string name="error_no_connection">Cannot connect to server. Please, check your Internet connectivity.</string>
+    <string name="error_loading_media">Error Loading Media</string>
+    <string name="casting_to_device">Casting to %1$s</string>
+    <string name="currently_playing_song">Song currently playing</string>
+    <string name="currently_playing_artist">Artist of currently playing song</string>
+    <string name="currently_playing_extra_info">Extra info for currently playing song</string>
+    <string name="play_item">Play item</string>
+    <string name="play_pause">play or pause</string>
+    <string name="skip_next">skip to next</string>
+    <string name="skip_prev">skip to previous</string>
+    <string name="touch_to_cast">Touch to Cast</string>
+    <!-- Use the default receiver. To customize a styled media receiver, you can use
+         the css and images under <project-root>/docs/cast_styled_receiver -->
+    <string name="cast_application_id">CC1AD845</string>
+    <string name="home_title">Home</string>
+    <string name="related_content_header">You may also like</string>
+    <string name="action_listen">Listen</string>
+    <string name="open_content_drawer">Open the main menu</string>
+    <string name="close_content_drawer">Close the main menu</string>
+    <string name="placeholder_message">This is a placeholder for your application code.</string>
+    <string name="drawer_allmusic_title">All Music</string>
+    <string name="drawer_playlists_title">Playlists</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="background_image_str">Background image for album art</string>
+    <string name="loading">Loading…</string>
+
+    <!-- Activity Label -->
+    <string name="activity_label_setting">Settings</string>
+    <string name="activity_label_lyric_player">Lyric Player</string>
+    <string name="activity_label_about">About</string>
+
+    <!-- Option Menu -->
+    <string name="action_encoding">Encoding</string>
+    <string name="action_search">Search</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_about">About</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_exit">Exit</string>
+    <string name="action_resume">Resume</string>
+
+    <!-- Explorer tab label -->
+    <string name="title_section1">All files</string>
+    <string name="title_section2">Recent</string>
+    <string name="title_section3">Download</string>
+
+    <!-- Preference -->
+    <string name="pref_notifications">Notification</string>
+    <string name="pref_notifications_summary">Show lyric sentence on notification bar</string>
+    <string name="pref_default_encoding">Default encoding</string>
+    <string name="pref_default_encoding_summary">Default encoding for reading lyric</string>
+    <string name="pref_default_encoding_default_value">UTF-8</string>
+    <string name="pref_remember_encoding">Remember encoding</string>
+    <string name="pref_remember_encoding_summary">Remember changed encoding when refresh</string>
+    <string name="pref_category_general">General</string>
+    <string name="pref_category_display">Display</string>
+    <string name="pref_color1_title">Highlight color</string>
+    <string name="pref_color1_summary">Font color used by current sentence</string>
+    <string name="pref_color2_title">Normal color</string>
+    <string name="pref_color2_summary">Font color used by other sentences</string>
+    <string name="pref_color3_title">Background color</string>
+    <string name="pref_key_highlight_color" translatable="false">highlight_color</string>
+    <string name="pref_key_normal_color" translatable="false">normal_color</string>
+    <string name="pref_key_background_color" translatable="false">background_color</string>
+    <string name="pref_key_default_encoding" translatable="false">pref_default_encoding_key</string>
+    <string name="pref_key_remember_encoding" translatable="false">pref_remember_encoding</string>
+    <string name="pref_key_notification" translatable="false">pref_notifications</string>
+
+    <!-- Color Picker -->
+    <string name="dialog_color_picker">Color Picker</string>
+    <string name="press_color_to_apply">Press on Color to apply</string>
+
+    <!-- Application Usage -->
+    <string name="querying_filesys">Querying file system...</string>
+    <string name="menu_encoding_title">Encoding</string>
+    <string name="menu_encoding_utf_8" translatable="false">UTF-8</string>
+    <string name="menu_encoding_gbk" translatable="false">GBK</string>
+    <string name="menu_encoding_big5" translatable="false">Big 5</string>
+    <string name="menu_encoding_sjis" translatable="false">Shift JIS</string>
+    <string name="notification_expand_summary">Expanded</string>
+    <string name="search_hint">Search lyric</string>
+
+    <!-- Download Fragment -->
+    <string name="meta_title">Title</string>
+    <string name="meta_artist">Artist</string>
+    <string name="meta_album">Album</string>
+    <string name="submit">Submit</string>
+    <string name="clear">Clear</string>
+
+    <!-- Notification -->
+    <string name="notification_ticker">Lyric</string>
+    <string name="notification_title">Touch to find lyric</string>
+
+    <!-- Toast -->
+    <string name="not_implemented">Not implemented yet</string>
+    <string name="lyric_not_found">Cannot find corresponding lyric.</string>
+    <string name="lyric_path_outdated">The lyric no longer exists.</string>
+
+    <!-- About Activity -->
+    <string name="about_logo_description" translatable="false">Logo</string>
+    <string name="about_version">Version </string>
+    <string name="about_license" translatable="false">Licensed by lyrichere</string>
+    <string name="about_developed_by" translatable="false">Developed by</string>
+    <string name="about_developer" translatable="false">ZHAI Yifan</string>
+    <string name="about_developer_website" translatable="false">weibo.com/zhayaofen</string>
+    <string name="about_support">Info and Support</string>
+    <string name="about_support_website" translatable="false">zhaiyifan.cn/wordpress/?p=160</string>
+    <string name="about_support_email" translatable="false">kaibarashin@outlook.com</string>
+
+    <string name="tag_not_found">Unknown</string>
+</resources>

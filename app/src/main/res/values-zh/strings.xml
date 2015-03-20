@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Activity Label -->
+    <string name="activity_label_setting">设置</string>
+    <string name="activity_label_lyric_player">歌词播放器</string>
+    <string name="activity_label_about">关于</string>
+
+    <!-- Option Menu -->
+    <string name="action_encoding">编码</string>
+    <string name="action_search">搜索</string>
+    <string name="action_refresh">刷新</string>
+    <string name="action_about">关于</string>
+    <string name="action_settings">设置</string>
+    <string name="action_exit">退出</string>
+    <string name="action_resume">返回</string>
+
+    <!-- Explorer tab label -->
+    <string name="title_section1">所有文件</string>
+    <string name="title_section2">最近</string>
+    <string name="title_section3">下载</string>
+
+    <!-- Preference -->
+    <string name="pref_category_general">综合</string>
+    <string name="pref_notifications">提示栏</string>
+    <string name="pref_notifications_summary">在提示栏显示歌词</string>
+    <string name="pref_default_encoding">默认编码</string>
+    <string name="pref_default_encoding_summary">默认读取歌词文件的编码</string>
+    <string name="pref_default_encoding_default_value">UTF-8</string>
+    <string name="pref_remember_encoding">记住编码</string>
+    <string name="pref_remember_encoding_summary">刷新时记住更改过的编码</string>
+    <string name="pref_category_display">显示</string>
+    <string name="pref_color1_title">高亮色</string>
+    <string name="pref_color1_summary">用于当前歌词句的字体色</string>
+    <string name="pref_color2_title">普通色</string>
+    <string name="pref_color2_summary">用于其他歌词句的字体色</string>
+    <string name="pref_color3_title">背景色</string>
+
+    <!-- Color Picker -->
+    <string name="dialog_color_picker">颜色选择器</string>
+    <string name="press_color_to_apply">点击颜色以应用</string>
+
+    <!-- Application Usage -->
+    <string name="querying_filesys">检索文件系统...</string>
+    <string name="menu_encoding_title">编码</string>
+    <string name="notification_expand_summary">已拉伸</string>
+    <string name="search_hint">搜索歌词</string>
+
+    <!-- Download Fragment -->
+    <string name="meta_title">标题</string>
+    <string name="meta_artist">艺术家</string>
+    <string name="meta_album">专辑</string>
+    <string name="submit">提交</string>
+    <string name="clear">清空</string>
+
+    <!-- Notification -->
+    <string name="notification_ticker">歌词</string>
+    <string name="notification_title">触摸以查找歌词</string>
+
+    <!-- Toast -->
+    <string name="not_implemented">尚未实现</string>
+    <string name="lyric_not_found">没有找到对应歌词</string>
+    <string name="lyric_path_outdated">歌词文件已经不存在</string>
+
+    <!-- About Activity -->
+    <string name="about_version">版本 </string>
+    <string name="about_support">信息与支持</string>
+
+    <string name="tag_not_found">未知</string>
+</resources>

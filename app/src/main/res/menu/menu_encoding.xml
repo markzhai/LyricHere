@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group_encoding"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_encoding_utf_8"
+            android:checked="true"
+            android:title="@string/menu_encoding_utf_8" />
+        <item
+            android:id="@+id/action_encoding_big5"
+            android:title="@string/menu_encoding_big5" />
+        <item
+            android:id="@+id/action_encoding_gbk"
+            android:title="@string/menu_encoding_gbk" />
+        <item
+            android:id="@+id/action_encoding_sjis"
+            android:title="@string/menu_encoding_sjis" />
+    </group>
+</menu>

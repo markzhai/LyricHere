@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/pref_category_general">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/pref_key_notification"
+            android:summary="@string/pref_notifications_summary"
+            android:title="@string/pref_notifications"/>
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/pref_key_remember_encoding"
+            android:summary="@string/pref_remember_encoding_summary"
+            android:title="@string/pref_remember_encoding"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_default_encoding_default_value"
+            android:entries="@array/defaultEncoding"
+            android:entryValues="@array/defaultEncodingValues"
+            android:key="@string/pref_key_default_encoding"
+            android:summary="@string/pref_default_encoding_summary"
+            android:title="@string/pref_default_encoding"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_display">
+        <com.markzhai.lyrichere.prefs.colorpicker.ColorPickerPreference
+            alphaSlider="true"
+            android:defaultValue="@color/Red"
+            android:key="@string/pref_key_highlight_color"
+            android:summary="@string/pref_color1_summary"
+            android:title="@string/pref_color1_title"/>
+        <com.markzhai.lyrichere.prefs.colorpicker.ColorPickerPreference
+            alphaSlider="true"
+            android:defaultValue="@color/White"
+            android:key="@string/pref_key_normal_color"
+            android:summary="@string/pref_color2_summary"
+            android:title="@string/pref_color2_title"/>
+        <com.markzhai.lyrichere.prefs.colorpicker.ColorPickerPreference
+            alphaSlider="true"
+            android:defaultValue="@color/Black"
+            android:key="@string/pref_key_background_color"
+            android:title="@string/pref_color3_title"/>
+    </PreferenceCategory>
+</PreferenceScreen>

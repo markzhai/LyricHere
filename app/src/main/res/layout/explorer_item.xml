@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_item_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.markzhai.lyrichere.ui.LyricExplorerFragment">
+
+    <markzhai.lyrichere.app.ui.ListScrollTextView
+        android:id="@+id/listview_item_left_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="@dimen/listview_items_margin_left_right"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="Title"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <markzhai.lyrichere.app.ui.ListScrollTextView
+        android:id="@+id/listview_item_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/listview_item_left_one"
+        android:layout_alignBottom="@+id/listview_item_left_one"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/listview_items_margin_right_left"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="1"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="Album"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/secondary_text_light" />
+
+    <TextView
+        android:id="@+id/listview_item_left_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/listview_item_right"
+        android:focusable="false"
+        android:singleLine="true"
+        android:text="Artist"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+</RelativeLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/drawer_item_height"
+    android:orientation="horizontal"
+    android:paddingEnd="@dimen/drawer_item_horizontal_padding"
+    android:paddingStart="@dimen/drawer_item_horizontal_padding">
+
+    <ImageView
+        android:id="@+id/drawer_item_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/drawer_item_icon_margin_end"
+        android:layout_marginEnd="@dimen/drawer_item_icon_margin_end"
+        android:tint="@color/drawer_item_tint_color"
+        android:tintMode="src_in"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/ic_allmusic_black_24dp"/>
+
+    <TextView
+        android:id="@+id/drawer_item_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/drawer_item_tint_color"
+        tools:text="Music library"/>
+
+</LinearLayout>

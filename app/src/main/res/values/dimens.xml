@@ -1,0 +1,42 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="listview_items_margin_right_left">180dp</dimen>
+    <dimen name="listview_items_margin_left_right">150dp</dimen>
+
+    <dimen name="button_width">96dp</dimen>
+
+    <dimen name="about_bold_font_size">17dp</dimen>
+    <dimen name="about_view_normal_margin">20dp</dimen>
+    <dimen name="about_view_small_margin">8dp</dimen>
+
+    <!-- error infobar -->
+    <dimen name="error_horizontal_padding">4dp</dimen>
+    <dimen name="error_vertical_padding">16dp</dimen>
+
+    <!-- playback controls -->
+    <dimen name="playback_controls_albumart_horizontal_margin">8dp</dimen>
+    <dimen name="playback_controls_albumart_size">64dp</dimen>
+    <dimen name="playback_controls_padding">8dp</dimen>
+
+    <!-- navigation drawer -->
+    <dimen name="drawer_item_icon_horizontal_margin">12dp</dimen>
+    <dimen name="drawer_item_right_margin">56dp</dimen>
+    <dimen name="drawer_item_icon_margin_end">32dp</dimen>
+    <dimen name="drawer_item_height">48dp</dimen>
+    <dimen name="drawer_item_horizontal_padding">16dp</dimen>
+
+    <!-- media browser listview -->
+    <dimen name="media_item_height">72dp</dimen>
+    <dimen name="media_item_icon_margin_start">12dp</dimen>
+    <dimen name="media_item_text_margin_start">60dp</dimen>
+    <dimen name="toolbar_inset_start">60dp</dimen>
+    <!-- Margins for the ShowcaseView button -->
+    <dimen name="button_margin">50dp</dimen>
+
+    <!-- Margins for full screen activity-->
+    <dimen name="text_view_margin">16dp</dimen>
+    <dimen name="end_text_margin">16dp</dimen>
+</resources>

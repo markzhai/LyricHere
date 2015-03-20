@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.markzhai.lyrichere.ui.AboutActivity">
+
+    <ImageView
+        android:id="@+id/about_logo_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/about_view_small_margin"
+        android:contentDescription="@string/about_logo_description"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/about_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/about_logo_image"
+        android:layout_centerHorizontal="true"
+        android:text="@string/app_name"
+        android:textSize="@dimen/about_bold_font_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/about_version_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/about_app_name"
+        android:layout_centerHorizontal="true" />
+
+
+    <TextView
+        android:id="@+id/about_license"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/about_view_normal_margin"
+        android:text="@string/about_license" />
+
+    <TextView
+        android:id="@+id/about_support_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/about_license"
+        android:layout_centerHorizontal="true"
+        android:autoLink="email"
+        android:text="@string/about_support_email" />
+
+    <TextView
+        android:id="@+id/about_support_website"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/about_support_email"
+        android:layout_centerHorizontal="true"
+        android:autoLink="web"
+        android:text="@string/about_support_website" />
+
+    <TextView
+        android:id="@+id/about_support"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/about_support_website"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/about_view_normal_margin"
+        android:text="@string/about_support"
+        android:textSize="@dimen/about_bold_font_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/about_developer_website"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/about_support"
+        android:layout_centerHorizontal="true"
+        android:autoLink="web"
+        android:text="@string/about_developer_website" />
+
+    <TextView
+        android:id="@+id/about_developer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/about_developer_website"
+        android:layout_centerHorizontal="true"
+        android:text="@string/about_developer" />
+
+    <TextView
+        android:id="@+id/about_developed_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/about_developer"
+        android:layout_centerHorizontal="true"
+        android:text="@string/about_developed_by"
+        android:textSize="@dimen/about_bold_font_size"
+        android:textStyle="bold" />
+</RelativeLayout>

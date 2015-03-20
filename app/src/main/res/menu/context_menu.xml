@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_encoding_utf_8"
+        android:title="@string/menu_encoding_utf_8" />
+    <item
+        android:id="@+id/menu_encoding_gbk"
+        android:title="@string/menu_encoding_gbk" />
+    <item
+        android:id="@+id/menu_encoding_big5"
+        android:title="@string/menu_encoding_big5" />
+    <item
+        android:id="@+id/menu_encoding_sjis"
+        android:title="@string/menu_encoding_sjis" />
+</menu>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Activity Label -->
+    <string name="activity_label_setting">設定</string>
+    <string name="activity_label_lyric_player">歌詞プレーヤー</string>
+    <string name="activity_label_about">Lyric Hereについて</string>
+
+    <!-- Option Menu -->
+    <string name="action_encoding">エンコード</string>
+    <string name="action_search">検索</string>
+    <string name="action_refresh">更新</string>
+    <string name="action_about">について</string>
+    <string name="action_settings">設定</string>
+    <string name="action_exit">終了</string>
+    <string name="action_resume">戻る</string>
+
+    <!-- Explorer tab label -->
+    <string name="title_section1">全てのファイル</string>
+    <string name="title_section2">最近</string>
+    <string name="title_section3">ダウンロード</string>
+
+    <!-- Preference -->
+    <string name="pref_category_general">総合</string>
+    <string name="pref_notifications">通知バー</string>
+    <string name="pref_notifications_summary">通知バーに歌詞を表示する</string>
+    <string name="pref_default_encoding">デフォルトエンコード</string>
+    <string name="pref_default_encoding_summary">歌詞ファイルをこのエンコードで読む</string>
+    <string name="pref_default_encoding_default_value">UTF-8</string>
+    <string name="pref_remember_encoding">エンコードを覚える</string>
+    <string name="pref_remember_encoding_summary">歌詞更新時に変更した歌詞のエンコード使用する</string>
+    <string name="pref_category_display">表示</string>
+    <string name="pref_color1_title">高亮文字色</string>
+    <string name="pref_color1_summary">当前歌詞を表示</string>
+    <string name="pref_color2_title">普通色</string>
+    <string name="pref_color2_summary">ほかの歌詞を表示</string>
+    <string name="pref_color3_title">背景色</string>
+
+    <!-- Color Picker -->
+    <string name="dialog_color_picker">カラーピッカー</string>
+    <string name="press_color_to_apply">色をクリックして使う</string>
+
+    <!-- Application Usage -->
+    <string name="querying_filesys">検索ファイルシステム...</string>
+    <string name="menu_encoding_title">エンコード</string>
+    <string name="notification_expand_summary">エクスパンデッド</string>
+    <string name="search_hint">検索歌詞</string>
+
+    <!-- Download Fragment -->
+    <string name="meta_title">タイトル</string>
+    <string name="meta_artist">アーティスト</string>
+    <string name="meta_album">アルバム</string>
+    <string name="submit">提出</string>
+    <string name="clear">クリア</string>
+
+    <!-- Notification -->
+    <string name="notification_ticker">歌詞</string>
+    <string name="notification_title">タッチして見つかってみる</string>
+
+    <!-- Toast -->
+    <string name="not_implemented">まだ実現してません</string>
+    <string name="lyric_not_found">相応の歌詞は見つかれません</string>
+    <string name="lyric_path_outdated">その歌詞ファイルはもういない</string>
+
+    <!-- About Activity -->
+    <string name="about_version">ヴァージョン </string>
+    <string name="about_support">サポート</string>
+
+    <string name="tag_not_found">不明</string>
+</resources>

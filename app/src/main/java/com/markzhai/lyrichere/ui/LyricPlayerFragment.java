@@ -24,6 +24,7 @@ import com.markzhai.lyrichere.Constants;
 import com.markzhai.lyrichere.R;
 import com.markzhai.lyrichere.utils.LogHelper;
 import com.markzhai.lyrichere.utils.LyricProvider;
+import com.markzhai.lyrichere.widget.LyricView;
 import com.markzhai.lyrichere.workers.LyricEncodingUpdater;
 import com.markzhai.lyrichere.workers.LyricLastVisitUpdater;
 

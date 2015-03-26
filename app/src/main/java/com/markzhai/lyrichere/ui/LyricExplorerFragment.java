@@ -27,6 +27,7 @@ import com.markzhai.lyrichere.Constants;
 import com.markzhai.lyrichere.R;
 import com.markzhai.lyrichere.adapters.LyricCursorAdapter;
 import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.widget.LyricSearchView;
 import com.markzhai.lyrichere.workers.LyricEncodingUpdater;
 
 /**

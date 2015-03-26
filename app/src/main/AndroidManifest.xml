@@ -105,7 +105,7 @@
             android:label="@string/activity_label_setting"/>
 
         <provider
-            android:name=".db.LyricContentProvider"
+            android:name=".provider.LyricContentProvider"
             android:authorities="markzhai.lyrichere.app.db.LyricContentProvider"
             android:enabled="true"
             android:exported="true"/>

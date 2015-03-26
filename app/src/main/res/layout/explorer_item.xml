@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.markzhai.lyrichere.ui.LyricExplorerFragment">
 
-    <com.markzhai.lyrichere.ui.ListScrollTextView
+    <com.markzhai.lyrichere.widget.ListScrollTextView
         android:id="@+id/listview_item_left_one"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         android:text="Title"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <com.markzhai.lyrichere.ui.ListScrollTextView
+    <com.markzhai.lyrichere.widget.ListScrollTextView
         android:id="@+id/listview_item_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

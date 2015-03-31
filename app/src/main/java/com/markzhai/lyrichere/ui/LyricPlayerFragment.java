@@ -293,9 +293,9 @@ public class LyricPlayerFragment extends Fragment {
             if (isNotificationOn) {
                 bigTextStyle.setSummaryText(getString(R.string.notification_expand_summary));
                 mNotifyBuilder = new NotificationCompat.Builder(getActivity())
-                        .setContentTitle(mLyricView.getLyric().getArtist() + " - " + mLyricView.getLyric().getTitle())
+                        .setContentTitle(mLyricView.getLyric().artist + " - " + mLyricView.getLyric().title)
                         .setContentText("...")
-                        .setTicker(mLyricView.getLyric().getTitle())
+                        .setTicker(mLyricView.getLyric().title)
                         .setContentIntent(PendingIntent.getActivity(getActivity(), 0, new Intent(getActivity(), LyricPlayerActivity.class), 0))
                         .setSmallIcon(R.drawable.kid)
                         .setStyle(bigTextStyle);

@@ -135,7 +135,7 @@ public class LyricView extends TextView {
         super.onDraw(canvas);
         if (mLyric == null)
             return;
-        List<Lyric.Sentence> sentenceList = mLyric.getSentenceList();
+        List<Lyric.Sentence> sentenceList = mLyric.sentenceList;
         if (sentenceList == null || sentenceList.isEmpty() || mLyricIndex == -2) {
             return;
         }
@@ -146,7 +146,7 @@ public class LyricView extends TextView {
         if (mLyricIndex > -1) {
             // Current line with highlighted color
             currY = mMiddleY + DY * drawText(
-                    canvas, mCurrentPaint, sentenceList.get(mLyricIndex).getContent(), mMiddleY);
+                    canvas, mCurrentPaint, sentenceList.get(mLyricIndex).content, mMiddleY);
         } else {
             // First line is not from timestamp 0
             currY = mMiddleY + DY;
@@ -159,7 +159,7 @@ public class LyricView extends TextView {
                 break;
             }
             // Draw and Move down
-            currY += DY * drawText(canvas, mPaint, sentenceList.get(i).getContent(), currY);
+            currY += DY * drawText(canvas, mPaint, sentenceList.get(i).content, currY);
             // canvas.translate(0, DY);
         }
 
@@ -171,16 +171,16 @@ public class LyricView extends TextView {
                 break;
             }
             // Draw and move upwards
-            currY -= DY * drawText(canvas, mPaint, sentenceList.get(i).getContent(), currY);
+            currY -= DY * drawText(canvas, mPaint, sentenceList.get(i).content, currY);
             // canvas.translate(0, DY);
         }
 
         if (mIsTouched > 0) {
             mPaint.setTextAlign(Paint.Align.LEFT);
-            canvas.drawText(String.format("%s - %s", mLyric.getArtist(), mLyric.getTitle()), 10, 50, mPaint);
-            canvas.drawText("offset: " + mLyric.getOffset(), 10, 150, mPaint);
+            canvas.drawText(String.format("%s - %s", mLyric.artist, mLyric.title), 10, 50, mPaint);
+            canvas.drawText("offset: " + mLyric.offset, 10, 150, mPaint);
             if (mLyricIndex >= 0) {
-                int seconds = (int) ((mLyric.getSentenceList().get(mLyricIndex).getFromTime() / 1000));
+                int seconds = (int) ((mLyric.sentenceList.get(mLyricIndex).fromTime / 1000));
                 int minutes = seconds / 60;
                 seconds = seconds % 60;
                 canvas.drawText(String.format("%02d:%02d", minutes, seconds), 10, 100, mPaint);
@@ -215,12 +215,12 @@ public class LyricView extends TextView {
                         if (mLastEffectY - y > 10) {
                             int times = (int) ((mLastEffectY - y) / 10);
                             mLastEffectY = y;
-                            mLyric.addOffset(times * -100);
+                            mLyric.offset += times * -100;
                             offsetChanged = true;
                         } else if (mLastEffectY - y < -10) {
                             int times = -(int) ((mLastEffectY - y) / 10);
                             mLastEffectY = y;
-                            mLyric.addOffset(times * 100);
+                            mLyric.offset += times * 100;
                             offsetChanged = true;
                         }
                     }
@@ -265,7 +265,7 @@ public class LyricView extends TextView {
         }
 
         // Get index of sentence whose timestamp is between its startTime and currentTime.
-        mLyricIndex = LyricUtils.getSentenceIndex(mLyric, time, mLyricIndex, mLyric.getOffset());
+        mLyricIndex = LyricUtils.getSentenceIndex(mLyric, time, mLyricIndex, mLyric.offset);
 
         // New current index is last sentence
         if (mLyricIndex >= mLyricSentenceLength - 1) {
@@ -273,12 +273,12 @@ public class LyricView extends TextView {
             return -1;
         }
 
-        return mLyric.getSentenceList().get(mLyricIndex + 1).getFromTime() + mLyric.getOffset();
+        return mLyric.sentenceList.get(mLyricIndex + 1).fromTime + mLyric.offset;
     }
 
     public synchronized void setLyric(Lyric lyric, boolean resetIndex) {
         mLyric = lyric;
-        mLyricSentenceLength = mLyric.getSentenceList().size();
+        mLyricSentenceLength = mLyric.sentenceList.size();
         if (resetIndex) {
             mLyricIndex = 0;
         }
@@ -294,7 +294,7 @@ public class LyricView extends TextView {
 
     public String getCurrentSentence() {
         if (mLyricIndex >= 0 && mLyricIndex < mLyricSentenceLength) {
-            return mLyric.getSentenceList().get(mLyricIndex).getContent();
+            return mLyric.sentenceList.get(mLyricIndex).content;
         }
         return null;
     }

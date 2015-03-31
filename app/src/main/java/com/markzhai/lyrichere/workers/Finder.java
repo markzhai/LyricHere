@@ -123,7 +123,7 @@ public class  Finder extends AsyncTask<File, Integer, Integer> {
             Uri uri = mContext.getContentResolver().insert(Constants.CONTENT_URI, values);
             if (uri != null) {
                 LogHelper.i(TAG, String.format("(id %d): %s - %s, [%s]", Integer.valueOf(uri.getLastPathSegment()),
-                        lyric.getArtist(), lyric.getTitle(), f.getAbsolutePath()));
+                        lyric.artist, lyric.title, f.getAbsolutePath()));
             }
             result++;
         }

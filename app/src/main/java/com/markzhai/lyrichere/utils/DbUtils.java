@@ -32,10 +32,6 @@ public class DbUtils {
     /**
      * find lyric by media metadata
      *
-     * @param resolver
-     * @param title
-     * @param artist
-     * @param album
      * @return String[] with path at index 0, encoding at index 1
      */
     public static String[] findLyric(ContentResolver resolver, String title, String artist, String album) {
@@ -88,10 +84,10 @@ public class DbUtils {
     public static int updateLyricEncoding(ContentResolver resolver, String rowId, Lyric lyric, String encoding) {
         ContentValues values = new ContentValues();
 
-        values.put(Constants.Column.TITLE, lyric.getTitle());
-        values.put(Constants.Column.ARTIST, lyric.getArtist());
-        values.put(Constants.Column.ALBUM, lyric.getAlbum());
-        values.put(Constants.Column.LENGTH, lyric.getLength());
+        values.put(Constants.Column.TITLE, lyric.title);
+        values.put(Constants.Column.ARTIST, lyric.artist);
+        values.put(Constants.Column.ALBUM, lyric.album);
+        values.put(Constants.Column.LENGTH, lyric.length);
         values.put(Constants.Column.ENCODING, encoding);
         values.put(Constants.Column.ENCODING_CHANGED, 1);
 
@@ -108,10 +104,10 @@ public class DbUtils {
         Lyric lyric = LyricUtils.parseLyric(new File(path), encoding);
         ContentValues values = new ContentValues();
 
-        values.put(Constants.Column.TITLE, lyric.getTitle());
-        values.put(Constants.Column.ARTIST, lyric.getArtist());
-        values.put(Constants.Column.ALBUM, lyric.getAlbum());
-        values.put(Constants.Column.LENGTH, lyric.getLength());
+        values.put(Constants.Column.TITLE, lyric.title);
+        values.put(Constants.Column.ARTIST, lyric.artist);
+        values.put(Constants.Column.ALBUM, lyric.album);
+        values.put(Constants.Column.LENGTH, lyric.length);
         values.put(Constants.Column.ENCODING, encoding);
         values.put(Constants.Column.ENCODING_CHANGED, 1);
 
@@ -162,10 +158,10 @@ public class DbUtils {
     public static ContentValues getLyricContentValue(Lyric lyric, String path, Long time, String encoding) {
         ContentValues values = new ContentValues();
 
-        values.put(Constants.Column.TITLE, lyric.getTitle());
-        values.put(Constants.Column.ARTIST, lyric.getArtist());
-        values.put(Constants.Column.ALBUM, lyric.getAlbum());
-        values.put(Constants.Column.LENGTH, lyric.getLength());
+        values.put(Constants.Column.TITLE, lyric.title);
+        values.put(Constants.Column.ARTIST, lyric.artist);
+        values.put(Constants.Column.ALBUM, lyric.album);
+        values.put(Constants.Column.LENGTH, lyric.length);
 
         values.put(Constants.Column.PATH, path);
         values.put(Constants.Column.ENCODING, encoding);
@@ -180,10 +176,10 @@ public class DbUtils {
                                                      String encoding, String unknownTag) {
         ContentValues values = new ContentValues();
 
-        values.put(Constants.Column.TITLE, TextUtils.isEmpty(lyric.getTitle()) ? unknownTag : lyric.getTitle());
-        values.put(Constants.Column.ARTIST, TextUtils.isEmpty(lyric.getArtist()) ? unknownTag : lyric.getArtist());
-        values.put(Constants.Column.ALBUM, TextUtils.isEmpty(lyric.getAlbum()) ? unknownTag : lyric.getAlbum());
-        values.put(Constants.Column.LENGTH, lyric.getLength());
+        values.put(Constants.Column.TITLE, TextUtils.isEmpty(lyric.title) ? unknownTag : lyric.title);
+        values.put(Constants.Column.ARTIST, TextUtils.isEmpty(lyric.artist) ? unknownTag : lyric.artist);
+        values.put(Constants.Column.ALBUM, TextUtils.isEmpty(lyric.album) ? unknownTag : lyric.album);
+        values.put(Constants.Column.LENGTH, lyric.length);
 
         values.put(Constants.Column.PATH, path);
         values.put(Constants.Column.ENCODING, encoding);

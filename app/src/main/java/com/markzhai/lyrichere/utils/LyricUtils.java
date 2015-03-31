@@ -9,7 +9,6 @@ import com.markzhai.lyrichere.model.Lyric.Sentence;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collections;
@@ -31,13 +30,11 @@ public class LyricUtils {
             while ((line = br.readLine()) != null) {
                 parseLine(line, lyric);
             }
-            Collections.sort(lyric.getSentenceList(), new Lyric.SentenceComparator());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Collections.sort(lyric.sentenceList, new Lyric.SentenceComparator());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (TextUtils.isEmpty(lyric.getTitle()) || TextUtils.isEmpty(lyric.getArtist())) {
+        if (TextUtils.isEmpty(lyric.title) || TextUtils.isEmpty(lyric.artist)) {
             String title;
             String artist = null;
             String filename = file.getName();
@@ -49,10 +46,10 @@ public class LyricUtils {
             } else {
                 title = filename.trim();
             }
-            if (TextUtils.isEmpty(lyric.getTitle()) && !TextUtils.isEmpty(title)) {
-                lyric.setTitle(title);
+            if (TextUtils.isEmpty(lyric.title) && !TextUtils.isEmpty(title)) {
+                lyric.title = title;
             } else if (!TextUtils.isEmpty(artist)) {
-                lyric.setArtist(artist);
+                lyric.artist = artist;
             }
         }
         return lyric;
@@ -69,10 +66,6 @@ public class LyricUtils {
 
     /**
      * Get sentence according to timestamp.
-     *
-     * @param lyric
-     * @param ts
-     * @return
      */
     public static Sentence getSentence(Lyric lyric, long ts) {
         return getSentence(lyric, ts, 0);
@@ -80,11 +73,6 @@ public class LyricUtils {
 
     /**
      * Get sentence according to timestamp and current index.
-     *
-     * @param lyric
-     * @param ts
-     * @param index
-     * @return
      */
     public static Sentence getSentence(Lyric lyric, long ts, int index) {
         return getSentence(lyric, ts, index, 0);
@@ -92,18 +80,12 @@ public class LyricUtils {
 
     /**
      * Get sentence according to timestamp, current index, offset.
-     *
-     * @param lyric
-     * @param ts
-     * @param index
-     * @param offset
-     * @return
      */
     public static Sentence getSentence(Lyric lyric, long ts, int index, int offset) {
         int found = getSentenceIndex(lyric, ts, index, offset);
         if (found == -1)
             return null;
-        return lyric.getSentenceList().get(found);
+        return lyric.sentenceList.get(found);
     }
 
     /**
@@ -118,7 +100,7 @@ public class LyricUtils {
     public static int getSentenceIndex(Lyric lyric, long ts, int index, int offset) {
         if (lyric == null || ts < 0 || index < -1)
             return -1;
-        List<Sentence> list = lyric.getSentenceList();
+        List<Sentence> list = lyric.sentenceList;
 
         if (index >= list.size())
             index = list.size() - 1;
@@ -127,9 +109,9 @@ public class LyricUtils {
 
         int found = -2;
 
-        if (list.get(index).getFromTime() + offset > ts) {
+        if (list.get(index).fromTime + offset > ts) {
             for (int i = index; i > -1; --i) {
-                if (list.get(i).getFromTime() + offset <= ts) {
+                if (list.get(i).fromTime + offset <= ts) {
                     found = i;
                     break;
                 }
@@ -140,7 +122,7 @@ public class LyricUtils {
         } else {
             for (int i = index; i < list.size() - 1; ++i) {
                 //Log.d(TAG, String.format("ts: %d, offset: %d, curr_ts: %d, next_ts: %d", ts, offset, list.get(i).getFromTime(), list.get(i + 1).getFromTime()));
-                if (list.get(i + 1).getFromTime() + offset > ts) {
+                if (list.get(i + 1).fromTime + offset > ts) {
                     found = i;
                     break;
                 }
@@ -171,19 +153,19 @@ public class LyricUtils {
                 return false;
 
             if (colonSplited[0].equalsIgnoreCase(Constants.ID_TAG_TITLE)) {
-                lyric.setTitle(colonSplited[1].trim());
+                lyric.title = colonSplited[1].trim();
             } else if (colonSplited[0].equalsIgnoreCase(Constants.ID_TAG_ARTIST)) {
-                lyric.setArtist(colonSplited[1].trim());
+                lyric.artist = colonSplited[1].trim();
             } else if (colonSplited[0].equalsIgnoreCase(Constants.ID_TAG_ALBUM)) {
-                lyric.setAlbum(colonSplited[1].trim());
+                lyric.album = colonSplited[1].trim();
             } else if (colonSplited[0].equalsIgnoreCase(Constants.ID_TAG_CREATOR_LRCFILE)) {
-                lyric.setBy(colonSplited[1].trim());
+                lyric.by = colonSplited[1].trim();
             } else if (colonSplited[0].equalsIgnoreCase(Constants.ID_TAG_CREATOR_SONGTEXT)) {
-                lyric.setAuthor(colonSplited[1].trim());
+                lyric.author = colonSplited[1].trim();
             } else if (colonSplited[0].equalsIgnoreCase(Constants.ID_TAG_LENGTH)) {
-                lyric.setLength(parseTime(colonSplited[1].trim(), lyric));
+                lyric.length = parseTime(colonSplited[1].trim(), lyric);
             } else if (colonSplited[0].equalsIgnoreCase(Constants.ID_TAG_OFFSET)) {
-                lyric.setOffset(parseOffset(colonSplited[1].trim()));
+                lyric.offset = parseOffset(colonSplited[1].trim());
             } else {
                 if (Character.isDigit(colonSplited[0].charAt(0))) {
                     List<Long> timestampList = new LinkedList<Long>();
@@ -235,9 +217,9 @@ public class LyricUtils {
         } else if (ss.length == 2) {// 如果正好两位，就算分秒
             try {
                 // 先看有没有一个是记录了整体偏移量的
-                if (lyric.getOffset() == 0 && ss[0].equalsIgnoreCase("offset")) {
-                    lyric.setOffset(Integer.parseInt(ss[1]));
-                    System.err.println("整体的偏移量：" + lyric.getOffset());
+                if (lyric.offset == 0 && ss[0].equalsIgnoreCase("offset")) {
+                    lyric.offset = Integer.parseInt(ss[1]);
+                    System.err.println("整体的偏移量：" + lyric.offset);
                     return -1;
                 }
                 int min = Integer.parseInt(ss[0]);

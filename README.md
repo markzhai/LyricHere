@@ -35,3 +35,11 @@ CHANGELOG
 - Add music player, refactor UI to material design.
 - Add recent played lyric feature.
 - A lyric player which can play local lrc files.
+
+LIBRARY
+-------
+
+- Butter Knife
+- DBFlow
+- base-adapter-helper
+- Google Auto

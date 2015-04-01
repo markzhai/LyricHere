@@ -86,13 +86,16 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="appcompat-v7-22.0.0" level="project" />
     <orderEntry type="library" exported="" name="DBFlow-Core-1.7.2" level="project" />
-    <orderEntry type="library" exported="" name="mediarouter-v7-21.0.2" level="project" />
     <orderEntry type="library" exported="" name="dagger-1.2.2" level="project" />
     <orderEntry type="library" exported="" name="DBFlow-1.7.2" level="project" />
     <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-22.0.0" level="project" />
+    <orderEntry type="library" exported="" name="base-adapter-helper-1.1.11" level="project" />
+    <orderEntry type="library" exported="" name="picasso-2.1.1" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-21.0.2" level="project" />
-    <orderEntry type="library" exported="" name="auto-value-1.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-22.0.0" level="project" />
+    <orderEntry type="library" exported="" name="butterknife-6.1.0" level="project" />
+    <orderEntry type="library" exported="" name="mediarouter-v7-21.0.2" level="project" />
+    <orderEntry type="library" exported="" name="auto-value-1.0" level="project" />
   </component>
 </module>

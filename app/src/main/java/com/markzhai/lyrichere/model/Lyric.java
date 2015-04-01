@@ -1,16 +1,15 @@
 package com.markzhai.lyrichere.model;
 
-import android.net.Uri;
-
-import com.raizlabs.android.dbflow.annotation.ContainerAdapter;
+import com.markzhai.lyrichere.AppDatabase;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.structure.provider.BaseSyncableProviderModel;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Lyric extends BaseSyncableProviderModel {
+@Table(databaseName = AppDatabase.NAME)
+public class Lyric extends BaseModel {
     private static final String TAG = Lyric.class.getSimpleName();
 
     public String title;
@@ -37,27 +36,6 @@ public class Lyric extends BaseSyncableProviderModel {
             }
         }
         return stringBuilder.toString();
-    }
-
-
-    @Override
-    public Uri getDeleteUri() {
-        return null;
-    }
-
-    @Override
-    public Uri getInsertUri() {
-        return null;
-    }
-
-    @Override
-    public Uri getUpdateUri() {
-        return null;
-    }
-
-    @Override
-    public Uri getQueryUri() {
-        return null;
     }
 
     public void addSentence(String content, long time) {

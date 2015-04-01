@@ -3,6 +3,8 @@ package com.markzhai.lyrichere;
 import android.app.Application;
 import android.content.Context;
 
+import com.raizlabs.android.dbflow.config.FlowManager;
+
 public class LHApplication extends Application {
 
     private static Context context = null;
@@ -13,6 +15,15 @@ public class LHApplication extends Application {
         super.onCreate();
         context = this;
         application = this;
+        FlowManager.init(this);
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        FlowManager.destroy();
+        application = null;
+        context = null;
     }
 
     public static Context getContext() {

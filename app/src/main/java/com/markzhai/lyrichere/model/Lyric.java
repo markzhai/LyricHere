@@ -1,15 +1,10 @@
 package com.markzhai.lyrichere.model;
 
-import com.markzhai.lyrichere.AppDatabase;
-import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-@Table(databaseName = AppDatabase.NAME)
-public class Lyric extends BaseModel {
+public class Lyric {
     private static final String TAG = Lyric.class.getSimpleName();
 
     public String title;

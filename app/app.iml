@@ -85,9 +85,9 @@
     <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="appcompat-v7-22.0.0" level="project" />
-    <orderEntry type="library" exported="" name="DBFlow-Core-1.7.2" level="project" />
+    <orderEntry type="library" exported="" name="DBFlow-Core-1.8.0" level="project" />
     <orderEntry type="library" exported="" name="dagger-1.2.2" level="project" />
-    <orderEntry type="library" exported="" name="DBFlow-1.7.2" level="project" />
+    <orderEntry type="library" exported="" name="DBFlow-1.8.0" level="project" />
     <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-22.0.0" level="project" />
     <orderEntry type="library" exported="" name="base-adapter-helper-1.1.11" level="project" />

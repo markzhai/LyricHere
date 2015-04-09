@@ -206,7 +206,7 @@ public class MusicProvider {
             if (mCurrentState == State.NON_INITIALIZED) {
                 mCurrentState = State.INITIALIZING;
                 Cursor cursor = fetchFromMediaStore();
-                if (cursor != null) {
+                if (cursor != null && cursor.getCount() > 0) {
                     cursor.moveToFirst();
                     do {
                         MediaMetadata item = buildFromCursor(cursor);

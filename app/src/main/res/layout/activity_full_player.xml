@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/pageView"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black"
-    android:fitsSystemWindows="true">
+<!--
+Copyright (C) 2014 The Android Open Source Project
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<RelativeLayout android:id="@+id/pageView"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/black"
+                android:fitsSystemWindows="true">
 
     <ImageView
         android:id="@+id/background_image"
@@ -29,10 +43,10 @@
             android:ellipsize="end"
             android:gravity="center_horizontal"
             android:maxLines="1"
-            android:shadowColor="@color/black"
+            android:shadowColor="@android:color/black"
             android:shadowRadius="20"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#E5FFFFFF"/>
+            android:textColor="@color/fullscreen_line_color"/>
 
         <TextView
             android:id="@+id/line2"
@@ -43,10 +57,10 @@
             android:fontFamily="sans-serif-light"
             android:gravity="center_horizontal"
             android:maxLines="1"
-            android:shadowColor="@color/black"
+            android:shadowColor="@android:color/black"
             android:shadowRadius="20"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#E5CCCCCC"/>
+            android:textColor="@color/fullscreen_secondary_line_color"/>
 
         <TextView
             android:id="@+id/line3"
@@ -57,10 +71,10 @@
             android:fontFamily="sans-serif-light"
             android:gravity="center_horizontal"
             android:maxLines="1"
-            android:shadowColor="@color/black"
+            android:shadowColor="@android:color/black"
             android:shadowRadius="20"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#E5CCCCCC"/>
+            android:textColor="@color/fullscreen_secondary_line_color"/>
 
         <LinearLayout
             android:id="@+id/controllers"
@@ -82,7 +96,7 @@
                     android:layout_marginStart="@dimen/text_view_margin"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:textColor="@color/white"/>
+                    android:textColor="@android:color/white"/>
 
                 <SeekBar
                     android:id="@+id/seekBar1"
@@ -104,7 +118,7 @@
                     android:layout_marginEnd="@dimen/end_text_margin"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:textColor="@color/white"/>
+                    android:textColor="@android:color/white"/>
 
             </RelativeLayout>
 

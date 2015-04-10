@@ -35,7 +35,7 @@ public final class AlbumArtCache {
 
     private static final AlbumArtCache sInstance = new AlbumArtCache();
 
-    public static final AlbumArtCache getInstance() {
+    public static AlbumArtCache getInstance() {
         return sInstance;
     }
 
@@ -80,7 +80,7 @@ public final class AlbumArtCache {
         new AsyncTask<Void, Void, Bitmap[]>() {
             @Override
             protected Bitmap[] doInBackground(Void[] objects) {
-                Bitmap[] bitmaps = null;
+                Bitmap[] bitmaps;
                 try {
                     Bitmap bitmap = BitmapHelper.fetchAndRescaleBitmap(artUrl,
                             MAX_ART_WIDTH, MAX_ART_HEIGHT);

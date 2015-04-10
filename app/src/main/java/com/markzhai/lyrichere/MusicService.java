@@ -31,9 +31,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.markzhai.lyrichere.utils.MediaIDHelper.createBrowseCategoryMediaID;
 import static com.markzhai.lyrichere.utils.MediaIDHelper.MEDIA_ID_MUSICS_BY_GENRE;
 import static com.markzhai.lyrichere.utils.MediaIDHelper.MEDIA_ID_ROOT;
+import static com.markzhai.lyrichere.utils.MediaIDHelper.createBrowseCategoryMediaID;
+
 /**
  * This class provides a MediaBrowser through a service. It exposes the media library to a browsing
  * client, through the onGetRoot and onLoadChildren methods. It also creates a MediaSession and
@@ -42,38 +43,38 @@ import static com.markzhai.lyrichere.utils.MediaIDHelper.MEDIA_ID_ROOT;
  * user interfaces that need to interact with your media session, like Android Auto. You can
  * (should) also use the same service from your app's UI, which gives a seamless playback
  * experience to the user.
- * <p/>
+ * <p>
  * To implement a MediaBrowserService, you need to:
- * <p/>
+ * <p>
  * <ul>
- * <p/>
+ * <p>
  * <li> Extend {@link android.service.media.MediaBrowserService}, implementing the media browsing
  * related methods {@link android.service.media.MediaBrowserService#onGetRoot} and
  * {@link android.service.media.MediaBrowserService#onLoadChildren};
  * <li> In onCreate, start a new {@link android.media.session.MediaSession} and notify its parent
  * with the session's token {@link android.service.media.MediaBrowserService#setSessionToken};
- * <p/>
+ * <p>
  * <li> Set a callback on the
  * {@link android.media.session.MediaSession#setCallback(android.media.session.MediaSession.Callback)}.
  * The callback will receive all the user's actions, like play, pause, etc;
- * <p/>
+ * <p>
  * <li> Handle all the actual music playing using any method your app prefers (for example,
  * {@link android.media.MediaPlayer})
- * <p/>
+ * <p>
  * <li> Update playbackState, "now playing" metadata and queue, using MediaSession proper methods
  * {@link android.media.session.MediaSession#setPlaybackState(android.media.session.PlaybackState)}
  * {@link android.media.session.MediaSession#setMetadata(android.media.MediaMetadata)} and
  * {@link android.media.session.MediaSession#setQueue(java.util.List)})
- * <p/>
+ * <p>
  * <li> Declare and export the service in AndroidManifest with an intent receiver for the action
  * android.media.browse.MediaBrowserService
- * <p/>
+ * <p>
  * </ul>
- * <p/>
+ * <p>
  * To make your app compatible with Android Auto, you also need to:
- * <p/>
+ * <p>
  * <ul>
- * <p/>
+ * <p>
  * <li> Declare a meta-data tag in AndroidManifest.xml linking to a xml resource
  * with a &lt;automotiveApp&gt; root element. For a media app, this must include
  * an &lt;uses name="media"/&gt; element as a child.
@@ -84,7 +85,7 @@ import static com.markzhai.lyrichere.utils.MediaIDHelper.MEDIA_ID_ROOT;
  * &lt;automotiveApp&gt;
  * &lt;uses name="media"/&gt;
  * &lt;/automotiveApp&gt;
- * <p/>
+ * <p>
  * </ul>
  *
  * @see <a href="README.md">README.md</a> for more details.
@@ -177,6 +178,10 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
                 }
             }
         }
+        // Reset the delay handler to enqueue a message to stop the service if
+        // nothing is playing.
+        mDelayedStopHandler.removeCallbacksAndMessages(null);
+        mDelayedStopHandler.sendEmptyMessageDelayed(0, STOP_DELAY);
         return START_STICKY;
     }
 
@@ -415,19 +420,32 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
         }
 
         @Override
-        public void onPlayFromSearch(String query, Bundle extras) {
-            LogHelper.d(TAG, "playFromSearch  query=", query);
+        public void onPlayFromSearch(final String query, final Bundle extras) {
+            LogHelper.d(TAG, "playFromSearch  query=", query, " extras=", extras);
 
-            mPlayingQueue = QueueHelper.getPlayingQueueFromSearch(query, mMusicProvider);
-            LogHelper.d(TAG, "playFromSearch  playqueue.length=" + mPlayingQueue.size());
-            mSession.setQueue(mPlayingQueue);
+            mPlayback.setState(PlaybackState.STATE_CONNECTING);
 
-            if (mPlayingQueue != null && !mPlayingQueue.isEmpty()) {
-                // start playing from the beginning of the queue
-                mCurrentIndexOnQueue = 0;
+            // Voice searches may occur before the media catalog has been
+            // prepared. We only handle the search after the musicProvider is ready.
+            mMusicProvider.retrieveMediaAsync(new MusicProvider.Callback() {
+                @Override
+                public void onMusicCatalogReady(boolean success) {
+                    mPlayingQueue = QueueHelper.getPlayingQueueFromSearch(query, extras, mMusicProvider);
 
-                handlePlayRequest();
-            }
+                    LogHelper.d(TAG, "playFromSearch  playqueue.length=" + mPlayingQueue.size());
+                    mSession.setQueue(mPlayingQueue);
+
+                    if (mPlayingQueue != null && !mPlayingQueue.isEmpty()) {
+                        // immediately start playing from the beginning of the search results
+                        mCurrentIndexOnQueue = 0;
+
+                        handlePlayRequest();
+                    } else {
+                        // if nothing was found, we need to warn the user and stop playing
+                        handleStopRequest(getString(R.string.no_search_results));
+                    }
+                }
+            });
         }
     }
 

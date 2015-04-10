@@ -25,6 +25,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -93,20 +94,42 @@ public class MusicProvider {
         return mMusicListByGenre.get(genre);
     }
 
+
     /**
-     * Very basic implementation of a search that filter music tracks which title containing
+     * Very basic implementation of a search that filter music tracks with title containing
      * the given query.
+     *
      */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public Iterable<MediaMetadata> searchMusic(String titleQuery) {
+    public Iterable<MediaMetadata> searchMusicBySongTitle(String query) {
+        return searchMusic(MediaMetadata.METADATA_KEY_TITLE, query);
+    }
+
+    /**
+     * Very basic implementation of a search that filter music tracks with album containing
+     * the given query.
+     *
+     */
+    public Iterable<MediaMetadata> searchMusicByAlbum(String query) {
+        return searchMusic(MediaMetadata.METADATA_KEY_ALBUM, query);
+    }
+
+    /**
+     * Very basic implementation of a search that filter music tracks with artist containing
+     * the given query.
+     *
+     */
+    public Iterable<MediaMetadata> searchMusicByArtist(String query) {
+        return searchMusic(MediaMetadata.METADATA_KEY_ARTIST, query);
+    }
+
+    Iterable<MediaMetadata> searchMusic(String metadataField, String query) {
         if (mCurrentState != State.INITIALIZED) {
             return Collections.emptyList();
         }
         ArrayList<MediaMetadata> result = new ArrayList<>();
-        titleQuery = titleQuery.toLowerCase();
+        query = query.toLowerCase(Locale.US);
         for (MutableMediaMetadata track : mMusicListById.values()) {
-            if (track.metadata.getString(MediaMetadata.METADATA_KEY_TITLE).toLowerCase()
-                    .contains(titleQuery)) {
+            if (track.metadata.getString(metadataField).toLowerCase(Locale.US).contains(query)) {
                 result.add(track.metadata);
             }
         }

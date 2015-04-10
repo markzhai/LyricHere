@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.markzhai.lyrichere.AlbumArtCache;
 import com.markzhai.lyrichere.MusicService;
@@ -186,6 +187,7 @@ public class PlaybackControlsFragment extends Fragment {
                 break;
             case PlaybackState.STATE_ERROR:
                 LogHelper.e(TAG, "error playbackstate: ", state.getErrorMessage());
+                Toast.makeText(getActivity(), state.getErrorMessage(), Toast.LENGTH_LONG).show();
                 break;
         }
 

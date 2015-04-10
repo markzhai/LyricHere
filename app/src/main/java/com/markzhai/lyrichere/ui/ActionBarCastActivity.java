@@ -18,6 +18,7 @@ package com.markzhai.lyrichere.ui;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -232,7 +233,7 @@ public abstract class ActionBarCastActivity extends ActionBarActivity {
     private void populateDrawerItems() {
         mDrawerMenuContents = new DrawerMenuContents(this);
         final int selectedPosition = mDrawerMenuContents.getPosition(this.getClass());
-        final int unselectedColor = getResources().getColor(R.color.white);
+        final int unselectedColor = Color.WHITE;
         final int selectedColor = getResources().getColor(R.color.drawer_item_selected_background);
         SimpleAdapter adapter = new SimpleAdapter(this, mDrawerMenuContents.getItems(),
                 R.layout.drawer_list_item,

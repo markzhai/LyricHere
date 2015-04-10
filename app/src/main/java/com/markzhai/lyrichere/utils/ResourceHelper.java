@@ -7,7 +7,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 
 /**
- * Generic reusable network methods.
+ * Generic reusable methods to handle resources.
  */
 public class ResourceHelper {
     /**

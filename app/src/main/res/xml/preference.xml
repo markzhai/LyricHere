@@ -26,19 +26,19 @@
     <PreferenceCategory android:title="@string/pref_category_display">
         <com.markzhai.lyrichere.prefs.colorpicker.ColorPickerPreference
             alphaSlider="true"
-            android:defaultValue="@color/Red"
+            android:defaultValue="@android:color/holo_red_light"
             android:key="@string/pref_key_highlight_color"
             android:summary="@string/pref_color1_summary"
             android:title="@string/pref_color1_title"/>
         <com.markzhai.lyrichere.prefs.colorpicker.ColorPickerPreference
             alphaSlider="true"
-            android:defaultValue="@color/White"
+            android:defaultValue="@android:color/white"
             android:key="@string/pref_key_normal_color"
             android:summary="@string/pref_color2_summary"
             android:title="@string/pref_color2_title"/>
         <com.markzhai.lyrichere.prefs.colorpicker.ColorPickerPreference
             alphaSlider="true"
-            android:defaultValue="@color/Black"
+            android:defaultValue="@android:color/black"
             android:key="@string/pref_key_background_color"
             android:title="@string/pref_color3_title"/>
     </PreferenceCategory>

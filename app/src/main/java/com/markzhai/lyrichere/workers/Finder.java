@@ -10,10 +10,11 @@ import android.preference.PreferenceManager;
 import com.markzhai.lyrichere.Constants;
 import com.markzhai.lyrichere.R;
 import com.markzhai.lyrichere.model.Lyric;
+import com.markzhai.lyrichere.model.LyricModel;
 import com.markzhai.lyrichere.utils.DbUtils;
+import com.markzhai.lyrichere.utils.FileUtils;
 import com.markzhai.lyrichere.utils.LogHelper;
 import com.markzhai.lyrichere.utils.LyricUtils;
-import com.markzhai.lyrichere.utils.FileUtils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.markzhai.lyrichere.Constants;
 import com.markzhai.lyrichere.R;
+import com.markzhai.lyrichere.model.LyricModel;
 import com.markzhai.lyrichere.prefs.SettingsActivity;
 import com.markzhai.lyrichere.utils.LogHelper;
 import com.markzhai.lyrichere.workers.Finder;
@@ -34,6 +35,10 @@ public class LyricExplorerActivity extends ActionBarCastActivity implements  Lyr
                 new LyricOpener(this).execute(title, artist, album);
             }
             setIntent(null);
+            LyricModel model = new LyricModel();
+            model.title = "aa";
+            model.author = "bb";
+            model.insert(false);
         }
     }
 

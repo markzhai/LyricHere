@@ -1,4 +1,4 @@
-package com.markzhai.lyrichere.model;
+package com.markzhai.lyrichere.provider;
 
 
 import android.annotation.TargetApi;
@@ -9,6 +9,7 @@ import android.os.Build;
 import android.provider.MediaStore;
 
 import com.markzhai.lyrichere.LHApplication;
+import com.markzhai.lyrichere.model.MutableMediaMetadata;
 import com.markzhai.lyrichere.utils.LogHelper;
 
 import org.json.JSONArray;

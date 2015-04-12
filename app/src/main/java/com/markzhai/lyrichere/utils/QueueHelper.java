@@ -5,7 +5,7 @@ import android.media.session.MediaSession;
 import android.os.Bundle;
 
 import com.markzhai.lyrichere.VoiceSearchParams;
-import com.markzhai.lyrichere.model.MusicProvider;
+import com.markzhai.lyrichere.provider.MusicProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,8 +22,7 @@ public class QueueHelper {
 
     private static final String TAG = LogHelper.makeLogTag(QueueHelper.class);
 
-    public static List<MediaSession.QueueItem> getPlayingQueue(String mediaId,
-                                                               MusicProvider musicProvider) {
+    public static List<MediaSession.QueueItem> getPlayingQueue(String mediaId, MusicProvider musicProvider) {
 
         // extract the browsing hierarchy from the media ID:
         String[] hierarchy = MediaIDHelper.getHierarchy(mediaId);
@@ -119,8 +118,7 @@ public class QueueHelper {
         return -1;
     }
 
-    private static List<MediaSession.QueueItem> convertToQueue(
-            Iterable<MediaMetadata> tracks, String... categories) {
+    private static List<MediaSession.QueueItem> convertToQueue(Iterable<MediaMetadata> tracks, String... categories) {
         List<MediaSession.QueueItem> queue = new ArrayList<>();
         int count = 0;
         for (MediaMetadata track : tracks) {

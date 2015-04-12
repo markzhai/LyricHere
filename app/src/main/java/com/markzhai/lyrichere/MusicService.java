@@ -20,7 +20,7 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.service.media.MediaBrowserService;
 
-import com.markzhai.lyrichere.model.MusicProvider;
+import com.markzhai.lyrichere.provider.MusicProvider;
 import com.markzhai.lyrichere.ui.NowPlayingActivity;
 import com.markzhai.lyrichere.utils.LogHelper;
 import com.markzhai.lyrichere.utils.MediaIDHelper;
@@ -231,8 +231,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
     /**
      * Actual implementation of onLoadChildren that assumes that MusicProvider is already initialized.
      */
-    private void loadChildrenImpl(final String parentMediaId,
-                                  final Result<List<MediaBrowser.MediaItem>> result) {
+    private void loadChildrenImpl(final String parentMediaId, final Result<List<MediaBrowser.MediaItem>> result) {
         LogHelper.d(TAG, "OnLoadChildren: parentMediaId=", parentMediaId);
 
         List<MediaBrowser.MediaItem> mediaItems = new ArrayList<>();
@@ -281,8 +280,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
         } else {
             LogHelper.w(TAG, "Skipping unmatched parentMediaId: ", parentMediaId);
         }
-        LogHelper.d(TAG, "OnLoadChildren sending ", mediaItems.size(),
-                " results for ", parentMediaId);
+        LogHelper.d(TAG, "OnLoadChildren sending ", mediaItems.size(), " results for ", parentMediaId);
         result.sendResult(mediaItems);
     }
 
@@ -510,8 +508,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
             return;
         }
         MediaSession.QueueItem queueItem = mPlayingQueue.get(mCurrentIndexOnQueue);
-        String musicId = MediaIDHelper.extractMusicIDFromMediaID(
-                queueItem.getDescription().getMediaId());
+        String musicId = MediaIDHelper.extractMusicIDFromMediaID(queueItem.getDescription().getMediaId());
         MediaMetadata track = mMusicProvider.getMusic(musicId);
         final String trackId = track.getString(MediaMetadata.METADATA_KEY_MEDIA_ID);
         if (!musicId.equals(trackId)) {
@@ -531,8 +528,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
 
         // Set the proper album artwork on the media session, so it can be shown in the
         // locked screen and in other places.
-        if (track.getDescription().getIconBitmap() == null &&
-                track.getDescription().getIconUri() != null) {
+        if (track.getDescription().getIconBitmap() == null && track.getDescription().getIconUri() != null) {
             String albumUri = track.getDescription().getIconUri().toString();
             AlbumArtCache.getInstance().fetch(albumUri, new AlbumArtCache.FetchListener() {
                 @Override
@@ -549,10 +545,8 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
                                     // the MediaDescription and thus it should be small to be serialized if
                                     // necessary..
                             .putBitmap(MediaMetadata.METADATA_KEY_DISPLAY_ICON, icon)
-
                             .build();
 
-                    MediaDescription md;
                     mMusicProvider.updateMusic(trackId, track);
 
                     // If we are still playing the same music

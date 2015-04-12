@@ -12,7 +12,7 @@ import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.text.TextUtils;
 
-import com.markzhai.lyrichere.model.MusicProvider;
+import com.markzhai.lyrichere.provider.MusicProvider;
 import com.markzhai.lyrichere.utils.LogHelper;
 import com.markzhai.lyrichere.utils.MediaIDHelper;
 

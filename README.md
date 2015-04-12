@@ -25,6 +25,7 @@ Existing Music Players
 TODO LIST
 -------
 
+- Extract artwork from local media files and show in list.
 - Better implementation for Music player.
 - Download from server(well, i myself will build the server side)
 - Add support lyric file encoding auto-recognize.

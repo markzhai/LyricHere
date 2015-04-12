@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * A Fragment that lists all the various browsable queues available
  * from a {@link android.service.media.MediaBrowserService}.
- * <p/>
+ * <p>
  * It uses a {@link MediaBrowser} to connect to the {@link com.markzhai.lyrichere.MusicService}.
  * Once connected, the fragment subscribes to get all the children.
  * All {@link MediaBrowser.MediaItem}'s that can be browsed are shown in a ListView.
@@ -48,8 +48,10 @@ public class MediaBrowserFragment extends Fragment {
     private MediaFragmentListener mMediaFragmentListener;
     private View mErrorView;
     private TextView mErrorMessage;
+
     private BroadcastReceiver mConnectivityChangeReceiver = new BroadcastReceiver() {
         private boolean oldOnline = false;
+
         @Override
         public void onReceive(Context context, Intent intent) {
             // We don't care about network changes while this fragment is not associated
@@ -76,8 +78,7 @@ public class MediaBrowserFragment extends Fragment {
             if (metadata == null) {
                 return;
             }
-            LogHelper.d(TAG, "Received metadata change to media ",
-                    metadata.getDescription().getMediaId());
+            LogHelper.d(TAG, "Received metadata change to media ", metadata.getDescription().getMediaId());
             mBrowserAdapter.notifyDataSetChanged();
         }
 
@@ -277,7 +278,7 @@ public class MediaBrowserFragment extends Fragment {
         if (parentId != null) {
             MediaBrowser mediaBrowser = mMediaFragmentListener.getMediaBrowser();
             LogHelper.d(TAG, "on updateTitle: mediaBrowser is ",
-                    mediaBrowser==null?"null":("not null, connected="+mediaBrowser.isConnected()));
+                    mediaBrowser == null ? "null" : ("not null, connected=" + mediaBrowser.isConnected()));
             if (mediaBrowser != null && mediaBrowser.isConnected()) {
                 // Unsubscribing is required to guarantee that we will get the initial values.
                 // Otherwise, if there is another callback subscribed to this mediaID, mediaBrowser
@@ -289,7 +290,7 @@ public class MediaBrowserFragment extends Fragment {
                                                  List<MediaBrowser.MediaItem> children) {
                         LogHelper.d(TAG, "Got ", children.size(), " children for ", parentId,
                                 ". Looking for ", mMediaId);
-                        for (MediaBrowser.MediaItem item: children) {
+                        for (MediaBrowser.MediaItem item : children) {
                             LogHelper.d(TAG, "child ", item.getMediaId());
                             if (item.getMediaId().equals(mMediaId)) {
                                 if (mMediaFragmentListener != null) {
@@ -328,14 +329,11 @@ public class MediaBrowserFragment extends Fragment {
                 MediaController controller = ((Activity) getContext()).getMediaController();
                 if (controller != null && controller.getMetadata() != null) {
                     String currentPlaying = controller.getMetadata().getDescription().getMediaId();
-                    String musicId = MediaIDHelper.extractMusicIDFromMediaID(
-                            item.getDescription().getMediaId());
+                    String musicId = MediaIDHelper.extractMusicIDFromMediaID(item.getDescription().getMediaId());
                     if (currentPlaying != null && currentPlaying.equals(musicId)) {
-                        if (controller.getPlaybackState().getState() ==
-                                PlaybackState.STATE_PLAYING) {
+                        if (controller.getPlaybackState().getState() == PlaybackState.STATE_PLAYING) {
                             state = MediaItemViewHolder.STATE_PLAYING;
-                        } else if (controller.getPlaybackState().getState() !=
-                                PlaybackState.STATE_ERROR) {
+                        } else if (controller.getPlaybackState().getState() != PlaybackState.STATE_ERROR) {
                             state = MediaItemViewHolder.STATE_PAUSED;
                         }
                     }
@@ -346,10 +344,10 @@ public class MediaBrowserFragment extends Fragment {
         }
     }
 
-    public static interface MediaFragmentListener extends MediaBrowserProvider {
+    public interface MediaFragmentListener extends MediaBrowserProvider {
         void onMediaItemSelected(MediaBrowser.MediaItem item);
+
         void setToolbarTitle(CharSequence title);
     }
-
 }
 

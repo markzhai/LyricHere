@@ -4,8 +4,8 @@
       <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.raizlabs.android/DBFlow/1.8.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.raizlabs.android/DBFlow/1.8.0/classes.jar!/" />
       <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.raizlabs.android/DBFlow/1.8.0/res" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.raizlabs.android/DBFlow/1.8.0/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -105,8 +105,7 @@ public class MusicPlayerActivity extends BaseActivity implements MediaBrowserFra
         if (intent.getAction() != null
                 && intent.getAction().equals(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH)) {
             mVoiceSearchParams = intent.getExtras();
-            LogHelper.d(TAG, "Starting from voice search query=",
-                    mVoiceSearchParams.getString(SearchManager.QUERY));
+            LogHelper.d(TAG, "Starting from voice search query=", mVoiceSearchParams.getString(SearchManager.QUERY));
         } else {
             if (savedInstanceState != null) {
                 // If there is a saved media ID, use it

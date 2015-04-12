@@ -12,6 +12,8 @@ import com.markzhai.lyrichere.ui.LyricExplorerActivity;
 import com.markzhai.lyrichere.utils.LogHelper;
 
 /**
+ * Receive broadcast from music player apps and pop lyric notifications.
+ * <p>
  * Created by yifan on 6/21/14.
  */
 public class MusicBroadcastReceiver extends BroadcastReceiver {

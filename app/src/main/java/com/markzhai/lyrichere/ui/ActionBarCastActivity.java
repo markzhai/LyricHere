@@ -15,6 +15,7 @@
  */
 package com.markzhai.lyrichere.ui;
 
+import android.app.ActivityOptions;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -67,13 +68,12 @@ public abstract class ActionBarCastActivity extends ActionBarActivity {
             if (mDrawerToggle != null) mDrawerToggle.onDrawerClosed(drawerView);
             int position = mItemToOpenWhenDrawerCloses;
             if (position >= 0) {
-                //Bundle extras = ActivityOptions.makeCustomAnimation(
-                //        ActionBarCastActivity.this, R.anim.fade_in, R.anim.fade_out).toBundle();
+                Bundle extras = ActivityOptions.makeCustomAnimation(
+                        ActionBarCastActivity.this, R.anim.fade_in, R.anim.fade_out).toBundle();
 
                 Class activityClass = mDrawerMenuContents.getActivity(position);
-                //startActivity(new Intent(ActionBarCastActivity.this, activityClass), extras);
-                startActivity(new Intent(ActionBarCastActivity.this, activityClass));
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                startActivity(new Intent(ActionBarCastActivity.this, activityClass), extras);
+                finish();
             }
         }
 

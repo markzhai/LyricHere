@@ -2,7 +2,6 @@ package com.markzhai.lyrichere.widget;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -21,6 +20,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * A Scrollable TextView which use lyric stream as input and display it.
+ * <p>
  * Created by yifan on 5/13/14.
  */
 public class LyricView extends TextView {
@@ -44,24 +45,16 @@ public class LyricView extends TextView {
     // private long currentDuringTime;
     private int mIsTouched = 0;
 
-    private OnSharedPreferenceChangeListener mPrefListener = new OnSharedPreferenceChangeListener() {
-        public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-
-        }
-    };
-
     public LyricView(Context context) {
-        super(context);
-        init(context);
+        this(context, null);
     }
 
-    public LyricView(Context context, AttributeSet attr) {
-        super(context, attr);
-        init(context);
+    public LyricView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
     }
 
-    public LyricView(Context context, AttributeSet attr, int i) {
-        super(context, attr, i);
+    public LyricView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         init(context);
     }
 

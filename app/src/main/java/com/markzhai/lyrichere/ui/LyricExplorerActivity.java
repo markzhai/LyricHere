@@ -91,7 +91,7 @@ public class LyricExplorerActivity extends ActionBarCastActivity implements  Lyr
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
             default:
-                return false;
+                return super.onOptionsItemSelected(item);
         }
         return true;
     }

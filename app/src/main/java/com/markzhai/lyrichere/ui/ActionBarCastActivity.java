@@ -72,8 +72,10 @@ public abstract class ActionBarCastActivity extends ActionBarActivity {
                         ActionBarCastActivity.this, R.anim.fade_in, R.anim.fade_out).toBundle();
 
                 Class activityClass = mDrawerMenuContents.getActivity(position);
-                startActivity(new Intent(ActionBarCastActivity.this, activityClass), extras);
-                finish();
+
+                Intent intent = new Intent(ActionBarCastActivity.this, activityClass);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent, extras);
             }
         }
 

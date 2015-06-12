@@ -10,7 +10,7 @@ import android.provider.MediaStore;
 
 import com.markzhai.lyrichere.LHApplication;
 import com.markzhai.lyrichere.model.MutableMediaMetadata;
-import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.utils.LogUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +35,7 @@ import java.util.concurrent.ConcurrentMap;
  * Utility class to get a list of MusicTrack's based on a server-side JSON configuration.
  */
 public class MusicProvider {
-    private static final String TAG = LogHelper.makeLogTag(MusicProvider.class);
+    private static final String TAG = LogUtils.makeLogTag(MusicProvider.class);
     private static final String CATALOG_URL = "http://storage.googleapis.com/automotive-media/music.json";
 
     public static final String CUSTOM_METADATA_TRACK_SOURCE = "__SOURCE__";
@@ -185,7 +185,7 @@ public class MusicProvider {
      * for future reference, keying tracks by musicId and grouping by genre.
      */
     public void retrieveMediaAsync(final Callback callback) {
-        LogHelper.d(TAG, "retrieveMediaAsync called");
+        LogUtils.d(TAG, "retrieveMediaAsync called");
         if (mCurrentState == State.INITIALIZED) {
             // Nothing to do, execute callback immediately
             callback.onMusicCatalogReady(true);
@@ -315,7 +315,7 @@ public class MusicProvider {
                 mCurrentState = State.INITIALIZED;
             }
         } catch (JSONException e) {
-            LogHelper.e(TAG, e, "Could not retrieve music list");
+            LogUtils.e(TAG, e, "Could not retrieve music list");
         } finally {
             if (mCurrentState != State.INITIALIZED) {
                 // Something bad happened, so we reset state to NON_INITIALIZED to allow
@@ -336,7 +336,7 @@ public class MusicProvider {
         int totalTrackCount = json.getInt(JSON_TOTAL_TRACK_COUNT);
         int duration = json.getInt(JSON_DURATION) * 1000; // ms
 
-        LogHelper.d(TAG, "Found music track: ", json);
+        LogUtils.d(TAG, "Found music track: ", json);
 
         // Media is stored relative to JSON file
         if (!source.startsWith("http")) {
@@ -387,7 +387,7 @@ public class MusicProvider {
             }
             return new JSONObject(sb.toString());
         } catch (Exception e) {
-            LogHelper.e(TAG, "Failed to parse the json for media list", e);
+            LogUtils.e(TAG, "Failed to parse the json for media list", e);
             return null;
         } finally {
             if (is != null) {

@@ -9,7 +9,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.markzhai.lyrichere.R;
-import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.utils.LogUtils;
 
 /**
  * Main activity for the music player.
@@ -19,7 +19,7 @@ import com.markzhai.lyrichere.utils.LogHelper;
  */
 public class MusicPlayerActivity extends BaseActivity implements MediaBrowserFragment.MediaFragmentListener {
 
-    private static final String TAG = LogHelper.makeLogTag(MusicPlayerActivity.class);
+    private static final String TAG = LogUtils.makeLogTag(MusicPlayerActivity.class);
     private static final String SAVED_MEDIA_ID = "com.markzhai.lyrichere.MEDIA_ID";
 
     public static final String EXTRA_START_FULLSCREEN = "com.markzhai.lyrichere.EXTRA_START_FULLSCREEN";
@@ -36,7 +36,7 @@ public class MusicPlayerActivity extends BaseActivity implements MediaBrowserFra
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogHelper.d(TAG, "Activity onCreate");
+        LogUtils.d(TAG, "Activity onCreate");
 
         setContentView(R.layout.activity_player);
 
@@ -60,20 +60,20 @@ public class MusicPlayerActivity extends BaseActivity implements MediaBrowserFra
 
     @Override
     public void onMediaItemSelected(MediaBrowser.MediaItem item) {
-        LogHelper.d(TAG, "onMediaItemSelected, mediaId=" + item.getMediaId());
+        LogUtils.d(TAG, "onMediaItemSelected, mediaId=" + item.getMediaId());
         if (item.isPlayable()) {
             getMediaController().getTransportControls().playFromMediaId(item.getMediaId(), null);
         } else if (item.isBrowsable()) {
             navigateToBrowser(item.getMediaId());
         } else {
-            LogHelper.w(TAG, "Ignoring MediaItem that is neither browsable nor playable: ",
+            LogUtils.w(TAG, "Ignoring MediaItem that is neither browsable nor playable: ",
                     "mediaId=", item.getMediaId());
         }
     }
 
     @Override
     public void setToolbarTitle(CharSequence title) {
-        LogHelper.d(TAG, "Setting toolbar title to ", title);
+        LogUtils.d(TAG, "Setting toolbar title to ", title);
         if (title == null) {
             title = getString(R.string.app_name);
         }
@@ -83,7 +83,7 @@ public class MusicPlayerActivity extends BaseActivity implements MediaBrowserFra
 
     @Override
     protected void onNewIntent(Intent intent) {
-        LogHelper.d(TAG, "onNewIntent, intent=" + intent);
+        LogUtils.d(TAG, "onNewIntent, intent=" + intent);
         initializeFromParams(null, intent);
         startFullScreenActivityIfNeeded(intent);
     }
@@ -105,7 +105,7 @@ public class MusicPlayerActivity extends BaseActivity implements MediaBrowserFra
         if (intent.getAction() != null
                 && intent.getAction().equals(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH)) {
             mVoiceSearchParams = intent.getExtras();
-            LogHelper.d(TAG, "Starting from voice search query=", mVoiceSearchParams.getString(SearchManager.QUERY));
+            LogUtils.d(TAG, "Starting from voice search query=", mVoiceSearchParams.getString(SearchManager.QUERY));
         } else {
             if (savedInstanceState != null) {
                 // If there is a saved media ID, use it
@@ -116,7 +116,7 @@ public class MusicPlayerActivity extends BaseActivity implements MediaBrowserFra
     }
 
     private void navigateToBrowser(String mediaId) {
-        LogHelper.d(TAG, "navigateToBrowser, mediaId=" + mediaId);
+        LogUtils.d(TAG, "navigateToBrowser, mediaId=" + mediaId);
         MediaBrowserFragment fragment = getBrowseFragment();
 
         if (fragment == null || !TextUtils.equals(fragment.getMediaId(), mediaId)) {

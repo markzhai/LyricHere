@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.markzhai.lyrichere.AlbumArtCache;
 import com.markzhai.lyrichere.MusicService;
 import com.markzhai.lyrichere.R;
-import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.utils.Utils;
 
 import java.util.concurrent.Executors;
@@ -38,7 +38,7 @@ import static android.view.View.VISIBLE;
  * depicting the album art. The activity also has controls to seek/pause/play the audio.
  */
 public class FullScreenPlayerActivity extends ActionBarCastActivity {
-    private static final String TAG = LogHelper.makeLogTag(FullScreenPlayerActivity.class);
+    private static final String TAG = LogUtils.makeLogTag(FullScreenPlayerActivity.class);
     private static final long PROGRESS_UPDATE_INTERNAL = 1000;
     private static final long PROGRESS_UPDATE_INITIAL_INTERVAL = 100;
 
@@ -77,7 +77,7 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
     private MediaController.Callback mCallback = new MediaController.Callback() {
         @Override
         public void onPlaybackStateChanged(PlaybackState state) {
-            LogHelper.d(TAG, "onPlaybackstate changed", state);
+            LogUtils.d(TAG, "onPlaybackstate changed", state);
             updatePlaybackState(state);
         }
 
@@ -94,7 +94,7 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
             new MediaBrowser.ConnectionCallback() {
                 @Override
                 public void onConnected() {
-                    LogHelper.d(TAG, "onConnected");
+                    LogUtils.d(TAG, "onConnected");
 
                     MediaSession.Token token = mMediaBrowser.getSessionToken();
                     if (token == null) {
@@ -163,7 +163,7 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
                         scheduleSeekbarUpdate();
                         break;
                     default:
-                        LogHelper.d(TAG, "onClick with state ", state.getState());
+                        LogUtils.d(TAG, "onClick with state ", state.getState());
                 }
             }
         });
@@ -303,7 +303,7 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
         if (description == null) {
             return;
         }
-        LogHelper.d(TAG, "updateMediaDescription called ");
+        LogUtils.d(TAG, "updateMediaDescription called ");
         mLine1.setText(description.getTitle());
         mLine2.setText(description.getSubtitle());
         fetchImageAsync(description);
@@ -313,7 +313,7 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
         if (metadata == null) {
             return;
         }
-        LogHelper.d(TAG, "updateDuration called ");
+        LogUtils.d(TAG, "updateDuration called ");
         int duration = (int) metadata.getLong(MediaMetadata.METADATA_KEY_DURATION);
         mSeekbar.setMax(duration);
         mEnd.setText(Utils.formatMillis(duration));
@@ -362,7 +362,7 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
                 stopSeekbarUpdate();
                 break;
             default:
-                LogHelper.d(TAG, "Unhandled state ", state.getState());
+                LogUtils.d(TAG, "Unhandled state ", state.getState());
         }
 
         mSkipNext.setVisibility((state.getActions() & PlaybackState.ACTION_SKIP_TO_NEXT) == 0

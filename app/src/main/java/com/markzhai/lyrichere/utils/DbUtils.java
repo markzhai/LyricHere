@@ -36,7 +36,7 @@ public class DbUtils {
      */
     public static String[] findLyric(ContentResolver resolver, String title, String artist, String album) {
         String[] result = null;
-        LogHelper.i(TAG, "findLyric for: " + title);
+        LogUtils.i(TAG, "findLyric for: " + title);
         Cursor cursor = resolver.query(Constants.CONTENT_URI,
                 new String[]{Constants.Column.TITLE, Constants.Column.ARTIST,
                         Constants.Column.ALBUM, Constants.Column.PATH, Constants.Column.ENCODING},

@@ -22,7 +22,7 @@ import android.view.WindowManager;
 
 import com.markzhai.lyrichere.Constants;
 import com.markzhai.lyrichere.R;
-import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.utils.LyricProvider;
 import com.markzhai.lyrichere.widget.LyricView;
 import com.markzhai.lyrichere.workers.LyricEncodingUpdater;
@@ -69,7 +69,7 @@ public class LyricPlayerFragment extends Fragment {
      * @return A new instance of fragment LyricPlayerFragment.
      */
     public static LyricPlayerFragment newInstance(String path, String encoding) {
-        LogHelper.i(TAG, String.format("newInstance(%s, %s)", path, encoding));
+        LogUtils.i(TAG, String.format("newInstance(%s, %s)", path, encoding));
         LyricPlayerFragment fragment = new LyricPlayerFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM_PATH, path);
@@ -95,7 +95,7 @@ public class LyricPlayerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        LogHelper.i(TAG, "onCreateView");
+        LogUtils.i(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_lyric_player, container, false);
         mLyricView = (LyricView) view.findViewById(R.id.textLyric);
         return view;
@@ -104,7 +104,7 @@ public class LyricPlayerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        LogHelper.i(TAG, "onResume");
+        LogUtils.i(TAG, "onResume");
 
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -132,7 +132,7 @@ public class LyricPlayerFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        LogHelper.i(TAG, "onCreateOptionsMenu");
+        LogUtils.i(TAG, "onCreateOptionsMenu");
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_encoding, menu);
     }
@@ -176,7 +176,7 @@ public class LyricPlayerFragment extends Fragment {
                 return false;
         }
         if (encoding != null && !mEncoding.equals(encoding)) {
-            LogHelper.i(TAG, "Changed encoding: " + encoding);
+            LogUtils.i(TAG, "Changed encoding: " + encoding);
             mEncoding = encoding;
             mLyricView.setLyric(mLyricProvider.get(mFilePath, mEncoding));
             mLyricView.invalidate();
@@ -188,7 +188,7 @@ public class LyricPlayerFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LogHelper.i(TAG, "onDestroy");
+        LogUtils.i(TAG, "onDestroy");
         mUiUpdateRunnable.stop();
     }
 
@@ -222,14 +222,14 @@ public class LyricPlayerFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        LogHelper.i(TAG, "onStop");
+        LogUtils.i(TAG, "onStop");
         mIsForeground = false;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        LogHelper.i(TAG, "onStart");
+        LogUtils.i(TAG, "onStart");
         if (mUiUpdateRunnable == null && mUiUpdateThread == null) {
             mUiUpdateRunnable = new UIUpdateRunnable();
             mUiUpdateThread = new Thread(mUiUpdateRunnable);
@@ -244,7 +244,7 @@ public class LyricPlayerFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        LogHelper.i(TAG, "onPause");
+        LogUtils.i(TAG, "onPause");
     }
 
     public boolean isForeground() {

@@ -10,10 +10,9 @@ import android.preference.PreferenceManager;
 import com.markzhai.lyrichere.Constants;
 import com.markzhai.lyrichere.R;
 import com.markzhai.lyrichere.model.Lyric;
-import com.markzhai.lyrichere.model.LyricModel;
 import com.markzhai.lyrichere.utils.DbUtils;
 import com.markzhai.lyrichere.utils.FileUtils;
-import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.utils.LyricUtils;
 
 import java.io.File;
@@ -37,7 +36,7 @@ public class  Finder extends AsyncTask<File, Integer, Integer> {
 
     @Override
     protected void onPostExecute(Integer result) {
-        LogHelper.i(TAG, String.format("Find %d lyrics under %s", result, currentDir.getAbsolutePath()));
+        LogUtils.i(TAG, String.format("Find %d lyrics under %s", result, currentDir.getAbsolutePath()));
         mContext = null;
     }
 
@@ -53,12 +52,12 @@ public class  Finder extends AsyncTask<File, Integer, Integer> {
             pathEncodingMap = DbUtils.getNonDefaultEncodingMap(mContext.getContentResolver());
         }
 
-        LogHelper.i(TAG, "Finder directory: " + currentDir.getAbsolutePath());
+        LogUtils.i(TAG, "Finder directory: " + currentDir.getAbsolutePath());
 
         String[] children = currentDir.list();
 
         if (children == null) {
-            LogHelper.i(TAG, "null children");
+            LogUtils.i(TAG, "null children");
             return result;
         }
 
@@ -123,7 +122,7 @@ public class  Finder extends AsyncTask<File, Integer, Integer> {
             // URI is registered at application AndroidManifest.xml
             Uri uri = mContext.getContentResolver().insert(Constants.CONTENT_URI, values);
             if (uri != null) {
-                LogHelper.i(TAG, String.format("(id %d): %s - %s, [%s]", Integer.valueOf(uri.getLastPathSegment()),
+                LogUtils.i(TAG, String.format("(id %d): %s - %s, [%s]", Integer.valueOf(uri.getLastPathSegment()),
                         lyric.artist, lyric.title, f.getAbsolutePath()));
             }
             result++;

@@ -13,7 +13,7 @@ import android.os.PowerManager;
 import android.text.TextUtils;
 
 import com.markzhai.lyrichere.provider.MusicProvider;
-import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.utils.MediaIDHelper;
 
 import java.io.IOException;
@@ -30,7 +30,7 @@ import static android.media.session.MediaSession.QueueItem;
 public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeListener,
         OnCompletionListener, OnErrorListener, OnPreparedListener, OnSeekCompleteListener {
 
-    private static final String TAG = LogHelper.makeLogTag(LocalPlayback.class);
+    private static final String TAG = LogUtils.makeLogTag(LocalPlayback.class);
 
     // The volume we set the media player to when we lose audio focus, but are
     // allowed to reduce the volume instead of stopping playback.
@@ -67,7 +67,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
         @Override
         public void onReceive(Context context, Intent intent) {
             if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())) {
-                LogHelper.d(TAG, "Headphones disconnected.");
+                LogUtils.d(TAG, "Headphones disconnected.");
                 if (isPlaying()) {
                     Intent i = new Intent(context, MusicService.class);
                     i.setAction(MusicService.ACTION_CMD);
@@ -181,7 +181,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
                 }
 
             } catch (IOException ex) {
-                LogHelper.e(TAG, ex, "Exception playing song");
+                LogUtils.e(TAG, ex, "Exception playing song");
                 if (mCallback != null) {
                     mCallback.onError(ex.getMessage());
                 }
@@ -210,7 +210,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
 
     @Override
     public void seekTo(int position) {
-        LogHelper.d(TAG, "seekTo called with ", position);
+        LogUtils.d(TAG, "seekTo called with ", position);
 
         if (mMediaPlayer == null) {
             // If we do not have a current media player, simply update the current position
@@ -250,7 +250,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
      * Try to get the system audio focus.
      */
     private void tryToGetAudioFocus() {
-        LogHelper.d(TAG, "tryToGetAudioFocus");
+        LogUtils.d(TAG, "tryToGetAudioFocus");
         if (mAudioFocus != AUDIO_FOCUSED) {
             int result = mAudioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC,
                     AudioManager.AUDIOFOCUS_GAIN);
@@ -264,7 +264,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
      * Give up the audio focus.
      */
     private void giveUpAudioFocus() {
-        LogHelper.d(TAG, "giveUpAudioFocus");
+        LogUtils.d(TAG, "giveUpAudioFocus");
         if (mAudioFocus == AUDIO_FOCUSED) {
             if (mAudioManager.abandonAudioFocus(this) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                 mAudioFocus = AUDIO_NO_FOCUS_NO_DUCK;
@@ -283,7 +283,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
      * you are sure this is the case.
      */
     private void configMediaPlayerState() {
-        LogHelper.d(TAG, "configMediaPlayerState. mAudioFocus=", mAudioFocus);
+        LogUtils.d(TAG, "configMediaPlayerState. mAudioFocus=", mAudioFocus);
         if (mAudioFocus == AUDIO_NO_FOCUS_NO_DUCK) {
             // If we don't have audio focus and can't duck, we have to pause,
             if (mState == PlaybackState.STATE_PLAYING) {
@@ -300,7 +300,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
             // If we were playing when we lost focus, we need to resume playing.
             if (mPlayOnFocusGain) {
                 if (mMediaPlayer != null && !mMediaPlayer.isPlaying()) {
-                    LogHelper.d(TAG, "configMediaPlayerState startMediaPlayer. seeking to ",
+                    LogUtils.d(TAG, "configMediaPlayerState startMediaPlayer. seeking to ",
                             mCurrentPosition);
                     if (mCurrentPosition == mMediaPlayer.getCurrentPosition()) {
                         mMediaPlayer.start();
@@ -324,7 +324,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
      */
     @Override
     public void onAudioFocusChange(int focusChange) {
-        LogHelper.d(TAG, "onAudioFocusChange. focusChange=", focusChange);
+        LogUtils.d(TAG, "onAudioFocusChange. focusChange=", focusChange);
         if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
             // We have gained focus:
             mAudioFocus = AUDIO_FOCUSED;
@@ -345,7 +345,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
                 mPlayOnFocusGain = true;
             }
         } else {
-            LogHelper.e(TAG, "onAudioFocusChange: Ignoring unsupported focusChange: ", focusChange);
+            LogUtils.e(TAG, "onAudioFocusChange: Ignoring unsupported focusChange: ", focusChange);
         }
         configMediaPlayerState();
     }
@@ -357,7 +357,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
      */
     @Override
     public void onSeekComplete(MediaPlayer mp) {
-        LogHelper.d(TAG, "onSeekComplete from MediaPlayer:", mp.getCurrentPosition());
+        LogUtils.d(TAG, "onSeekComplete from MediaPlayer:", mp.getCurrentPosition());
         mCurrentPosition = mp.getCurrentPosition();
         if (mState == PlaybackState.STATE_BUFFERING) {
             mMediaPlayer.start();
@@ -375,7 +375,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
      */
     @Override
     public void onCompletion(MediaPlayer player) {
-        LogHelper.d(TAG, "onCompletion from MediaPlayer");
+        LogUtils.d(TAG, "onCompletion from MediaPlayer");
         // The media player finished playing the current song, so we go ahead
         // and start the next.
         if (mCallback != null) {
@@ -390,7 +390,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
      */
     @Override
     public void onPrepared(MediaPlayer player) {
-        LogHelper.d(TAG, "onPrepared from MediaPlayer");
+        LogUtils.d(TAG, "onPrepared from MediaPlayer");
         // The media player is done preparing. That means we can start playing if we
         // have audio focus.
         configMediaPlayerState();
@@ -405,7 +405,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
      */
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-        LogHelper.e(TAG, "Media player error: what=" + what + ", extra=" + extra);
+        LogUtils.e(TAG, "Media player error: what=" + what + ", extra=" + extra);
         if (mCallback != null) {
             mCallback.onError("MediaPlayer error " + what + " (" + extra + ")");
         }
@@ -418,7 +418,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
      * already exists.
      */
     private void createMediaPlayerIfNeeded() {
-        LogHelper.d(TAG, "createMediaPlayerIfNeeded. needed? ", (mMediaPlayer == null));
+        LogUtils.d(TAG, "createMediaPlayerIfNeeded. needed? ", (mMediaPlayer == null));
         if (mMediaPlayer == null) {
             mMediaPlayer = new MediaPlayer();
 
@@ -447,7 +447,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
      *                           be released or not
      */
     private void relaxResources(boolean releaseMediaPlayer) {
-        LogHelper.d(TAG, "relaxResources. releaseMediaPlayer=", releaseMediaPlayer);
+        LogUtils.d(TAG, "relaxResources. releaseMediaPlayer=", releaseMediaPlayer);
 
         mService.stopForeground(true);
 

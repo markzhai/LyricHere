@@ -29,6 +29,7 @@ TODO LIST
 - Better implementation for Music player.
 - Download from server(well, i myself will build the server side)
 - Add support lyric file encoding auto-recognize.
+- Use Google Data Binding and Dagger2
 
 CHANGELOG
 -------

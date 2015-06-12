@@ -9,7 +9,7 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
 import com.markzhai.lyrichere.ui.LyricExplorerActivity;
-import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.utils.LogUtils;
 
 /**
  * Receive broadcast from music player apps and pop lyric notifications.
@@ -26,7 +26,7 @@ public class MusicBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        LogHelper.i(TAG, "Action : " + intent.getAction());
+        LogUtils.i(TAG, "Action : " + intent.getAction());
         String artist = intent.getStringExtra("artist");
         String title = intent.getStringExtra("track");
         String album = intent.getStringExtra("album");
@@ -40,8 +40,8 @@ public class MusicBroadcastReceiver extends BroadcastReceiver {
         isPlaying = intent.getBooleanExtra("playing", isPlaying);
         isPlaying = intent.getBooleanExtra("spotifyPlaying", isPlaying);
 
-        LogHelper.i(TAG, String.valueOf("title: " + title));
-        LogHelper.i(TAG, String.valueOf("isPlaying: " + isPlaying));
+        LogUtils.i(TAG, String.valueOf("title: " + title));
+        LogUtils.i(TAG, String.valueOf("isPlaying: " + isPlaying));
 
         if (isPlaying && !isSameTrack(title, artist, album)) {
             addNotification(context);
@@ -100,7 +100,7 @@ public class MusicBroadcastReceiver extends BroadcastReceiver {
             mArtist = artist;
             mAlbum = album;
         }
-        LogHelper.i(TAG, "isSameTrack: " + String.valueOf(isSame));
+        LogUtils.i(TAG, "isSameTrack: " + String.valueOf(isSame));
         return isSame;
     }
 }

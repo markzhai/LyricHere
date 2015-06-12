@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.markzhai.lyrichere.AlbumArtCache;
 import com.markzhai.lyrichere.MusicService;
 import com.markzhai.lyrichere.R;
-import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.utils.LogUtils;
 
 /**
  * A class that shows the Media Queue to the user.
@@ -28,7 +28,7 @@ import com.markzhai.lyrichere.utils.LogHelper;
  */
 public class PlaybackControlsFragment extends Fragment {
 
-    private static final String TAG = LogHelper.makeLogTag(PlaybackControlsFragment.class);
+    private static final String TAG = LogUtils.makeLogTag(PlaybackControlsFragment.class);
 
     private ImageButton mPlayPause;
     private TextView mTitle;
@@ -45,7 +45,7 @@ public class PlaybackControlsFragment extends Fragment {
             if (state == null) {
                 return;
             }
-            LogHelper.d(TAG, "Received playback state change to state ", state.getState());
+            LogUtils.d(TAG, "Received playback state change to state ", state.getState());
             PlaybackControlsFragment.this.onPlaybackStateChanged(state);
         }
 
@@ -54,7 +54,7 @@ public class PlaybackControlsFragment extends Fragment {
             if (metadata == null) {
                 return;
             }
-            LogHelper.d(TAG, "Received metadata state change to mediaId=",
+            LogUtils.d(TAG, "Received metadata state change to mediaId=",
                     metadata.getDescription().getMediaId(),
                     " song=", metadata.getDescription().getTitle());
             PlaybackControlsFragment.this.onMetadataChanged(metadata);
@@ -93,7 +93,7 @@ public class PlaybackControlsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        LogHelper.d(TAG, "fragment.onStart");
+        LogUtils.d(TAG, "fragment.onStart");
         if (getActivity().getMediaController() != null) {
             onConnected();
         }
@@ -102,7 +102,7 @@ public class PlaybackControlsFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        LogHelper.d(TAG, "fragment.onStop");
+        LogUtils.d(TAG, "fragment.onStop");
         if (getActivity().getMediaController() != null) {
             getActivity().getMediaController().unregisterCallback(mCallback);
         }
@@ -110,7 +110,7 @@ public class PlaybackControlsFragment extends Fragment {
 
     public void onConnected() {
         MediaController controller = getActivity().getMediaController();
-        LogHelper.d(TAG, "onConnected, mediaController==null? ", controller == null);
+        LogUtils.d(TAG, "onConnected, mediaController==null? ", controller == null);
         if (controller != null) {
             onMetadataChanged(controller.getMetadata());
             onPlaybackStateChanged(controller.getPlaybackState());
@@ -119,9 +119,9 @@ public class PlaybackControlsFragment extends Fragment {
     }
 
     private void onMetadataChanged(MediaMetadata metadata) {
-        LogHelper.d(TAG, "onMetadataChanged ", metadata);
+        LogUtils.d(TAG, "onMetadataChanged ", metadata);
         if (getActivity() == null) {
-            LogHelper.w(TAG, "onMetadataChanged called when getActivity null," +
+            LogUtils.w(TAG, "onMetadataChanged called when getActivity null," +
                     "this should not happen if the callback was properly unregistered. Ignoring.");
             return;
         }
@@ -147,7 +147,7 @@ public class PlaybackControlsFragment extends Fragment {
                             @Override
                             public void onFetched(String artUrl, Bitmap bitmap, Bitmap icon) {
                                 if (icon != null) {
-                                    LogHelper.d(TAG, "album art icon of w=", icon.getWidth(),
+                                    LogUtils.d(TAG, "album art icon of w=", icon.getWidth(),
                                             " h=", icon.getHeight());
                                     if (isAdded()) {
                                         mAlbumArt.setImageBitmap(icon);
@@ -170,9 +170,9 @@ public class PlaybackControlsFragment extends Fragment {
     }
 
     private void onPlaybackStateChanged(PlaybackState state) {
-        LogHelper.d(TAG, "onPlaybackStateChanged ", state);
+        LogUtils.d(TAG, "onPlaybackStateChanged ", state);
         if (getActivity() == null) {
-            LogHelper.w(TAG, "onPlaybackStateChanged called when getActivity null," +
+            LogUtils.w(TAG, "onPlaybackStateChanged called when getActivity null," +
                     "this should not happen if the callback was properly unregistered. Ignoring.");
             return;
         }
@@ -186,7 +186,7 @@ public class PlaybackControlsFragment extends Fragment {
                 enablePlay = true;
                 break;
             case PlaybackState.STATE_ERROR:
-                LogHelper.e(TAG, "error playbackstate: ", state.getErrorMessage());
+                LogUtils.e(TAG, "error playbackstate: ", state.getErrorMessage());
                 Toast.makeText(getActivity(), state.getErrorMessage(), Toast.LENGTH_LONG).show();
                 break;
         }
@@ -215,10 +215,10 @@ public class PlaybackControlsFragment extends Fragment {
             PlaybackState stateObj = getActivity().getMediaController().getPlaybackState();
             final int state = stateObj == null ?
                     PlaybackState.STATE_NONE : stateObj.getState();
-            LogHelper.d(TAG, "Button pressed, in state " + state);
+            LogUtils.d(TAG, "Button pressed, in state " + state);
             switch (v.getId()) {
                 case R.id.play_pause:
-                    LogHelper.d(TAG, "Play button pressed, in state " + state);
+                    LogUtils.d(TAG, "Play button pressed, in state " + state);
                     if (state == PlaybackState.STATE_PAUSED ||
                             state == PlaybackState.STATE_STOPPED ||
                             state == PlaybackState.STATE_NONE) {

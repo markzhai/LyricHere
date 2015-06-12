@@ -22,7 +22,7 @@ import android.service.media.MediaBrowserService;
 
 import com.markzhai.lyrichere.provider.MusicProvider;
 import com.markzhai.lyrichere.ui.NowPlayingActivity;
-import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.utils.MediaIDHelper;
 import com.markzhai.lyrichere.utils.QueueHelper;
 
@@ -109,7 +109,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
     // to local playback from cast playback.
     public static final String CMD_STOP_CASTING = "CMD_STOP_CASTING";
 
-    private static final String TAG = LogHelper.makeLogTag(MusicService.class);
+    private static final String TAG = LogUtils.makeLogTag(MusicService.class);
     // Action to thumbs up a media item
     private static final String CUSTOM_ACTION_THUMBS_UP = "com.markzhai.lyrichere.THUMBS_UP";
     // Delay stopSelf by using a handler.
@@ -132,7 +132,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
     @Override
     public void onCreate() {
         super.onCreate();
-        LogHelper.d(TAG, "onCreate");
+        LogUtils.d(TAG, "onCreate");
 
         mPlayingQueue = new ArrayList<>();
         mMusicProvider = new MusicProvider();
@@ -187,7 +187,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
 
     @Override
     public void onDestroy() {
-        LogHelper.d(TAG, "onDestroy");
+        LogUtils.d(TAG, "onDestroy");
         // Service is being killed, so make sure we release our resources
         handleStopRequest(null);
 
@@ -199,7 +199,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
 
     @Override
     public BrowserRoot onGetRoot(String clientPackageName, int clientUid, Bundle rootHints) {
-        LogHelper.d(TAG, "OnGetRoot: clientPackageName=" + clientPackageName,
+        LogUtils.d(TAG, "OnGetRoot: clientPackageName=" + clientPackageName,
                 "; clientUid=" + clientUid + " ; rootHints=", rootHints);
         return new BrowserRoot(MEDIA_ID_ROOT, null);
     }
@@ -232,12 +232,12 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
      * Actual implementation of onLoadChildren that assumes that MusicProvider is already initialized.
      */
     private void loadChildrenImpl(final String parentMediaId, final Result<List<MediaBrowser.MediaItem>> result) {
-        LogHelper.d(TAG, "OnLoadChildren: parentMediaId=", parentMediaId);
+        LogUtils.d(TAG, "OnLoadChildren: parentMediaId=", parentMediaId);
 
         List<MediaBrowser.MediaItem> mediaItems = new ArrayList<>();
 
         if (MEDIA_ID_ROOT.equals(parentMediaId)) {
-            LogHelper.d(TAG, "OnLoadChildren.ROOT");
+            LogUtils.d(TAG, "OnLoadChildren.ROOT");
             mediaItems.add(new MediaBrowser.MediaItem(
                     new MediaDescription.Builder()
                             .setMediaId(MEDIA_ID_MUSICS_BY_GENRE)
@@ -248,7 +248,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
             ));
 
         } else if (MEDIA_ID_MUSICS_BY_GENRE.equals(parentMediaId)) {
-            LogHelper.d(TAG, "OnLoadChildren.GENRES");
+            LogUtils.d(TAG, "OnLoadChildren.GENRES");
             for (String genre : mMusicProvider.getGenres()) {
                 MediaBrowser.MediaItem item = new MediaBrowser.MediaItem(
                         new MediaDescription.Builder()
@@ -262,7 +262,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
 
         } else if (parentMediaId.startsWith(MEDIA_ID_MUSICS_BY_GENRE)) {
             String genre = MediaIDHelper.getHierarchy(parentMediaId)[1];
-            LogHelper.d(TAG, "OnLoadChildren.SONGS_BY_GENRE  genre=", genre);
+            LogUtils.d(TAG, "OnLoadChildren.SONGS_BY_GENRE  genre=", genre);
             for (MediaMetadata track : mMusicProvider.getMusicsByGenre(genre)) {
                 // Since mediaMetadata fields are immutable, we need to create a copy, so we
                 // can set a hierarchy-aware mediaID. We will need to know the media hierarchy
@@ -278,16 +278,16 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
                 mediaItems.add(bItem);
             }
         } else {
-            LogHelper.w(TAG, "Skipping unmatched parentMediaId: ", parentMediaId);
+            LogUtils.w(TAG, "Skipping unmatched parentMediaId: ", parentMediaId);
         }
-        LogHelper.d(TAG, "OnLoadChildren sending ", mediaItems.size(), " results for ", parentMediaId);
+        LogUtils.d(TAG, "OnLoadChildren sending ", mediaItems.size(), " results for ", parentMediaId);
         result.sendResult(mediaItems);
     }
 
     private final class MediaSessionCallback extends MediaSession.Callback {
         @Override
         public void onPlay() {
-            LogHelper.d(TAG, "play");
+            LogUtils.d(TAG, "play");
 
             if (mPlayingQueue == null || mPlayingQueue.isEmpty()) {
                 mPlayingQueue = QueueHelper.getRandomQueue(mMusicProvider);
@@ -304,7 +304,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
 
         @Override
         public void onSkipToQueueItem(long queueId) {
-            LogHelper.d(TAG, "OnSkipToQueueItem:" + queueId);
+            LogUtils.d(TAG, "OnSkipToQueueItem:" + queueId);
 
             if (mPlayingQueue != null && !mPlayingQueue.isEmpty()) {
                 // set the current index on queue from the music Id:
@@ -316,13 +316,13 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
 
         @Override
         public void onSeekTo(long position) {
-            LogHelper.d(TAG, "onSeekTo:", position);
+            LogUtils.d(TAG, "onSeekTo:", position);
             mPlayback.seekTo((int) position);
         }
 
         @Override
         public void onPlayFromMediaId(String mediaId, Bundle extras) {
-            LogHelper.d(TAG, "playFromMediaId mediaId:", mediaId, "  extras=", extras);
+            LogUtils.d(TAG, "playFromMediaId mediaId:", mediaId, "  extras=", extras);
 
             // The mediaId used here is not the unique musicId. This one comes from the
             // MediaBrowser, and is actually a "hierarchy-aware mediaID": a concatenation of
@@ -340,7 +340,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
                 mCurrentIndexOnQueue = QueueHelper.getMusicIndexOnQueue(mPlayingQueue, mediaId);
 
                 if (mCurrentIndexOnQueue < 0) {
-                    LogHelper.e(TAG, "playFromMediaId: media ID ", mediaId,
+                    LogUtils.e(TAG, "playFromMediaId: media ID ", mediaId,
                             " could not be found on queue. Ignoring.");
                 } else {
                     // play the music
@@ -351,19 +351,19 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
 
         @Override
         public void onPause() {
-            LogHelper.d(TAG, "pause. current state=" + mPlayback.getState());
+            LogUtils.d(TAG, "pause. current state=" + mPlayback.getState());
             handlePauseRequest();
         }
 
         @Override
         public void onStop() {
-            LogHelper.d(TAG, "stop. current state=" + mPlayback.getState());
+            LogUtils.d(TAG, "stop. current state=" + mPlayback.getState());
             handleStopRequest(null);
         }
 
         @Override
         public void onSkipToNext() {
-            LogHelper.d(TAG, "skipToNext");
+            LogUtils.d(TAG, "skipToNext");
             mCurrentIndexOnQueue++;
             if (mPlayingQueue != null && mCurrentIndexOnQueue >= mPlayingQueue.size()) {
                 // This sample's behavior: skipping to next when in last song returns to the
@@ -373,7 +373,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
             if (QueueHelper.isIndexPlayable(mCurrentIndexOnQueue, mPlayingQueue)) {
                 handlePlayRequest();
             } else {
-                LogHelper.e(TAG, "skipToNext: cannot skip to next. next Index=" +
+                LogUtils.e(TAG, "skipToNext: cannot skip to next. next Index=" +
                         mCurrentIndexOnQueue + " queue length=" +
                         (mPlayingQueue == null ? "null" : mPlayingQueue.size()));
                 handleStopRequest("Cannot skip");
@@ -382,7 +382,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
 
         @Override
         public void onSkipToPrevious() {
-            LogHelper.d(TAG, "skipToPrevious");
+            LogUtils.d(TAG, "skipToPrevious");
             mCurrentIndexOnQueue--;
             if (mPlayingQueue != null && mCurrentIndexOnQueue < 0) {
                 // This sample's behavior: skipping to previous when in first song restarts the
@@ -392,7 +392,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
             if (QueueHelper.isIndexPlayable(mCurrentIndexOnQueue, mPlayingQueue)) {
                 handlePlayRequest();
             } else {
-                LogHelper.e(TAG, "skipToPrevious: cannot skip to previous. previous Index=" +
+                LogUtils.e(TAG, "skipToPrevious: cannot skip to previous. previous Index=" +
                         mCurrentIndexOnQueue + " queue length=" +
                         (mPlayingQueue == null ? "null" : mPlayingQueue.size()));
                 handleStopRequest("Cannot skip");
@@ -402,7 +402,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
         @Override
         public void onCustomAction(String action, Bundle extras) {
             if (CUSTOM_ACTION_THUMBS_UP.equals(action)) {
-                LogHelper.i(TAG, "onCustomAction: favorite for current track");
+                LogUtils.i(TAG, "onCustomAction: favorite for current track");
                 MediaMetadata track = getCurrentPlayingMusic();
                 if (track != null) {
                     String musicId = track.getString(MediaMetadata.METADATA_KEY_MEDIA_ID);
@@ -412,14 +412,14 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
                 // custom action will change to reflect the new favorite state.
                 updatePlaybackState(null);
             } else {
-                LogHelper.e(TAG, "Unsupported action: ", action);
+                LogUtils.e(TAG, "Unsupported action: ", action);
             }
 
         }
 
         @Override
         public void onPlayFromSearch(final String query, final Bundle extras) {
-            LogHelper.d(TAG, "playFromSearch  query=", query, " extras=", extras);
+            LogUtils.d(TAG, "playFromSearch  query=", query, " extras=", extras);
 
             mPlayback.setState(PlaybackState.STATE_CONNECTING);
 
@@ -430,7 +430,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
                 public void onMusicCatalogReady(boolean success) {
                     mPlayingQueue = QueueHelper.getPlayingQueueFromSearch(query, extras, mMusicProvider);
 
-                    LogHelper.d(TAG, "playFromSearch  playqueue.length=" + mPlayingQueue.size());
+                    LogUtils.d(TAG, "playFromSearch  playqueue.length=" + mPlayingQueue.size());
                     mSession.setQueue(mPlayingQueue);
 
                     if (mPlayingQueue != null && !mPlayingQueue.isEmpty()) {
@@ -451,11 +451,11 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
      * Handle a request to play music
      */
     private void handlePlayRequest() {
-        LogHelper.d(TAG, "handlePlayRequest: mState=" + mPlayback.getState());
+        LogUtils.d(TAG, "handlePlayRequest: mState=" + mPlayback.getState());
 
         mDelayedStopHandler.removeCallbacksAndMessages(null);
         if (!mServiceStarted) {
-            LogHelper.v(TAG, "Starting service");
+            LogUtils.v(TAG, "Starting service");
             // The MusicService needs to keep running even after the calling MediaBrowser
             // is disconnected. Call startService(Intent) and then stopSelf(..) when we no longer
             // need to play media.
@@ -477,7 +477,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
      * Handle a request to pause music
      */
     private void handlePauseRequest() {
-        LogHelper.d(TAG, "handlePauseRequest: mState=" + mPlayback.getState());
+        LogUtils.d(TAG, "handlePauseRequest: mState=" + mPlayback.getState());
         mPlayback.pause();
         // reset the delayed stop handler.
         mDelayedStopHandler.removeCallbacksAndMessages(null);
@@ -488,7 +488,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
      * Handle a request to stop music
      */
     private void handleStopRequest(String withError) {
-        LogHelper.d(TAG, "handleStopRequest: mState=" + mPlayback.getState() + " error=", withError);
+        LogUtils.d(TAG, "handleStopRequest: mState=" + mPlayback.getState() + " error=", withError);
         mPlayback.stop(true);
         // reset the delayed stop handler.
         mDelayedStopHandler.removeCallbacksAndMessages(null);
@@ -503,7 +503,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
 
     private void updateMetadata() {
         if (!QueueHelper.isIndexPlayable(mCurrentIndexOnQueue, mPlayingQueue)) {
-            LogHelper.e(TAG, "Can't retrieve current metadata.");
+            LogUtils.e(TAG, "Can't retrieve current metadata.");
             updatePlaybackState(getResources().getString(R.string.error_no_metadata));
             return;
         }
@@ -513,7 +513,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
         final String trackId = track.getString(MediaMetadata.METADATA_KEY_MEDIA_ID);
         if (!musicId.equals(trackId)) {
             IllegalStateException e = new IllegalStateException("track ID should match musicId.");
-            LogHelper.e(TAG, "track ID should match musicId.",
+            LogUtils.e(TAG, "track ID should match musicId.",
                     " musicId=", musicId, " trackId=", trackId,
                     " mediaId from queueItem=", queueItem.getDescription().getMediaId(),
                     " title from queueItem=", queueItem.getDescription().getTitle(),
@@ -523,7 +523,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
                     e);
             throw e;
         }
-        LogHelper.d(TAG, "Updating metadata for MusicID= " + musicId);
+        LogUtils.d(TAG, "Updating metadata for MusicID= " + musicId);
         mSession.setMetadata(track);
 
         // Set the proper album artwork on the media session, so it can be shown in the
@@ -566,7 +566,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
      * @param error if not null, error message to present to the user.
      */
     private void updatePlaybackState(String error) {
-        LogHelper.d(TAG, "updatePlaybackState, playback state=" + mPlayback.getState());
+        LogUtils.d(TAG, "updatePlaybackState, playback state=" + mPlayback.getState());
         long position = PlaybackState.PLAYBACK_POSITION_UNKNOWN;
         if (mPlayback != null && mPlayback.isConnected()) {
             position = mPlayback.getCurrentStreamPosition();
@@ -609,7 +609,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
             if (mMusicProvider.isFavorite(musicId)) {
                 favoriteIcon = R.drawable.ic_star_on;
             }
-            LogHelper.d(TAG, "updatePlaybackState, setting Favorite custom action of music ",
+            LogUtils.d(TAG, "updatePlaybackState, setting Favorite custom action of music ",
                     musicId, " current favorite=", mMusicProvider.isFavorite(musicId));
             stateBuilder.addCustomAction(CUSTOM_ACTION_THUMBS_UP, getString(R.string.favorite),
                     favoriteIcon);
@@ -638,7 +638,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
         if (QueueHelper.isIndexPlayable(mCurrentIndexOnQueue, mPlayingQueue)) {
             MediaSession.QueueItem item = mPlayingQueue.get(mCurrentIndexOnQueue);
             if (item != null) {
-                LogHelper.d(TAG, "getCurrentPlayingMusic for musicId=",
+                LogUtils.d(TAG, "getCurrentPlayingMusic for musicId=",
                         item.getDescription().getMediaId());
                 return mMusicProvider.getMusic(
                         MediaIDHelper.extractMusicIDFromMediaID(item.getDescription().getMediaId()));
@@ -679,7 +679,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
 
     @Override
     public void onMetadataChanged(String mediaId) {
-        LogHelper.d(TAG, "onMetadataChanged", mediaId);
+        LogUtils.d(TAG, "onMetadataChanged", mediaId);
         List<MediaSession.QueueItem> queue = QueueHelper.getPlayingQueue(mediaId, mMusicProvider);
         int index = QueueHelper.getMusicIndexOnQueue(queue, mediaId);
         if (index > -1) {
@@ -702,7 +702,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
         int oldState = mPlayback.getState();
         int pos = mPlayback.getCurrentStreamPosition();
         String currentMediaId = mPlayback.getCurrentMediaId();
-        LogHelper.d(TAG, "Current position from " + playback + " is ", pos);
+        LogUtils.d(TAG, "Current position from " + playback + " is ", pos);
         mPlayback.stop(false);
         playback.setCallback(this);
         playback.setCurrentStreamPosition(pos < 0 ? 0 : pos);
@@ -728,7 +728,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
             case PlaybackState.STATE_NONE:
                 break;
             default:
-                LogHelper.d(TAG, "Default called. Old state is ", oldState);
+                LogUtils.d(TAG, "Default called. Old state is ", oldState);
         }
     }
 
@@ -747,10 +747,10 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
             MusicService service = mWeakReference.get();
             if (service != null && service.mPlayback != null) {
                 if (service.mPlayback.isPlaying()) {
-                    LogHelper.d(TAG, "Ignoring delayed stop since the media player is in use.");
+                    LogUtils.d(TAG, "Ignoring delayed stop since the media player is in use.");
                     return;
                 }
-                LogHelper.d(TAG, "Stopping service with delay handler.");
+                LogUtils.d(TAG, "Stopping service with delay handler.");
                 service.stopSelf();
                 service.mServiceStarted = false;
             }

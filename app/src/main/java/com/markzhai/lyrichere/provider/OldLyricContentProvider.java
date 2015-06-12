@@ -12,7 +12,7 @@ import android.text.TextUtils;
 
 import com.markzhai.lyrichere.Constants;
 import com.markzhai.lyrichere.utils.DbHelper;
-import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.utils.LogUtils;
 
 public class OldLyricContentProvider extends ContentProvider {
     private static final String TAG = OldLyricContentProvider.class.getSimpleName();
@@ -35,10 +35,10 @@ public class OldLyricContentProvider extends ContentProvider {
     public String getType(Uri uri) {
         switch (sURIMatcher.match(uri)) {
             case Constants.LYRIC_DIR:
-                LogHelper.i(TAG, "gotType: " + Constants.LYRIC_TYPE_DIR);
+                LogUtils.i(TAG, "gotType: " + Constants.LYRIC_TYPE_DIR);
                 return Constants.LYRIC_TYPE_DIR;
             case Constants.LYRIC_ITEM:
-                LogHelper.i(TAG, "gotType: " + Constants.LYRIC_TYPE_ITEM);
+                LogUtils.i(TAG, "gotType: " + Constants.LYRIC_TYPE_ITEM);
                 return Constants.LYRIC_TYPE_ITEM;
             default:
                 throw new IllegalArgumentException("Illegal URI: " + uri);
@@ -60,7 +60,7 @@ public class OldLyricContentProvider extends ContentProvider {
         // Was insert successful?
         if (rowId != -1) {
             ret = ContentUris.withAppendedId(uri, rowId);
-            LogHelper.i(TAG, "inserted uri: " + ret);
+            LogUtils.i(TAG, "inserted uri: " + ret);
 
             // Notify that data for this uri has changed
             getContext().getContentResolver().notifyChange(uri, null);
@@ -94,7 +94,7 @@ public class OldLyricContentProvider extends ContentProvider {
             // Notify that data for this uri has changed
             getContext().getContentResolver().notifyChange(uri, null);
         }
-        LogHelper.i(TAG, "updated records: " + ret);
+        LogUtils.i(TAG, "updated records: " + ret);
         return ret;
     }
 
@@ -124,7 +124,7 @@ public class OldLyricContentProvider extends ContentProvider {
             // Notify that data for this uri has changed
             getContext().getContentResolver().notifyChange(uri, null);
         }
-        LogHelper.i(TAG, "deleted records: " + ret);
+        LogUtils.i(TAG, "deleted records: " + ret);
         return ret;
     }
 

@@ -12,7 +12,7 @@ import android.os.Bundle;
 
 import com.markzhai.lyrichere.MusicService;
 import com.markzhai.lyrichere.R;
-import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.utils.NetworkHelper;
 import com.markzhai.lyrichere.utils.ResourceHelper;
 
@@ -21,7 +21,7 @@ import com.markzhai.lyrichere.utils.ResourceHelper;
  */
 public abstract class BaseActivity extends ActionBarCastActivity implements MediaBrowserProvider {
 
-    private static final String TAG = LogHelper.makeLogTag(BaseActivity.class);
+    private static final String TAG = LogUtils.makeLogTag(BaseActivity.class);
 
     private MediaBrowser mMediaBrowser;
     private PlaybackControlsFragment mControlsFragment;
@@ -30,7 +30,7 @@ public abstract class BaseActivity extends ActionBarCastActivity implements Medi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LogHelper.d(TAG, "Activity onCreate");
+        LogUtils.d(TAG, "Activity onCreate");
 
         // Since our app icon has the same color as colorPrimary, our entry in the Recent Apps
         // list gets weird. We need to change either the icon or the color of the TaskDescription.
@@ -47,7 +47,7 @@ public abstract class BaseActivity extends ActionBarCastActivity implements Medi
     @Override
     protected void onStart() {
         super.onStart();
-        LogHelper.d(TAG, "Activity onStart");
+        LogUtils.d(TAG, "Activity onStart");
 
         mControlsFragment = (PlaybackControlsFragment) getFragmentManager()
                 .findFragmentById(R.id.fragment_playback_controls);
@@ -63,7 +63,7 @@ public abstract class BaseActivity extends ActionBarCastActivity implements Medi
     @Override
     protected void onStop() {
         super.onStop();
-        LogHelper.d(TAG, "Activity onStop");
+        LogUtils.d(TAG, "Activity onStop");
         if (getMediaController() != null) {
             getMediaController().unregisterCallback(mMediaControllerCallback);
         }
@@ -80,7 +80,7 @@ public abstract class BaseActivity extends ActionBarCastActivity implements Medi
     }
 
     protected void showPlaybackControls() {
-        LogHelper.d(TAG, "showPlaybackControls");
+        LogUtils.d(TAG, "showPlaybackControls");
         if (NetworkHelper.isOnline(this)) {
             getFragmentManager().beginTransaction()
                     .setCustomAnimations(
@@ -92,7 +92,7 @@ public abstract class BaseActivity extends ActionBarCastActivity implements Medi
     }
 
     protected void hidePlaybackControls() {
-        LogHelper.d(TAG, "hidePlaybackControls");
+        LogUtils.d(TAG, "hidePlaybackControls");
         getFragmentManager().beginTransaction()
                 .hide(mControlsFragment)
                 .commit();
@@ -129,7 +129,7 @@ public abstract class BaseActivity extends ActionBarCastActivity implements Medi
         if (shouldShowControls()) {
             showPlaybackControls();
         } else {
-            LogHelper.d(TAG, "connectionCallback.onConnected: " +
+            LogUtils.d(TAG, "connectionCallback.onConnected: " +
                     "hiding controls because metadata is null");
             hidePlaybackControls();
         }
@@ -149,7 +149,7 @@ public abstract class BaseActivity extends ActionBarCastActivity implements Medi
                     if (shouldShowControls()) {
                         showPlaybackControls();
                     } else {
-                        LogHelper.d(TAG, "mediaControllerCallback.onPlaybackStateChanged: " +
+                        LogUtils.d(TAG, "mediaControllerCallback.onPlaybackStateChanged: " +
                                         "hiding controls because state is ",
                                 state == null ? "null" : state.getState());
                         hidePlaybackControls();
@@ -161,7 +161,7 @@ public abstract class BaseActivity extends ActionBarCastActivity implements Medi
                     if (shouldShowControls()) {
                         showPlaybackControls();
                     } else {
-                        LogHelper.d(TAG, "mediaControllerCallback.onMetadataChanged: " +
+                        LogUtils.d(TAG, "mediaControllerCallback.onMetadataChanged: " +
                                 "hiding controls because metadata is null");
                         hidePlaybackControls();
                     }
@@ -172,7 +172,7 @@ public abstract class BaseActivity extends ActionBarCastActivity implements Medi
             new MediaBrowser.ConnectionCallback() {
                 @Override
                 public void onConnected() {
-                    LogHelper.d(TAG, "onConnected");
+                    LogUtils.d(TAG, "onConnected");
 
                     MediaSession.Token token = mMediaBrowser.getSessionToken();
                     if (token == null) {

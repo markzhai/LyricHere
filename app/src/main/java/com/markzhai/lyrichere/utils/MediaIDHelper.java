@@ -7,7 +7,7 @@ import java.util.Arrays;
  */
 public class MediaIDHelper {
 
-    private static final String TAG = LogHelper.makeLogTag(MediaIDHelper.class);
+    private static final String TAG = LogUtils.makeLogTag(MediaIDHelper.class);
 
     // Media IDs used on browseable items of MediaBrowser
     public static final String MEDIA_ID_ROOT = "__ROOT__";

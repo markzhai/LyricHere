@@ -6,7 +6,7 @@ import android.widget.FilterQueryProvider;
 import android.widget.SimpleCursorAdapter;
 
 import com.markzhai.lyrichere.utils.DbUtils;
-import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.utils.LogUtils;
 
 /**
  * Created by yifan on 6/19/14.
@@ -19,7 +19,7 @@ public class LyricCursorAdapter extends SimpleCursorAdapter {
         setFilterQueryProvider(new FilterQueryProvider() {
             @Override
             public Cursor runQuery(CharSequence constraint) {
-                LogHelper.d(TAG, "runQuery: " + constraint);
+                LogUtils.d(TAG, "runQuery: " + constraint);
                 return DbUtils.searchByKeyword(context.getContentResolver(), constraint.toString());
             }
         });
@@ -27,7 +27,7 @@ public class LyricCursorAdapter extends SimpleCursorAdapter {
 
     @Override
     public Cursor runQueryOnBackgroundThread(CharSequence constraint) {
-        LogHelper.d(TAG, "runQueryOnBackgroundThread: " + constraint);
+        LogUtils.d(TAG, "runQueryOnBackgroundThread: " + constraint);
         return super.runQueryOnBackgroundThread(constraint);
     }
 }

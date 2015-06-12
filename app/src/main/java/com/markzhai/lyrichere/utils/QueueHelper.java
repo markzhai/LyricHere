@@ -20,7 +20,7 @@ import static com.markzhai.lyrichere.utils.MediaIDHelper.MEDIA_ID_MUSICS_BY_SEAR
  */
 public class QueueHelper {
 
-    private static final String TAG = LogHelper.makeLogTag(QueueHelper.class);
+    private static final String TAG = LogUtils.makeLogTag(QueueHelper.class);
 
     public static List<MediaSession.QueueItem> getPlayingQueue(String mediaId, MusicProvider musicProvider) {
 
@@ -28,13 +28,13 @@ public class QueueHelper {
         String[] hierarchy = MediaIDHelper.getHierarchy(mediaId);
 
         if (hierarchy.length != 2) {
-            LogHelper.e(TAG, "Could not build a playing queue for this mediaId: ", mediaId);
+            LogUtils.e(TAG, "Could not build a playing queue for this mediaId: ", mediaId);
             return null;
         }
 
         String categoryType = hierarchy[0];
         String categoryValue = hierarchy[1];
-        LogHelper.d(TAG, "Creating playing queue for ", categoryType, ",  ", categoryValue);
+        LogUtils.d(TAG, "Creating playing queue for ", categoryType, ",  ", categoryValue);
 
         Iterable<MediaMetadata> tracks = null;
         // This sample only supports genre and by_search category types.
@@ -45,7 +45,7 @@ public class QueueHelper {
         }
 
         if (tracks == null) {
-            LogHelper.e(TAG, "Unrecognized category type: ", categoryType, " for media ", mediaId);
+            LogUtils.e(TAG, "Unrecognized category type: ", categoryType, " for media ", mediaId);
             return null;
         }
 
@@ -55,12 +55,12 @@ public class QueueHelper {
     public static List<MediaSession.QueueItem> getPlayingQueueFromSearch(String query,
                                                                          Bundle queryParams, MusicProvider musicProvider) {
 
-        LogHelper.d(TAG, "Creating playing queue for musics from search: ", query,
+        LogUtils.d(TAG, "Creating playing queue for musics from search: ", query,
                 " params=", queryParams);
 
         VoiceSearchParams params = new VoiceSearchParams(query, queryParams);
 
-        LogHelper.d(TAG, "VoiceSearchParams: ", params);
+        LogUtils.d(TAG, "VoiceSearchParams: ", params);
 
         if (params.isAny) {
             // If isAny is true, we will play anything. This is app-dependent, and can be,
@@ -159,7 +159,7 @@ public class QueueHelper {
                 }
             }
         }
-        LogHelper.d(TAG, "getRandomQueue: result.size=", result.size());
+        LogUtils.d(TAG, "getRandomQueue: result.size=", result.size());
 
         Collections.shuffle(result);
 

@@ -22,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.markzhai.lyrichere.R;
-import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.utils.MediaIDHelper;
 import com.markzhai.lyrichere.utils.NetworkHelper;
 
@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class MediaBrowserFragment extends Fragment {
 
-    private static final String TAG = LogHelper.makeLogTag(MediaBrowserFragment.class);
+    private static final String TAG = LogUtils.makeLogTag(MediaBrowserFragment.class);
 
     private static final String ARG_MEDIA_ID = "media_id";
 
@@ -78,14 +78,14 @@ public class MediaBrowserFragment extends Fragment {
             if (metadata == null) {
                 return;
             }
-            LogHelper.d(TAG, "Received metadata change to media ", metadata.getDescription().getMediaId());
+            LogUtils.d(TAG, "Received metadata change to media ", metadata.getDescription().getMediaId());
             mBrowserAdapter.notifyDataSetChanged();
         }
 
         @Override
         public void onPlaybackStateChanged(PlaybackState state) {
             super.onPlaybackStateChanged(state);
-            LogHelper.d(TAG, "Received state change: ", state);
+            LogUtils.d(TAG, "Received state change: ", state);
             checkForUserVisibleErrors(false);
             mBrowserAdapter.notifyDataSetChanged();
         }
@@ -96,7 +96,7 @@ public class MediaBrowserFragment extends Fragment {
                 @Override
                 public void onChildrenLoaded(String parentId, List<MediaBrowser.MediaItem> children) {
                     try {
-                        LogHelper.d(TAG, "fragment onChildrenLoaded, parentId=" + parentId +
+                        LogUtils.d(TAG, "fragment onChildrenLoaded, parentId=" + parentId +
                                 "  count=" + children.size());
                         checkForUserVisibleErrors(children.isEmpty());
                         mBrowserAdapter.clear();
@@ -105,13 +105,13 @@ public class MediaBrowserFragment extends Fragment {
                         }
                         mBrowserAdapter.notifyDataSetChanged();
                     } catch (Throwable t) {
-                        LogHelper.e(TAG, "Error on childrenloaded", t);
+                        LogUtils.e(TAG, "Error on childrenloaded", t);
                     }
                 }
 
                 @Override
                 public void onError(String id) {
-                    LogHelper.e(TAG, "browse fragment subscription onError, id=" + id);
+                    LogUtils.e(TAG, "browse fragment subscription onError, id=" + id);
                     Toast.makeText(getActivity(), R.string.error_loading_media, Toast.LENGTH_LONG).show();
                     checkForUserVisibleErrors(true);
                 }
@@ -128,7 +128,7 @@ public class MediaBrowserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        LogHelper.d(TAG, "fragment.onCreateView");
+        LogUtils.d(TAG, "fragment.onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_media_browser_list, container, false);
 
         mErrorView = rootView.findViewById(R.id.playback_error);
@@ -157,7 +157,7 @@ public class MediaBrowserFragment extends Fragment {
         // fetch browsing information to fill the listview:
         MediaBrowser mediaBrowser = mMediaFragmentListener.getMediaBrowser();
 
-        LogHelper.d(TAG, "fragment.onStart, mediaId=", mMediaId,
+        LogUtils.d(TAG, "fragment.onStart, mediaId=", mMediaId,
                 "  onConnected=" + mediaBrowser.isConnected());
 
         if (mediaBrowser.isConnected()) {
@@ -256,7 +256,7 @@ public class MediaBrowserFragment extends Fragment {
             }
         }
         mErrorView.setVisibility(showError ? View.VISIBLE : View.GONE);
-        LogHelper.d(TAG, "checkForUserVisibleErrors. forceError=", forceError,
+        LogUtils.d(TAG, "checkForUserVisibleErrors. forceError=", forceError,
                 " showError=", showError,
                 " isOnline=", NetworkHelper.isOnline(getActivity()));
     }
@@ -274,10 +274,10 @@ public class MediaBrowserFragment extends Fragment {
         // fetch and iterate over it and find the proper MediaItem, from which we get the title,
         // This is temporary - a better solution (a method to get a mediaItem by its mediaID)
         // is being worked out in the platform and should be available soon.
-        LogHelper.d(TAG, "on updateTitle: mediaId=", mMediaId, " parentID=", parentId);
+        LogUtils.d(TAG, "on updateTitle: mediaId=", mMediaId, " parentID=", parentId);
         if (parentId != null) {
             MediaBrowser mediaBrowser = mMediaFragmentListener.getMediaBrowser();
-            LogHelper.d(TAG, "on updateTitle: mediaBrowser is ",
+            LogUtils.d(TAG, "on updateTitle: mediaBrowser is ",
                     mediaBrowser == null ? "null" : ("not null, connected=" + mediaBrowser.isConnected()));
             if (mediaBrowser != null && mediaBrowser.isConnected()) {
                 // Unsubscribing is required to guarantee that we will get the initial values.
@@ -288,10 +288,10 @@ public class MediaBrowserFragment extends Fragment {
                     @Override
                     public void onChildrenLoaded(String parentId,
                                                  List<MediaBrowser.MediaItem> children) {
-                        LogHelper.d(TAG, "Got ", children.size(), " children for ", parentId,
+                        LogUtils.d(TAG, "Got ", children.size(), " children for ", parentId,
                                 ". Looking for ", mMediaId);
                         for (MediaBrowser.MediaItem item : children) {
-                            LogHelper.d(TAG, "child ", item.getMediaId());
+                            LogUtils.d(TAG, "child ", item.getMediaId());
                             if (item.getMediaId().equals(mMediaId)) {
                                 if (mMediaFragmentListener != null) {
                                     mMediaFragmentListener.setToolbarTitle(
@@ -306,7 +306,7 @@ public class MediaBrowserFragment extends Fragment {
                     @Override
                     public void onError(String id) {
                         super.onError(id);
-                        LogHelper.d(TAG, "subscribe error: id=", id);
+                        LogUtils.d(TAG, "subscribe error: id=", id);
                     }
                 });
             }

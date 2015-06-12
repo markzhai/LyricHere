@@ -25,7 +25,7 @@ public class LyricUtils {
         Lyric lyric = new Lyric();
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), Encoding));
-            LogHelper.i(TAG, String.format("parseLyric(%s, %s)", file.getPath(), Encoding));
+            LogUtils.i(TAG, String.format("parseLyric(%s, %s)", file.getPath(), Encoding));
             String line;
             while ((line = br.readLine()) != null) {
                 parseLine(line, lyric);
@@ -263,7 +263,7 @@ public class LyricUtils {
         if (ss.length == 2) {
             if (ss[0].equalsIgnoreCase("offset")) {
                 int os = Integer.parseInt(ss[1]);
-                LogHelper.i(TAG, "整体的偏移量：" + os);
+                LogUtils.i(TAG, "整体的偏移量：" + os);
                 return os;
             } else {
                 return Integer.MAX_VALUE;

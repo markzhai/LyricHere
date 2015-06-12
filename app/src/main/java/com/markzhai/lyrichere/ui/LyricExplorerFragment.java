@@ -26,7 +26,7 @@ import android.widget.SimpleCursorAdapter.ViewBinder;
 import com.markzhai.lyrichere.Constants;
 import com.markzhai.lyrichere.R;
 import com.markzhai.lyrichere.adapters.LyricCursorAdapter;
-import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.widget.LyricSearchView;
 import com.markzhai.lyrichere.workers.LyricEncodingUpdater;
 
@@ -216,7 +216,7 @@ public class LyricExplorerFragment extends ListFragment implements LoaderCallbac
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id != LOADER_ID)
             return null;
-        LogHelper.i(TAG, "onCreateLoader for mParam: " + mParam);
+        LogUtils.i(TAG, "onCreateLoader for mParam: " + mParam);
 
         CursorLoader cursorLoader = null;
         switch (mParam) {
@@ -238,7 +238,7 @@ public class LyricExplorerFragment extends ListFragment implements LoaderCallbac
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        LogHelper.i(TAG, "onLoadFinished with cursor: " + cursor.getCount());
+        LogUtils.i(TAG, "onLoadFinished with cursor: " + cursor.getCount());
         mAdapter.swapCursor(cursor);
     }
 
@@ -267,13 +267,13 @@ public class LyricExplorerFragment extends ListFragment implements LoaderCallbac
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        LogHelper.i(TAG, "onQueryTextSubmit: " + query);
+        LogUtils.i(TAG, "onQueryTextSubmit: " + query);
         return true;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        LogHelper.i(TAG, "onQueryTextChange: " + newText);
+        LogUtils.i(TAG, "onQueryTextChange: " + newText);
         if (TextUtils.isEmpty(newText.trim())) {
             getLoaderManager().restartLoader(LOADER_ID, null, this);
             /*
@@ -299,7 +299,7 @@ public class LyricExplorerFragment extends ListFragment implements LoaderCallbac
 
     @Override
     public boolean onClose() {
-        LogHelper.i(TAG, "onClose");
+        LogUtils.i(TAG, "onClose");
         return false;
     }
 

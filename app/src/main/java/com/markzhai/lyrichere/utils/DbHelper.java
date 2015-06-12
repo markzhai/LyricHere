@@ -32,7 +32,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 Constants.Column.ENCODING,
                 Constants.Column.ENCODING_CHANGED,
                 Constants.Column.LAST_VISITED_AT);
-        LogHelper.i(TAG, "onCreate with SQL: " + sql);
+        LogUtils.i(TAG, "onCreate with SQL: " + sql);
         db.execSQL(sql);
     }
 

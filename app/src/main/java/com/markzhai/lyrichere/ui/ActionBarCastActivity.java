@@ -35,7 +35,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.markzhai.lyrichere.R;
-import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.utils.ResourceHelper;
 
 /**
@@ -50,7 +50,7 @@ import com.markzhai.lyrichere.utils.ResourceHelper;
  */
 public abstract class ActionBarCastActivity extends ActionBarActivity {
 
-    private static final String TAG = LogHelper.makeLogTag(ActionBarCastActivity.class);
+    private static final String TAG = LogUtils.makeLogTag(ActionBarCastActivity.class);
 
     private Toolbar mToolbar;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -107,7 +107,7 @@ public abstract class ActionBarCastActivity extends ActionBarActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogHelper.d(TAG, "Activity onCreate");
+        LogUtils.d(TAG, "Activity onCreate");
     }
 
     @Override

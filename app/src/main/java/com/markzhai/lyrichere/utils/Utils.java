@@ -1,35 +1,22 @@
 package com.markzhai.lyrichere.utils;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.RectF;
-import android.media.MediaMetadata;
-import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.TextUtils;
 import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * A collection of utility methods, all static from CastCompanionLibrary.
  */
 public class Utils {
 
-    private static final String TAG = LogHelper.makeLogTag(Utils.class);
+    private static final String TAG = LogUtils.makeLogTag(Utils.class);
     private static final String KEY_IMAGES = "images";
     private static final String KEY_URL = "movie-urls";
     private static final String KEY_CONTENT_TYPE = "content-type";

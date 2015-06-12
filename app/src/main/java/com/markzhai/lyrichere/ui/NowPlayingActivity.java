@@ -7,7 +7,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.utils.LogUtils;
 
 /**
  * The activity for the Now Playing Card PendingIntent.
@@ -17,7 +17,7 @@ import com.markzhai.lyrichere.utils.LogHelper;
  */
 public class NowPlayingActivity extends Activity {
 
-    private static final String TAG = LogHelper.makeLogTag(NowPlayingActivity.class);
+    private static final String TAG = LogUtils.makeLogTag(NowPlayingActivity.class);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

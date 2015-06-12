@@ -13,7 +13,7 @@ import com.markzhai.lyrichere.Constants;
 import com.markzhai.lyrichere.R;
 import com.markzhai.lyrichere.model.LyricModel;
 import com.markzhai.lyrichere.prefs.SettingsActivity;
-import com.markzhai.lyrichere.utils.LogHelper;
+import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.workers.Finder;
 import com.markzhai.lyrichere.workers.LyricOpener;
 
@@ -24,14 +24,14 @@ public class LyricExplorerActivity extends ActionBarCastActivity implements  Lyr
     @Override
     public void onResume() {
         super.onResume();
-        LogHelper.i(TAG, "onResume");
+        LogUtils.i(TAG, "onResume");
 
         if (getIntent() != null) {
             String title = getIntent().getStringExtra(Constants.Column.TITLE);
             if (!TextUtils.isEmpty(title)) {
                 String artist = getIntent().getStringExtra(Constants.Column.ARTIST);
                 String album = getIntent().getStringExtra(Constants.Column.ALBUM);
-                LogHelper.i(TAG, title);
+                LogUtils.i(TAG, title);
                 new LyricOpener(this).execute(title, artist, album);
             }
             setIntent(null);
@@ -44,19 +44,20 @@ public class LyricExplorerActivity extends ActionBarCastActivity implements  Lyr
 
     /**
      * Override onNewIntent to get new intent when re-entering
+     */
     @Override
     protected void onNewIntent(Intent intent) {
-        LogHelper.i(TAG, "onNewIntent");
-        if (intent.getStringExtra(Constants.Column.TITLE) != null)
-            LogHelper.i(TAG, intent.getStringExtra(Constants.Column.TITLE));
+        LogUtils.i(TAG, "onNewIntent");
+        if (intent.getStringExtra(Constants.Column.TITLE) != null) {
+            LogUtils.i(TAG, intent.getStringExtra(Constants.Column.TITLE));
+        }
         super.onNewIntent(intent);
         setIntent(intent);
     }
-     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        LogHelper.i(TAG, "onCreate");
+        LogUtils.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lyric_explorer);
         initializeToolbar();

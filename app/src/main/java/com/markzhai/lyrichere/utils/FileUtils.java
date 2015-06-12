@@ -115,7 +115,7 @@ public final class FileUtils {
             }
 
         } catch (IOException e) {
-            LogHelper.w(TAG, "Could not execute DU command for " + dir.getAbsolutePath(), e);
+            LogUtils.w(TAG, "Could not execute DU command for " + dir.getAbsolutePath(), e);
         }
 
         return sizes;

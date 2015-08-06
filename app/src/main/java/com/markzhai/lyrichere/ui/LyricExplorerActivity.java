@@ -38,7 +38,7 @@ public class LyricExplorerActivity extends ActionBarCastActivity implements  Lyr
             LyricModel model = new LyricModel();
             model.title = "aa";
             model.author = "bb";
-            model.insert(false);
+            model.save();
         }
     }
 

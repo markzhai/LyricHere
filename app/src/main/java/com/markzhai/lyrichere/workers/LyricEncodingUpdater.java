@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import java.io.File;
 
 import com.markzhai.lyrichere.utils.DbUtils;
-import com.markzhai.lyrichere.utils.LyricUtils;
 
 /**
  * Created by yifan on 6/15/14.

@@ -2,6 +2,14 @@ Lyric Here
 ==========
 A music player focused on user experience of lyric.
 
+Features
+-----------
+
+- Local music browser and player.
+- Music player widget, notification widget.
+- Powerful LyricView which supports scrolling up and down to change offset.
+- Receive broadcast from popular music players and pop up lyric open notification.
+
 Pre-requisites
 --------------
 

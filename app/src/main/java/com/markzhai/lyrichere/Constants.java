@@ -7,16 +7,6 @@ import android.provider.BaseColumns;
  * Created by yifan on 5/17/14.
  */
 public class Constants {
-
-    // Lyric tag
-    public static final String ID_TAG_TITLE = "ti";
-    public static final String ID_TAG_ARTIST = "ar";
-    public static final String ID_TAG_ALBUM = "al";
-    public static final String ID_TAG_CREATOR_LRCFILE = "by";
-    public static final String ID_TAG_CREATOR_SONGTEXT = "au";
-    public static final String ID_TAG_LENGTH = "length";
-    public static final String ID_TAG_OFFSET = "offset";
-
     // DB specific constants
     public static final String DB_NAME = "lyric.db";
     public static final int DB_VERSION = 4;

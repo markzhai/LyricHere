@@ -2,6 +2,7 @@ package com.markzhai.lyrichere.model;
 
 import com.markzhai.lyrichere.AppDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -11,7 +12,8 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 @Table(databaseName = AppDatabase.NAME)
 public class LyricModel extends BaseModel {
 
-    @Column(columnType = Column.PRIMARY_KEY_AUTO_INCREMENT)
+    @PrimaryKey
+    @Column
     public long _id;
 
     @Column

@@ -24,9 +24,10 @@ import com.markzhai.lyrichere.Constants;
 import com.markzhai.lyrichere.R;
 import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.utils.LyricProvider;
-import com.markzhai.lyrichere.widget.LyricView;
 import com.markzhai.lyrichere.workers.LyricEncodingUpdater;
 import com.markzhai.lyrichere.workers.LyricLastVisitUpdater;
+
+import cn.zhaiyifan.lyric.widget.LyricView;
 
 public class LyricPlayerFragment extends Fragment {
     private static final String TAG = LyricPlayerFragment.class.getSimpleName();
@@ -34,8 +35,6 @@ public class LyricPlayerFragment extends Fragment {
     private static final String ARG_PARAM_ENCODING = "encoding";
     private String mFilePath;
     private String mEncoding;
-
-    private OnFragmentInteractionListener mListener;
 
     private LyricView mLyricView;
     private Handler mHandler = new Handler();
@@ -49,7 +48,6 @@ public class LyricPlayerFragment extends Fragment {
             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
     };
-    private UIUpdateRunnable mUiUpdateRunnable = null;
     private Thread mUiUpdateThread = null;
     private NotificationManager mNotificationManager;
 
@@ -97,7 +95,7 @@ public class LyricPlayerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LogUtils.i(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_lyric_player, container, false);
-        mLyricView = (LyricView) view.findViewById(R.id.textLyric);
+        mLyricView = (LyricView) view.findViewById(R.id.lyricView);
         return view;
     }
 
@@ -109,30 +107,32 @@ public class LyricPlayerFragment extends Fragment {
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         mIsForeground = true;
+
         // Not first time createView
         String path = getActivity().getIntent().getStringExtra(Constants.Column.PATH);
         String encoding = getActivity().getIntent().getStringExtra(Constants.Column.ENCODING);
+
+        // new lyric file
         if (path != null && !mFilePath.equals(path)) {
             mFilePath = path;
             mEncoding = encoding;
 
-            mUiUpdateRunnable.stop();
-            while (mUiUpdateThread.isAlive()) {
+            mLyricView.stop();
+            //while (mUiUpdateThread.isAlive()) {
                 // wait till dead
-            }
-            mUiUpdateRunnable.reset();
-            mUiUpdateThread = new Thread(mUiUpdateRunnable);
+            //}
+            //mUiUpdateRunnable.reset();
+            //mUiUpdateThread = new Thread(mUiUpdateRunnable);
             mLyricView.setLyric(mLyricProvider.get(mFilePath, mEncoding));
             mLyricView.setLyricIndex(0);
-            mUiUpdateThread.start();
+            mLyricView.play();
 
-            new LyricLastVisitUpdater(this.getActivity()).execute(mFilePath);
+            new LyricLastVisitUpdater(getActivity()).execute(mFilePath);
         }
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        LogUtils.i(TAG, "onCreateOptionsMenu");
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_encoding, menu);
     }
@@ -140,14 +140,19 @@ public class LyricPlayerFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (mEncoding.equals(Constants.ENCODE_UTF_8)) {
-            menu.findItem(R.id.action_encoding_utf_8).setChecked(true);
-        } else if (mEncoding.equals(Constants.ENCODE_BIG5)) {
-            menu.findItem(R.id.action_encoding_big5).setChecked(true);
-        } else if (mEncoding.equals(Constants.ENCODE_GBK)) {
-            menu.findItem(R.id.action_encoding_gbk).setChecked(true);
-        } else if (mEncoding.equals(Constants.ENCODE_SJIS)) {
-            menu.findItem(R.id.action_encoding_sjis).setChecked(true);
+        switch (mEncoding) {
+            case Constants.ENCODE_UTF_8:
+                menu.findItem(R.id.action_encoding_utf_8).setChecked(true);
+                break;
+            case Constants.ENCODE_BIG5:
+                menu.findItem(R.id.action_encoding_big5).setChecked(true);
+                break;
+            case Constants.ENCODE_GBK:
+                menu.findItem(R.id.action_encoding_gbk).setChecked(true);
+                break;
+            case Constants.ENCODE_SJIS:
+                menu.findItem(R.id.action_encoding_sjis).setChecked(true);
+                break;
         }
     }
 
@@ -189,34 +194,7 @@ public class LyricPlayerFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         LogUtils.i(TAG, "onDestroy");
-        mUiUpdateRunnable.stop();
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        mLyricView.stop();
     }
 
     @Override
@@ -224,39 +202,6 @@ public class LyricPlayerFragment extends Fragment {
         super.onStop();
         LogUtils.i(TAG, "onStop");
         mIsForeground = false;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        LogUtils.i(TAG, "onStart");
-        if (mUiUpdateRunnable == null && mUiUpdateThread == null) {
-            mUiUpdateRunnable = new UIUpdateRunnable();
-            mUiUpdateThread = new Thread(mUiUpdateRunnable);
-            mLyricView.setLyric(mLyricProvider.get(mFilePath, mEncoding));
-            new LyricLastVisitUpdater(this.getActivity()).execute(mFilePath);
-        }
-        if (!mUiUpdateThread.isAlive() && !mUiUpdateRunnable.isStopped() && !mUiUpdateRunnable.mStopped) {
-            mUiUpdateThread.start();
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        LogUtils.i(TAG, "onPause");
-    }
-
-    public boolean isForeground() {
-        return mIsForeground;
-    }
-
-    /**
-     * See <a href="http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(Uri uri);
     }
 
     private class UIUpdateRunnable implements Runnable {

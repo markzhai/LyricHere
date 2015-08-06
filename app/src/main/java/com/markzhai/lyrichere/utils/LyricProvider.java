@@ -5,7 +5,8 @@ import android.content.Context;
 
 import java.io.File;
 
-import com.markzhai.lyrichere.model.Lyric;
+import cn.zhaiyifan.lyric.LyricUtils;
+import cn.zhaiyifan.lyric.model.Lyric;
 
 /**
  * May add get lyric from internet later

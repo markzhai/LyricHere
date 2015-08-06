@@ -3,7 +3,7 @@ package com.markzhai.lyrichere.utils;
 import android.content.Context;
 import android.support.v4.util.LruCache;
 
-import com.markzhai.lyrichere.model.Lyric;
+import cn.zhaiyifan.lyric.model.Lyric;
 
 /**
  * Created by yifan on 6/12/14.

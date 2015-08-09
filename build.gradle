@@ -18,7 +18,7 @@ allprojects {
         // Android config
         androidCompileSdkVersion = 21
         androidBuildToolsVersion = "21.1.2"
-        androidMinSdkVersion = 14
+        androidMinSdkVersion = 21
         androidTargetSdkVersion = 21
         androidApplicationId = 'com.markzhai.lyrichere'
         androidVersionCode = 1

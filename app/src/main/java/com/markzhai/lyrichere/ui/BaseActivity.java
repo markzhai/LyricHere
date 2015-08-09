@@ -9,6 +9,7 @@ import android.media.session.MediaController;
 import android.media.session.MediaSession;
 import android.media.session.PlaybackState;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.markzhai.lyrichere.MusicService;
 import com.markzhai.lyrichere.R;
@@ -52,7 +53,7 @@ public abstract class BaseActivity extends ActionBarCastActivity implements Medi
         mControlsFragment = (PlaybackControlsFragment) getFragmentManager()
                 .findFragmentById(R.id.fragment_playback_controls);
         if (mControlsFragment == null) {
-            throw new IllegalStateException("Mising fragment with id 'controls'. Cannot continue.");
+            throw new IllegalStateException("Missing fragment with id 'controls'. Cannot continue.");
         }
 
         hidePlaybackControls();
@@ -145,13 +146,12 @@ public abstract class BaseActivity extends ActionBarCastActivity implements Medi
     private final MediaController.Callback mMediaControllerCallback =
             new MediaController.Callback() {
                 @Override
-                public void onPlaybackStateChanged(PlaybackState state) {
+                public void onPlaybackStateChanged(@NonNull PlaybackState state) {
                     if (shouldShowControls()) {
                         showPlaybackControls();
                     } else {
                         LogUtils.d(TAG, "mediaControllerCallback.onPlaybackStateChanged: " +
-                                        "hiding controls because state is ",
-                                state == null ? "null" : state.getState());
+                                "hiding controls because state is ", state.getState());
                         hidePlaybackControls();
                     }
                 }
@@ -168,17 +168,12 @@ public abstract class BaseActivity extends ActionBarCastActivity implements Medi
                 }
             };
 
-    private MediaBrowser.ConnectionCallback mConnectionCallback =
+    private final MediaBrowser.ConnectionCallback mConnectionCallback =
             new MediaBrowser.ConnectionCallback() {
                 @Override
                 public void onConnected() {
                     LogUtils.d(TAG, "onConnected");
-
-                    MediaSession.Token token = mMediaBrowser.getSessionToken();
-                    if (token == null) {
-                        throw new IllegalArgumentException("No Session token");
-                    }
-                    connectToSession(token);
+                    connectToSession(mMediaBrowser.getSessionToken());
                 }
             };
 

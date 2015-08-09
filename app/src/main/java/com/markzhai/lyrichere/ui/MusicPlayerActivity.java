@@ -21,6 +21,7 @@ public class MusicPlayerActivity extends BaseActivity implements MediaBrowserFra
 
     private static final String TAG = LogUtils.makeLogTag(MusicPlayerActivity.class);
     private static final String SAVED_MEDIA_ID = "com.markzhai.lyrichere.MEDIA_ID";
+    private static final String FRAGMENT_TAG = "list_container";
 
     public static final String EXTRA_START_FULLSCREEN = "com.markzhai.lyrichere.EXTRA_START_FULLSCREEN";
 
@@ -126,7 +127,7 @@ public class MusicPlayerActivity extends BaseActivity implements MediaBrowserFra
             transaction.setCustomAnimations(
                     R.animator.slide_in_from_right, R.animator.slide_out_to_left,
                     R.animator.slide_in_from_left, R.animator.slide_out_to_right);
-            transaction.replace(R.id.container, fragment);
+            transaction.replace(R.id.container, fragment, FRAGMENT_TAG);
             // If this is not the top level media (root), we add it to the fragment back stack,
             // so that actionbar toggle and Back will work appropriately:
             if (mediaId != null) {

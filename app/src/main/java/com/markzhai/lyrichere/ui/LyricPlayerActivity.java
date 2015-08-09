@@ -29,7 +29,7 @@ public class LyricPlayerActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         String path = getIntent().getStringExtra(Constants.Column.PATH);

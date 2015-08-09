@@ -16,10 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -99,7 +97,6 @@ public class MusicProvider {
     /**
      * Very basic implementation of a search that filter music tracks with title containing
      * the given query.
-     *
      */
     public Iterable<MediaMetadata> searchMusicBySongTitle(String query) {
         return searchMusic(MediaMetadata.METADATA_KEY_TITLE, query);
@@ -108,7 +105,6 @@ public class MusicProvider {
     /**
      * Very basic implementation of a search that filter music tracks with album containing
      * the given query.
-     *
      */
     public Iterable<MediaMetadata> searchMusicByAlbum(String query) {
         return searchMusic(MediaMetadata.METADATA_KEY_ALBUM, query);
@@ -117,7 +113,6 @@ public class MusicProvider {
     /**
      * Very basic implementation of a search that filter music tracks with artist containing
      * the given query.
-     *
      */
     public Iterable<MediaMetadata> searchMusicByArtist(String query) {
         return searchMusic(MediaMetadata.METADATA_KEY_ARTIST, query);
@@ -373,12 +368,10 @@ public class MusicProvider {
      * @return result JSONObject containing the parsed representation.
      */
     private JSONObject fetchJSONFromUrl(String urlString) {
-        InputStream is = null;
+        BufferedReader reader = null;
         try {
-            URL url = new URL(urlString);
-            URLConnection urlConnection = url.openConnection();
-            is = new BufferedInputStream(urlConnection.getInputStream());
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
+            URLConnection urlConnection = new URL(urlString).openConnection();
+            reader = new BufferedReader(new InputStreamReader(
                     urlConnection.getInputStream(), "iso-8859-1"));
             StringBuilder sb = new StringBuilder();
             String line;
@@ -390,9 +383,9 @@ public class MusicProvider {
             LogUtils.e(TAG, "Failed to parse the json for media list", e);
             return null;
         } finally {
-            if (is != null) {
+            if (reader != null) {
                 try {
-                    is.close();
+                    reader.close();
                 } catch (IOException e) {
                     // ignore
                 }

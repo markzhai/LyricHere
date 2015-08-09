@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +18,7 @@ import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.workers.Finder;
 import com.markzhai.lyrichere.workers.LyricOpener;
 
-public class LyricExplorerActivity extends ActionBarCastActivity implements  LyricExplorerFragment
+public class LyricExplorerActivity extends AppCompatActivity implements  LyricExplorerFragment
         .OnFragmentInteractionListener, DownloadFragment.OnFragmentInteractionListener {
     private static final String TAG = LyricExplorerActivity.class.getSimpleName();
 

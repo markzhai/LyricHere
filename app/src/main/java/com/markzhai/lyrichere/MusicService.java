@@ -19,6 +19,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.service.media.MediaBrowserService;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.markzhai.lyrichere.provider.MusicProvider;
 import com.markzhai.lyrichere.ui.NowPlayingActivity;
@@ -43,38 +45,38 @@ import static com.markzhai.lyrichere.utils.MediaIDHelper.createBrowseCategoryMed
  * user interfaces that need to interact with your media session, like Android Auto. You can
  * (should) also use the same service from your app's UI, which gives a seamless playback
  * experience to the user.
- * <p>
+ * <p/>
  * To implement a MediaBrowserService, you need to:
- * <p>
+ * <p/>
  * <ul>
- * <p>
+ * <p/>
  * <li> Extend {@link android.service.media.MediaBrowserService}, implementing the media browsing
  * related methods {@link android.service.media.MediaBrowserService#onGetRoot} and
  * {@link android.service.media.MediaBrowserService#onLoadChildren};
  * <li> In onCreate, start a new {@link android.media.session.MediaSession} and notify its parent
  * with the session's token {@link android.service.media.MediaBrowserService#setSessionToken};
- * <p>
+ * <p/>
  * <li> Set a callback on the
  * {@link android.media.session.MediaSession#setCallback(android.media.session.MediaSession.Callback)}.
  * The callback will receive all the user's actions, like play, pause, etc;
- * <p>
+ * <p/>
  * <li> Handle all the actual music playing using any method your app prefers (for example,
  * {@link android.media.MediaPlayer})
- * <p>
+ * <p/>
  * <li> Update playbackState, "now playing" metadata and queue, using MediaSession proper methods
  * {@link android.media.session.MediaSession#setPlaybackState(android.media.session.PlaybackState)}
  * {@link android.media.session.MediaSession#setMetadata(android.media.MediaMetadata)} and
  * {@link android.media.session.MediaSession#setQueue(java.util.List)})
- * <p>
+ * <p/>
  * <li> Declare and export the service in AndroidManifest with an intent receiver for the action
  * android.media.browse.MediaBrowserService
- * <p>
+ * <p/>
  * </ul>
- * <p>
+ * <p/>
  * To make your app compatible with Android Auto, you also need to:
- * <p>
+ * <p/>
  * <ul>
- * <p>
+ * <p/>
  * <li> Declare a meta-data tag in AndroidManifest.xml linking to a xml resource
  * with a &lt;automotiveApp&gt; root element. For a media app, this must include
  * an &lt;uses name="media"/&gt; element as a child.
@@ -85,7 +87,7 @@ import static com.markzhai.lyrichere.utils.MediaIDHelper.createBrowseCategoryMed
  * &lt;automotiveApp&gt;
  * &lt;uses name="media"/&gt;
  * &lt;/automotiveApp&gt;
- * <p>
+ * <p/>
  * </ul>
  *
  * @see <a href="README.md">README.md</a> for more details.
@@ -126,7 +128,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
     // Indicates whether the service was started.
     private boolean mServiceStarted;
     private Bundle mSessionExtras;
-    private DelayedStopHandler mDelayedStopHandler = new DelayedStopHandler(this);
+    private final DelayedStopHandler mDelayedStopHandler = new DelayedStopHandler(this);
     private Playback mPlayback;
 
     @Override
@@ -198,7 +200,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
     }
 
     @Override
-    public BrowserRoot onGetRoot(String clientPackageName, int clientUid, Bundle rootHints) {
+    public BrowserRoot onGetRoot(@NonNull String clientPackageName, int clientUid, Bundle rootHints) {
         LogUtils.d(TAG, "OnGetRoot: clientPackageName=" + clientPackageName,
                 "; clientUid=" + clientUid + " ; rootHints=", rootHints);
         return new BrowserRoot(MEDIA_ID_ROOT, null);
@@ -400,7 +402,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
         }
 
         @Override
-        public void onCustomAction(String action, Bundle extras) {
+        public void onCustomAction(@NonNull String action, Bundle extras) {
             if (CUSTOM_ACTION_THUMBS_UP.equals(action)) {
                 LogUtils.i(TAG, "onCustomAction: favorite for current track");
                 MediaMetadata track = getCurrentPlayingMusic();
@@ -510,8 +512,11 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
         MediaSession.QueueItem queueItem = mPlayingQueue.get(mCurrentIndexOnQueue);
         String musicId = MediaIDHelper.extractMusicIDFromMediaID(queueItem.getDescription().getMediaId());
         MediaMetadata track = mMusicProvider.getMusic(musicId);
+        if (track == null) {
+            throw new IllegalArgumentException("Invalid musicId " + musicId);
+        }
         final String trackId = track.getString(MediaMetadata.METADATA_KEY_MEDIA_ID);
-        if (!musicId.equals(trackId)) {
+        if (!TextUtils.equals(musicId, trackId)) {
             IllegalStateException e = new IllegalStateException("track ID should match musicId.");
             LogUtils.e(TAG, "track ID should match musicId.",
                     " musicId=", musicId, " trackId=", trackId,

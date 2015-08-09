@@ -13,6 +13,7 @@ import android.media.session.PlaybackState;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -90,17 +91,12 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
         }
     };
 
-    private MediaBrowser.ConnectionCallback mConnectionCallback =
+    private final MediaBrowser.ConnectionCallback mConnectionCallback =
             new MediaBrowser.ConnectionCallback() {
                 @Override
                 public void onConnected() {
                     LogUtils.d(TAG, "onConnected");
-
-                    MediaSession.Token token = mMediaBrowser.getSessionToken();
-                    if (token == null) {
-                        throw new IllegalArgumentException("No Session token");
-                    }
-                    connectToSession(token);
+                    connectToSession(mMediaBrowser.getSessionToken());
                 }
             };
 
@@ -109,13 +105,15 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_player);
         initializeToolbar();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("");
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("");
+        }
 
         mBackgroundImage = (ImageView) findViewById(R.id.background_image);
         mPauseDrawable = getDrawable(R.drawable.ic_pause_white_48dp);
         mPlayDrawable = getDrawable(R.drawable.ic_play_arrow_white_48dp);
-        mPlayPause = (ImageView) findViewById(R.id.imageView1);
+        mPlayPause = (ImageView) findViewById(R.id.play_pause);
         mSkipNext = (ImageView) findViewById(R.id.next);
         mSkipPrev = (ImageView) findViewById(R.id.prev);
         mStart = (TextView) findViewById(R.id.startText);
@@ -149,21 +147,23 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
             @Override
             public void onClick(View v) {
                 PlaybackState state = getMediaController().getPlaybackState();
-                MediaController.TransportControls controls =
-                        getMediaController().getTransportControls();
-                switch (state.getState()) {
-                    case PlaybackState.STATE_PLAYING: // fall through
-                    case PlaybackState.STATE_BUFFERING:
-                        controls.pause();
-                        stopSeekbarUpdate();
-                        break;
-                    case PlaybackState.STATE_PAUSED:
-                    case PlaybackState.STATE_STOPPED:
-                        controls.play();
-                        scheduleSeekbarUpdate();
-                        break;
-                    default:
-                        LogUtils.d(TAG, "onClick with state ", state.getState());
+                if (state != null) {
+                    MediaController.TransportControls controls =
+                            getMediaController().getTransportControls();
+                    switch (state.getState()) {
+                        case PlaybackState.STATE_PLAYING: // fall through
+                        case PlaybackState.STATE_BUFFERING:
+                            controls.pause();
+                            stopSeekbarUpdate();
+                            break;
+                        case PlaybackState.STATE_PAUSED:
+                        case PlaybackState.STATE_STOPPED:
+                            controls.play();
+                            scheduleSeekbarUpdate();
+                            break;
+                        default:
+                            LogUtils.d(TAG, "onClick with state ", state.getState());
+                    }
                 }
             }
         });
@@ -273,7 +273,10 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
         mExecutorService.shutdown();
     }
 
-    private void fetchImageAsync(MediaDescription description) {
+    private void fetchImageAsync(@NonNull MediaDescription description) {
+        if (description.getIconUri() == null) {
+            return;
+        }
         String artUrl = description.getIconUri().toString();
         mCurrentArtUrl = artUrl;
         AlbumArtCache cache = AlbumArtCache.getInstance();
@@ -324,14 +327,13 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
             return;
         }
         mLastPlaybackState = state;
-        String castName = getMediaController()
-                .getExtras().getString(MusicService.EXTRA_CONNECTED_CAST);
-        String line3Text = "";
-        if (castName != null) {
-            line3Text = getResources()
+        if (getMediaController() != null && getMediaController().getExtras() != null) {
+            String castName = getMediaController()
+                    .getExtras().getString(MusicService.EXTRA_CONNECTED_CAST);
+            String line3Text = castName == null ? "" : getResources()
                     .getString(R.string.casting_to_device, castName);
+            mLine3.setText(line3Text);
         }
-        mLine3.setText(line3Text);
 
         switch (state.getState()) {
             case PlaybackState.STATE_PLAYING:

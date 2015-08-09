@@ -49,16 +49,16 @@ public class MediaNotificationManager extends BroadcastReceiver {
     private PlaybackState mPlaybackState;
     private MediaMetadata mMetadata;
 
-    private NotificationManager mNotificationManager;
+    private final NotificationManager mNotificationManager;
 
-    private PendingIntent mPauseIntent;
-    private PendingIntent mPlayIntent;
-    private PendingIntent mPreviousIntent;
-    private PendingIntent mNextIntent;
+    private final PendingIntent mPauseIntent;
+    private final PendingIntent mPlayIntent;
+    private final PendingIntent mPreviousIntent;
+    private final PendingIntent mNextIntent;
 
-    private PendingIntent mStopCastIntent;
+    private final PendingIntent mStopCastIntent;
 
-    private int mNotificationColor;
+    private final int mNotificationColor;
 
     private boolean mStarted = false;
 

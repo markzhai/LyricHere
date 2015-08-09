@@ -20,7 +20,7 @@ public class ScrimInsetsRelativeLayout extends RelativeLayout {
     private Drawable mInsetForeground;
 
     private Rect mInsets;
-    private Rect mTempRect = new Rect();
+    private final Rect mTempRect = new Rect();
     private OnInsetsCallback mOnInsetsCallback;
 
     public ScrimInsetsRelativeLayout(Context context) {

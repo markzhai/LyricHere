@@ -1,5 +1,7 @@
 package com.markzhai.lyrichere.utils;
 
+import android.support.annotation.NonNull;
+
 import java.util.Arrays;
 
 /**
@@ -65,7 +67,7 @@ public class MediaIDHelper {
      *
      * @param mediaID that contains a category and categoryValue.
      */
-    public static String[] getHierarchy(String mediaID) {
+    public static @NonNull String[] getHierarchy(String mediaID) {
         int pos = mediaID.indexOf(LEAF_SEPARATOR);
         if (pos >= 0) {
             mediaID = mediaID.substring(0, pos);
@@ -75,7 +77,7 @@ public class MediaIDHelper {
 
     public static String extractBrowseCategoryValueFromMediaID(String mediaID) {
         String[] hierarchy = getHierarchy(mediaID);
-        if (hierarchy != null && hierarchy.length == 2) {
+        if (hierarchy.length == 2) {
             return hierarchy[1];
         }
         return null;
@@ -90,7 +92,7 @@ public class MediaIDHelper {
         if (!isBrowseable(mediaID)) {
             return createMediaID(null, hierarchy);
         }
-        if (hierarchy == null || hierarchy.length <= 1) {
+        if (hierarchy.length <= 1) {
             return MEDIA_ID_ROOT;
         }
         String[] parentHierarchy = Arrays.copyOf(hierarchy, hierarchy.length - 1);

@@ -53,7 +53,7 @@ public abstract class BaseActivity extends ActionBarCastActivity implements Medi
         mControlsFragment = (PlaybackControlsFragment) getFragmentManager()
                 .findFragmentById(R.id.fragment_playback_controls);
         if (mControlsFragment == null) {
-            throw new IllegalStateException("Missing fragment with id 'controls'. Cannot continue.");
+            throw new IllegalStateException("Missing fragment with id 'fragment_playback_controls'");
         }
 
         hidePlaybackControls();

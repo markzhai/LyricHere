@@ -18,7 +18,7 @@ import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.workers.Finder;
 import com.markzhai.lyrichere.workers.LyricOpener;
 
-public class LyricExplorerActivity extends AppCompatActivity implements  LyricExplorerFragment
+public class LyricExplorerActivity extends BaseActivity implements  LyricExplorerFragment
         .OnFragmentInteractionListener, DownloadFragment.OnFragmentInteractionListener {
     private static final String TAG = LyricExplorerActivity.class.getSimpleName();
 

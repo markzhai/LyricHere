@@ -13,7 +13,7 @@ public class Constants {
     public static final String TABLE = "lyric";
 
     // Notification
-    public static final int NOTIFY_ID = 5656;
+    public static final int NOTIFY_ID = 5653;
 
     // Provider specific constants
     public static final String AUTHORITY = "markzhai.lyrichere.app.db.LyricContentProvider";

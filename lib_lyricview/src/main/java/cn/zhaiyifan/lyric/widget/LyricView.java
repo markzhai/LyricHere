@@ -23,8 +23,10 @@ import cn.zhaiyifan.lyric.model.Lyric;
  * Created by yifan on 5/13/14.
  */
 public class LyricView extends TextView implements Runnable {
+    public Lyric lyric;
+
     private static final int DY = 50;
-    private Lyric mLyric;
+
     private Paint mCurrentPaint;
     private Paint mPaint;
     private float mMiddleX;
@@ -35,8 +37,9 @@ public class LyricView extends TextView implements Runnable {
     private int mLyricSentenceLength;
     private boolean mIsNeedUpdate = false;
     private float mLastEffectY = 0;
-
     private int mIsTouched = 0;
+
+    private OnLyricUpdateListener mOnLyricUpdateListener;
 
     public LyricView(Context context) {
         this(context, null);
@@ -48,10 +51,6 @@ public class LyricView extends TextView implements Runnable {
 
     public LyricView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    private void init() {
         setFocusable(true);
 
         int backgroundColor = Color.BLACK;
@@ -78,6 +77,10 @@ public class LyricView extends TextView implements Runnable {
         mCurrentPaint.setTextAlign(Paint.Align.CENTER);
         setHorizontallyScrolling(true);
         setMovementMethod(new ScrollingMovementMethod());
+    }
+
+    public void setOnLyricUpdateListener(OnLyricUpdateListener lister) {
+        mOnLyricUpdateListener = lister;
     }
 
     private int drawText(Canvas canvas, Paint paint, String text, float startY) {
@@ -116,9 +119,9 @@ public class LyricView extends TextView implements Runnable {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (mLyric == null)
+        if (lyric == null)
             return;
-        List<Lyric.Sentence> sentenceList = mLyric.sentenceList;
+        List<Lyric.Sentence> sentenceList = lyric.sentenceList;
         if (sentenceList == null || sentenceList.isEmpty() || mLyricIndex == -2) {
             return;
         }
@@ -160,10 +163,10 @@ public class LyricView extends TextView implements Runnable {
 
         if (mIsTouched > 0) {
             mPaint.setTextAlign(Paint.Align.LEFT);
-            canvas.drawText(String.format("%s - %s", mLyric.artist, mLyric.title), 10, 50, mPaint);
-            canvas.drawText("offset: " + mLyric.offset, 10, 150, mPaint);
+            canvas.drawText(String.format("%s - %s", lyric.artist, lyric.title), 10, 50, mPaint);
+            canvas.drawText("offset: " + lyric.offset, 10, 150, mPaint);
             if (mLyricIndex >= 0) {
-                int seconds = (int) ((mLyric.sentenceList.get(mLyricIndex).fromTime / 1000));
+                int seconds = (int) ((lyric.sentenceList.get(mLyricIndex).fromTime / 1000));
                 int minutes = seconds / 60;
                 seconds = seconds % 60;
                 canvas.drawText(String.format("%02d:%02d", minutes, seconds), 10, 100, mPaint);
@@ -184,7 +187,7 @@ public class LyricView extends TextView implements Runnable {
     public boolean onTouchEvent(MotionEvent event) {
         final int action = event.getActionMasked();
         final boolean superResult = super.onTouchEvent(event);
-        if (mLyric == null) {
+        if (lyric == null) {
             return superResult;
         }
 
@@ -199,12 +202,12 @@ public class LyricView extends TextView implements Runnable {
                     if (mLastEffectY - y > 10) {
                         int times = (int) ((mLastEffectY - y) / 10);
                         mLastEffectY = y;
-                        mLyric.offset += times * -100;
+                        lyric.offset += times * -100;
                         offsetChanged = true;
                     } else if (mLastEffectY - y < -10) {
                         int times = -(int) ((mLastEffectY - y) / 10);
                         mLastEffectY = y;
-                        mLyric.offset += times * 100;
+                        lyric.offset += times * 100;
                         offsetChanged = true;
                     }
                 }
@@ -246,7 +249,7 @@ public class LyricView extends TextView implements Runnable {
         }
 
         // Get index of sentence whose timestamp is between its startTime and currentTime.
-        mLyricIndex = LyricUtils.getSentenceIndex(mLyric, time, mLyricIndex, mLyric.offset);
+        mLyricIndex = LyricUtils.getSentenceIndex(lyric, time, mLyricIndex, lyric.offset);
 
         // New current index is last sentence
         if (mLyricIndex >= mLyricSentenceLength - 1) {
@@ -254,12 +257,12 @@ public class LyricView extends TextView implements Runnable {
             return -1;
         }
 
-        return mLyric.sentenceList.get(mLyricIndex + 1).fromTime + mLyric.offset;
+        return lyric.sentenceList.get(mLyricIndex + 1).fromTime + lyric.offset;
     }
 
     public synchronized void setLyric(Lyric lyric, boolean resetIndex) {
-        mLyric = lyric;
-        mLyricSentenceLength = mLyric.sentenceList.size();
+        this.lyric = lyric;
+        mLyricSentenceLength = this.lyric.sentenceList.size();
         if (resetIndex) {
             mLyricIndex = 0;
         }
@@ -271,7 +274,7 @@ public class LyricView extends TextView implements Runnable {
 
     public String getCurrentSentence() {
         if (mLyricIndex >= 0 && mLyricIndex < mLyricSentenceLength) {
-            return mLyric.sentenceList.get(mLyricIndex).content;
+            return lyric.sentenceList.get(mLyricIndex).content;
         }
         return null;
     }
@@ -306,7 +309,7 @@ public class LyricView extends TextView implements Runnable {
     private long mStartTime = -1;
     private boolean mStop = true;
     private boolean mIsForeground = true;
-    long mNextSentenceTime = -1;
+    private long mNextSentenceTime = -1;
 
     private Handler mHandler = new Handler();
 
@@ -323,6 +326,9 @@ public class LyricView extends TextView implements Runnable {
             long ts = System.currentTimeMillis() - mStartTime;
             if (ts >= mNextSentenceTime || checkUpdate()) {
                 mNextSentenceTime = updateIndex(ts);
+                if (mOnLyricUpdateListener != null) {
+                    mOnLyricUpdateListener.onLyricUpdate();
+                }
 
                 // Redraw only when window is visible
                 if (mIsForeground) {
@@ -338,5 +344,9 @@ public class LyricView extends TextView implements Runnable {
                 mStop = true;
             }
         }
+    }
+
+    public interface OnLyricUpdateListener {
+        void onLyricUpdate();
     }
 }

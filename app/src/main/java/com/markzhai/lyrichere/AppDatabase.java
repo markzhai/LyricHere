@@ -7,7 +7,7 @@ public class AppDatabase {
 
     public static final String NAME = "App";
 
-    public static final int VERSION = 1;
+    public static final int VERSION = 2;
 
     public static final String AUTHORITY = "com.markzhai.lyrichere.provider";
 

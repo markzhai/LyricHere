@@ -1,10 +1,9 @@
 package com.markzhai.lyrichere.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import com.markzhai.lyrichere.Constants;
 import com.markzhai.lyrichere.R;
@@ -16,6 +15,17 @@ public class LyricPlayerActivity extends AppCompatActivity {
     public void onBackPressed() {
         //super.onBackPressed();
         moveTaskToBack(true);
+    }
+
+    /**
+     * Override onNewIntent to get new intent when re-entering
+     *
+     * @param intent
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 
     @Override

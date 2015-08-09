@@ -18,6 +18,9 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.Map;
 
+import cn.zhaiyifan.lyric.LyricUtils;
+import cn.zhaiyifan.lyric.model.Lyric;
+
 /**
  * Created by yifan on 6/3/14.
  */

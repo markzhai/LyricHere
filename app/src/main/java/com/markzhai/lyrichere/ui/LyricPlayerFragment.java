@@ -1,14 +1,11 @@
 package com.markzhai.lyrichere.ui;
 
-import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
@@ -29,7 +26,7 @@ import com.markzhai.lyrichere.workers.LyricLastVisitUpdater;
 
 import cn.zhaiyifan.lyric.widget.LyricView;
 
-public class LyricPlayerFragment extends Fragment {
+public class LyricPlayerFragment extends Fragment implements LyricView.OnLyricUpdateListener {
     private static final String TAG = LyricPlayerFragment.class.getSimpleName();
     private static final String ARG_PARAM_PATH = "path";
     private static final String ARG_PARAM_ENCODING = "encoding";
@@ -37,7 +34,6 @@ public class LyricPlayerFragment extends Fragment {
     private String mEncoding;
 
     private LyricView mLyricView;
-    private Handler mHandler = new Handler();
     private Runnable mUpdateResultsRunnable = new Runnable() {
         public void run() {
             mLyricView.invalidate();
@@ -48,11 +44,9 @@ public class LyricPlayerFragment extends Fragment {
             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
     };
-    private Thread mUiUpdateThread = null;
     private NotificationManager mNotificationManager;
 
     private LyricProvider mLyricProvider;
-    private boolean mIsForeground;
 
     private SharedPreferences mSharedPreferences;
 
@@ -83,8 +77,8 @@ public class LyricPlayerFragment extends Fragment {
             mFilePath = getArguments().getString(ARG_PARAM_PATH);
             mEncoding = getArguments().getString(ARG_PARAM_ENCODING);
         }
-
         mLyricProvider = LyricProvider.getInstance(getActivity());
+
         mNotificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -96,8 +90,14 @@ public class LyricPlayerFragment extends Fragment {
         LogUtils.i(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_lyric_player, container, false);
         mLyricView = (LyricView) view.findViewById(R.id.lyricView);
+        mLyricView.setOnLyricUpdateListener(this);
+        mLyricView.setLyric(mLyricProvider.get(mFilePath, mEncoding));
+        mLyricView.setLyricIndex(0);
+        mLyricView.play();
         return view;
     }
+
+    boolean mIsForeground = false;
 
     @Override
     public void onResume() {
@@ -118,11 +118,6 @@ public class LyricPlayerFragment extends Fragment {
             mEncoding = encoding;
 
             mLyricView.stop();
-            //while (mUiUpdateThread.isAlive()) {
-                // wait till dead
-            //}
-            //mUiUpdateRunnable.reset();
-            //mUiUpdateThread = new Thread(mUiUpdateRunnable);
             mLyricView.setLyric(mLyricProvider.get(mFilePath, mEncoding));
             mLyricView.setLyricIndex(0);
             mLyricView.play();
@@ -204,84 +199,39 @@ public class LyricPlayerFragment extends Fragment {
         mIsForeground = false;
     }
 
-    private class UIUpdateRunnable implements Runnable {
-        private long mStartTime = -1;
-        private long mNextSentenceTime = -1;
-        private boolean mStopping = false;
-        private boolean mStopped = false;
-        private NotificationCompat.Builder mNotifyBuilder;
+    private NotificationCompat.Builder mNotifyBuilder;
+    NotificationCompat.BigTextStyle bigTextStyle;
 
-        public void reset() {
-            mStartTime = -1;
-            mNextSentenceTime = -1;
-            mStopping = false;
-        }
+    @Override
+    public void onLyricUpdate() {
 
-        public void stop() {
-            mStopping = true;
-        }
+        boolean isNotificationOn = mSharedPreferences.getBoolean(getString(R.string.pref_key_notification), true);
 
-        public boolean isStopped() {
-            return mStopped;
-        }
-
-        // TODO: Improve user touch response
-        public void run() {
-            if (mStartTime == -1) {
-                mStartTime = System.currentTimeMillis();
-            }
-
-            boolean isNotificationOn = mSharedPreferences.getBoolean(getString(R.string.pref_key_notification), true);
-
-            NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle().bigText("...");
-
-            if (isNotificationOn) {
+        if (isNotificationOn) {
+            if (mNotifyBuilder == null) {
+                bigTextStyle = new NotificationCompat.BigTextStyle().bigText("...");
                 bigTextStyle.setSummaryText(getString(R.string.notification_expand_summary));
                 mNotifyBuilder = new NotificationCompat.Builder(getActivity())
-                        .setContentTitle(mLyricView.getLyric().artist + " - " + mLyricView.getLyric().title)
+                        .setContentTitle(mLyricView.lyric.artist + " - " + mLyricView.lyric.title)
                         .setContentText("...")
-                        .setTicker(mLyricView.getLyric().title)
+                        .setTicker(mLyricView.lyric.title)
                         .setContentIntent(PendingIntent.getActivity(getActivity(), 0, new Intent(getActivity(), LyricPlayerActivity.class), 0))
                         .setSmallIcon(R.drawable.kid)
                         .setStyle(bigTextStyle);
-                //mNotificationManager.notify(Constants.NOTIFY_ID, mNotifyBuilder.build());
             }
 
-            while (mLyricView.getLyricIndex() != -2) {
-                if (mStopping) {
-                    mStopped = true;
-                    return;
-                }
-                long ts = System.currentTimeMillis() - mStartTime;
-                if (ts >= mNextSentenceTime || mLyricView.checkUpdate()) {
-                    mNextSentenceTime = mLyricView.updateIndex(ts);
-                    // LogHelper.i(TAG, String.format("mNextSentenceTime: %d, ts %d, mLyricIndex: %d", mNextSentenceTime, ts, mLyricView.getLyricIndex()));
+            String sentence = mLyricView.getCurrentSentence();
 
-                    // Redraw only when fragment is visible
-                    if (mIsForeground) {
-                        mHandler.post(mUpdateResultsRunnable);
-                    } else if (isNotificationOn) {
-                        String sentence = mLyricView.getCurrentSentence();
-
-                        //.setSmallIcon(R.drawable.ic_notify_status)
-                        if (sentence != null) {
-                            mNotifyBuilder.setContentText(sentence);
-                            bigTextStyle.bigText(sentence);
-                        }
-                        // Because the ID remains unchanged, the existing notification is updated.
-                        mNotificationManager.notify(Constants.NOTIFY_ID, mNotifyBuilder.build());
-                    }
-                }
-                if (mNextSentenceTime == -1) {
-                    mStopped = true;
-                    if (isNotificationOn) {
-                        mNotificationManager.cancel(Constants.NOTIFY_ID);
-                    }
-                    // Clear KEEP_SCREEN_ON flag when finish playing
-                    mHandler.post(mClearScreenOnFlagRunnable);
-                    return;
-                }
+            //.setSmallIcon(R.drawable.ic_notify_status)
+            if (sentence != null) {
+                mNotifyBuilder.setContentText(sentence);
+                bigTextStyle.bigText(sentence);
+                // Because the ID remains unchanged, the existing notification is updated.
+                mNotificationManager.notify(Constants.NOTIFY_ID, mNotifyBuilder.build());
             }
+
+            // mHandler.post(mClearScreenOnFlagRunnable);
+            // mNotificationManager.cancel(Constants.NOTIFY_ID);
         }
     }
 }

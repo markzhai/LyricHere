@@ -7,6 +7,8 @@ import java.io.File;
 
 import com.markzhai.lyrichere.utils.DbUtils;
 
+import cn.zhaiyifan.lyric.LyricUtils;
+
 /**
  * Created by yifan on 6/15/14.
  */

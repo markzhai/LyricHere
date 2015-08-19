@@ -47,17 +47,39 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
     private static final long PROGRESS_UPDATE_INTERNAL = 1000;
     private static final long PROGRESS_UPDATE_INITIAL_INTERVAL = 100;
 
-    private ImageView mSkipPrev;
-    private ImageView mSkipNext;
-    private ImageView mPlayPause;
-    private TextView mStart;
-    private TextView mEnd;
-    private SeekBar mSeekbar;
-    private TextView mLine1;
-    private TextView mLine2;
-    private TextView mLine3;
-    private ProgressBar mLoading;
-    private View mControllers;
+    @Bind(R.id.prev)
+    ImageView mSkipPrev;
+
+    @Bind(R.id.next)
+    ImageView mSkipNext;
+
+    @Bind(R.id.play_pause)
+    ImageView mPlayPause;
+
+    @Bind(R.id.startText)
+    TextView mStart;
+
+    @Bind(R.id.endText)
+    TextView mEnd;
+
+    @Bind(R.id.seekBar1)
+    SeekBar mSeekBar;
+
+    @Bind(R.id.line1)
+    TextView mLine1;
+
+    @Bind(R.id.line2)
+    TextView mLine2;
+
+    @Bind(R.id.line3)
+    TextView mLine3;
+
+    @Bind(R.id.progressBar1)
+    ProgressBar mLoading;
+
+    @Bind(R.id.controllers)
+    View mControllers;
+
     private Drawable mPauseDrawable;
     private Drawable mPlayDrawable;
 
@@ -84,7 +106,7 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
     private MediaController.Callback mCallback = new MediaController.Callback() {
         @Override
         public void onPlaybackStateChanged(PlaybackState state) {
-            LogUtils.d(TAG, "onPlaybackstate changed", state);
+            LogUtils.d(TAG, "onPlaybackStateChanged", state);
             updatePlaybackState(state);
         }
 
@@ -116,20 +138,8 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
             getSupportActionBar().setTitle("");
         }
 
-        mBackgroundImage = (ImageView) findViewById(R.id.background_image);
         mPauseDrawable = getDrawable(R.drawable.ic_pause_white_48dp);
         mPlayDrawable = getDrawable(R.drawable.ic_play_arrow_white_48dp);
-        mPlayPause = (ImageView) findViewById(R.id.play_pause);
-        mSkipNext = (ImageView) findViewById(R.id.next);
-        mSkipPrev = (ImageView) findViewById(R.id.prev);
-        mStart = (TextView) findViewById(R.id.startText);
-        mEnd = (TextView) findViewById(R.id.endText);
-        mSeekbar = (SeekBar) findViewById(R.id.seekBar1);
-        mLine1 = (TextView) findViewById(R.id.line1);
-        mLine2 = (TextView) findViewById(R.id.line2);
-        mLine3 = (TextView) findViewById(R.id.line3);
-        mLoading = (ProgressBar) findViewById(R.id.progressBar1);
-        mControllers = findViewById(R.id.controllers);
 
         mSkipNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,7 +184,7 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
             }
         });
 
-        mSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mStart.setText(Utils.formatMillis(progress));
@@ -330,7 +340,7 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
         }
         LogUtils.d(TAG, "updateDuration called ");
         int duration = (int) metadata.getLong(MediaMetadata.METADATA_KEY_DURATION);
-        mSeekbar.setMax(duration);
+        mSeekBar.setMax(duration);
         mEnd.setText(Utils.formatMillis(duration));
     }
 
@@ -399,6 +409,6 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
                     mLastPlaybackState.getLastPositionUpdateTime();
             currentPosition += (int) timeDelta * mLastPlaybackState.getPlaybackSpeed();
         }
-        mSeekbar.setProgress((int) currentPosition);
+        mSeekBar.setProgress((int) currentPosition);
     }
 }

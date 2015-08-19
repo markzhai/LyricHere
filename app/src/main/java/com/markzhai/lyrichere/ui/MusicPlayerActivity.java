@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.media.browse.MediaBrowser;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.markzhai.lyrichere.R;
 import com.markzhai.lyrichere.utils.LogUtils;
 
@@ -17,7 +20,7 @@ import com.markzhai.lyrichere.utils.LogUtils;
  * when it is created and connect/disconnect on start/stop. Thus, a MediaBrowser will be always
  * connected while this activity is running.
  */
-public class MusicPlayerActivity extends BaseActivity implements MediaBrowserFragment.MediaFragmentListener {
+public class MusicPlayerActivity extends PlaybackControlBaseActivity implements MediaBrowserFragment.MediaFragmentListener {
 
     private static final String TAG = LogUtils.makeLogTag(MusicPlayerActivity.class);
     private static final String SAVED_MEDIA_ID = "com.markzhai.lyrichere.MEDIA_ID";
@@ -57,6 +60,12 @@ public class MusicPlayerActivity extends BaseActivity implements MediaBrowserFra
             outState.putString(SAVED_MEDIA_ID, mediaId);
         }
         super.onSaveInstanceState(outState);
+    }
+
+    @NonNull
+    @Override
+    public MvpPresenter createPresenter() {
+        return new MvpBasePresenter();
     }
 
     @Override

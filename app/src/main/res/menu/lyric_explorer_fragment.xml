@@ -6,6 +6,6 @@
         android:id="@+id/action_search"
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/action_search"
-        app:actionViewClass="com.markzhai.lyrichere.ui.LyricSearchView"
+        app:actionViewClass="com.markzhai.lyrichere.widget.LyricSearchView"
         app:showAsAction="ifRoom|collapseActionView" />
 </menu>

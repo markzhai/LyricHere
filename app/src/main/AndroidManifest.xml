@@ -44,13 +44,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Proxy activity that opens either the NowPlaying TV or the mobile UI, depending on the current environment
-        TODO:  TV is not yet supported, this is just a placeholder! -->
-        <activity
-            android:name=".ui.NowPlayingActivity"
-            android:icon="@drawable/ic_launcher">
-        </activity>
-
         <!-- Main music service, provides media browsing and media playback services to
          consumers through MediaBrowserService and MediaSession. Consumers connect to it through
          MediaBrowser (for browsing) and MediaController (for play session control) -->

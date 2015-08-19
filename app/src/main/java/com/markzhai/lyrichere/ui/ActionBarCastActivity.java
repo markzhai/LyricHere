@@ -34,6 +34,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.markzhai.lyrichere.R;
 import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.utils.ResourceHelper;
@@ -48,7 +49,7 @@ import com.markzhai.lyrichere.utils.ResourceHelper;
  * a {@link android.support.v4.widget.DrawerLayout} with id 'drawerLayout' and
  * a {@link android.widget.ListView} with id 'drawerList'.
  */
-public abstract class ActionBarCastActivity extends AppCompatActivity {
+public abstract class ActionBarCastActivity extends BaseActivity {
 
     private static final String TAG = LogUtils.makeLogTag(ActionBarCastActivity.class);
 

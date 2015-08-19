@@ -20,6 +20,8 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.markzhai.lyrichere.AlbumArtCache;
 import com.markzhai.lyrichere.MusicService;
 import com.markzhai.lyrichere.R;
@@ -30,6 +32,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
+import butterknife.Bind;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -56,7 +60,9 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
     private View mControllers;
     private Drawable mPauseDrawable;
     private Drawable mPlayDrawable;
-    private ImageView mBackgroundImage;
+
+    @Bind(R.id.background_image)
+    ImageView mBackgroundImage;
 
     private String mCurrentArtUrl;
     private Handler mHandler = new Handler();
@@ -264,6 +270,12 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
         if (getMediaController() != null) {
             getMediaController().unregisterCallback(mCallback);
         }
+    }
+
+    @NonNull
+    @Override
+    public MvpPresenter createPresenter() {
+        return new MvpBasePresenter();
     }
 
     @Override

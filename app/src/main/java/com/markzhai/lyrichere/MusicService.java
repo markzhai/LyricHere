@@ -23,7 +23,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.markzhai.lyrichere.provider.MusicProvider;
-import com.markzhai.lyrichere.ui.NowPlayingActivity;
+import com.markzhai.lyrichere.ui.MusicPlayerActivity;
 import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.utils.MediaIDHelper;
 import com.markzhai.lyrichere.utils.QueueHelper;
@@ -152,7 +152,7 @@ public class MusicService extends MediaBrowserService implements Playback.Callba
         mPlayback.start();
 
         Context context = getApplicationContext();
-        Intent intent = new Intent(context, NowPlayingActivity.class);
+        Intent intent = new Intent(context, MusicPlayerActivity.class);
         PendingIntent pi = PendingIntent.getActivity(context, 99 /*request code*/,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
         mSession.setSessionActivity(pi);

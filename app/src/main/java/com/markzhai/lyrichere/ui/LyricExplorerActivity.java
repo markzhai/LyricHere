@@ -3,6 +3,7 @@ package com.markzhai.lyrichere.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -10,6 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.markzhai.lyrichere.Constants;
 import com.markzhai.lyrichere.R;
 import com.markzhai.lyrichere.model.LyricModel;
@@ -18,7 +22,7 @@ import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.workers.Finder;
 import com.markzhai.lyrichere.workers.LyricOpener;
 
-public class LyricExplorerActivity extends BaseActivity implements  LyricExplorerFragment
+public class LyricExplorerActivity extends PlaybackControlBaseActivity implements  LyricExplorerFragment
         .OnFragmentInteractionListener, DownloadFragment.OnFragmentInteractionListener {
     private static final String TAG = LyricExplorerActivity.class.getSimpleName();
 
@@ -41,6 +45,22 @@ public class LyricExplorerActivity extends BaseActivity implements  LyricExplore
             model.author = "bb";
             model.save();
         }
+    }
+
+    @NonNull
+    @Override
+    public MvpPresenter createPresenter() {
+        return new MvpBasePresenter() {
+            @Override
+            public void attachView(MvpView view) {
+
+            }
+
+            @Override
+            public void detachView(boolean retainInstance) {
+
+            }
+        };
     }
 
     /**

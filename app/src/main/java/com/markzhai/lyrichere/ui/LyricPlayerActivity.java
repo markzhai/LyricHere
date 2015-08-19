@@ -1,14 +1,19 @@
 package com.markzhai.lyrichere.ui;
 
 import android.content.Intent;
+import android.media.browse.MediaBrowser;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 
+import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.markzhai.lyrichere.Constants;
 import com.markzhai.lyrichere.R;
 
-public class LyricPlayerActivity extends AppCompatActivity {
+public class LyricPlayerActivity extends BaseActivity {
     private static final String TAG = LyricPlayerActivity.class.getSimpleName();
 
     @Override
@@ -20,7 +25,7 @@ public class LyricPlayerActivity extends AppCompatActivity {
     /**
      * Override onNewIntent to get new intent when re-entering
      *
-     * @param intent
+     * @param intent new intent when re-entering
      */
     @Override
     protected void onNewIntent(Intent intent) {
@@ -41,6 +46,12 @@ public class LyricPlayerActivity extends AppCompatActivity {
                     .add(R.id.container, LyricPlayerFragment.newInstance(path, encoding))
                     .commit();
         }
+    }
+
+    @NonNull
+    @Override
+    public MvpPresenter createPresenter() {
+        return new MvpBasePresenter();
     }
 
     @Override

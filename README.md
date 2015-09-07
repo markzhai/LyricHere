@@ -2,6 +2,10 @@ Lyric Here
 ==========
 A music player focused on user experience of lyric.
 
+Work in progress
+----------------
+Support api 14 above!!!
+
 Features
 -----------
 

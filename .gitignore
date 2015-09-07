@@ -28,3 +28,5 @@ proguard/
 # intellij workspace
 .idea/
 *.iml
+gradle/
+gradlew*

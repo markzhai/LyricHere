@@ -56,10 +56,6 @@ dependencies {
     // ButterKnife
     compile parent.ext.libButterknife
 
-    // Dagger
-    compile parent.ext.libDagger
-    apt parent.ext.libDaggerCompiler
-
     // DBFlow
     apt parent.ext.libDBFlowCompiler
     compile parent.ext.libDBFlowCore

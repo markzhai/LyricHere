@@ -52,9 +52,11 @@
             android:exported="true"
             tools:ignore="ExportedService">
             <intent-filter>
-                <action android:name="android.media.browse.MediaBrowserService"/>
+                <action android:name="android.media.browse.MediaBrowserServiceCompat" />
             </intent-filter>
         </service>
+
+        <receiver android:name=".MediaButtonReceiver" />
 
         <!-- A full screen activity showing controls and a seek bar for
              the current playing music -->

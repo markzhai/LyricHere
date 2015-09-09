@@ -1,12 +1,14 @@
 package com.markzhai.lyrichere.ui;
 
-import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Intent;
-import android.media.browse.MediaBrowser;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.media.browse.MediaBrowserCompat;
+import android.support.v4.media.session.MediaControllerCompat;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.text.TextUtils;
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
@@ -69,10 +71,15 @@ public class MusicPlayerActivity extends PlaybackControlBaseActivity implements 
     }
 
     @Override
-    public void onMediaItemSelected(MediaBrowser.MediaItem item) {
+    public void onMediaItemSelected(MediaBrowserCompat.MediaItem item) {
         LogUtils.d(TAG, "onMediaItemSelected, mediaId=" + item.getMediaId());
         if (item.isPlayable()) {
-            getMediaController().getTransportControls().playFromMediaId(item.getMediaId(), null);
+            final MediaControllerCompat mediaController = getSupportMediaController();
+            if (mediaController != null) {
+                MediaSessionCompat.Token token = mediaController.getSessionToken();
+                MediaControllerCompat.TransportControls tc = mediaController.getTransportControls();
+                mediaController.getTransportControls().playFromMediaId(item.getMediaId(), null);
+            }
         } else if (item.isBrowsable()) {
             navigateToBrowser(item.getMediaId());
         } else {
@@ -132,10 +139,11 @@ public class MusicPlayerActivity extends PlaybackControlBaseActivity implements 
         if (fragment == null || !TextUtils.equals(fragment.getMediaId(), mediaId)) {
             fragment = new MediaBrowserFragment();
             fragment.setMediaId(mediaId);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(
-                    R.animator.slide_in_from_right, R.animator.slide_out_to_left,
-                    R.animator.slide_in_from_left, R.animator.slide_out_to_right);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            // TODO support animations
+            //transaction.setCustomAnimations(
+            //        R.animator.slide_in_from_right, R.animator.slide_out_to_left,
+            //        R.animator.slide_in_from_left, R.animator.slide_out_to_right);
             transaction.replace(R.id.container, fragment, FRAGMENT_TAG);
             // If this is not the top level media (root), we add it to the fragment back stack,
             // so that actionbar toggle and Back will work appropriately:
@@ -155,7 +163,7 @@ public class MusicPlayerActivity extends PlaybackControlBaseActivity implements 
     }
 
     private MediaBrowserFragment getBrowseFragment() {
-        return (MediaBrowserFragment) getFragmentManager().findFragmentById(R.id.container);
+        return (MediaBrowserFragment) getSupportFragmentManager().findFragmentById(R.id.container);
     }
 
     @Override
@@ -165,7 +173,10 @@ public class MusicPlayerActivity extends PlaybackControlBaseActivity implements 
             // send it to the media session and set it to null, so it won't play again
             // when the activity is stopped/started or recreated:
             String query = mVoiceSearchParams.getString(SearchManager.QUERY);
-            getMediaController().getTransportControls().playFromSearch(query, mVoiceSearchParams);
+            final MediaControllerCompat mediaController = getSupportMediaController();
+            if (mediaController != null) {
+                mediaController.getTransportControls().playFromSearch(query, mVoiceSearchParams);
+            }
             mVoiceSearchParams = null;
         }
         getBrowseFragment().onConnected();

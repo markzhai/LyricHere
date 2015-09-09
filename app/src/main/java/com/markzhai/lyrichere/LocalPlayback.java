@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
-import android.media.MediaMetadata;
 import android.media.MediaPlayer;
-import android.media.session.PlaybackState;
+import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.text.TextUtils;
@@ -22,7 +22,7 @@ import static android.media.MediaPlayer.OnCompletionListener;
 import static android.media.MediaPlayer.OnErrorListener;
 import static android.media.MediaPlayer.OnPreparedListener;
 import static android.media.MediaPlayer.OnSeekCompleteListener;
-import static android.media.session.MediaSession.QueueItem;
+import static android.support.v4.media.session.MediaSessionCompat.QueueItem;
 
 /**
  * A class that implements local media playback using {@link android.media.MediaPlayer}
@@ -47,6 +47,8 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
 
     private final MusicService mService;
     private final WifiManager.WifiLock mWifiLock;
+
+    /** The current PlaybackStateCompat **/
     private int mState;
     private boolean mPlayOnFocusGain;
     private Callback mCallback;
@@ -93,7 +95,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
 
     @Override
     public void stop(boolean notifyListeners) {
-        mState = PlaybackState.STATE_STOPPED;
+        mState = PlaybackStateCompat.STATE_STOPPED;
         if (notifyListeners && mCallback != null) {
             mCallback.onPlaybackStatusChanged(mState);
         }
@@ -146,12 +148,12 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
             mCurrentMediaId = mediaId;
         }
 
-        if (mState == PlaybackState.STATE_PAUSED && !mediaHasChanged && mMediaPlayer != null) {
+        if (mState == PlaybackStateCompat.STATE_PAUSED && !mediaHasChanged && mMediaPlayer != null) {
             configMediaPlayerState();
         } else {
-            mState = PlaybackState.STATE_STOPPED;
+            mState = PlaybackStateCompat.STATE_STOPPED;
             relaxResources(false); // release everything except MediaPlayer
-            MediaMetadata track = mMusicProvider.getMusic(
+            MediaMetadataCompat track = mMusicProvider.getMusic(
                     MediaIDHelper.extractMusicIDFromMediaID(item.getDescription().getMediaId()));
 
             String source = track.getString(MusicProvider.CUSTOM_METADATA_TRACK_SOURCE);
@@ -159,7 +161,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
             try {
                 createMediaPlayerIfNeeded();
 
-                mState = PlaybackState.STATE_BUFFERING;
+                mState = PlaybackStateCompat.STATE_BUFFERING;
 
                 mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 mMediaPlayer.setDataSource(source);
@@ -191,7 +193,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
 
     @Override
     public void pause() {
-        if (mState == PlaybackState.STATE_PLAYING) {
+        if (mState == PlaybackStateCompat.STATE_PLAYING) {
             // Pause media player and cancel the 'foreground service' state.
             if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
                 mMediaPlayer.pause();
@@ -201,7 +203,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
             relaxResources(false);
             giveUpAudioFocus();
         }
-        mState = PlaybackState.STATE_PAUSED;
+        mState = PlaybackStateCompat.STATE_PAUSED;
         if (mCallback != null) {
             mCallback.onPlaybackStatusChanged(mState);
         }
@@ -217,7 +219,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
             mCurrentPosition = position;
         } else {
             if (mMediaPlayer.isPlaying()) {
-                mState = PlaybackState.STATE_BUFFERING;
+                mState = PlaybackStateCompat.STATE_BUFFERING;
             }
             mMediaPlayer.seekTo(position);
             if (mCallback != null) {
@@ -286,7 +288,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
         LogUtils.d(TAG, "configMediaPlayerState. mAudioFocus=", mAudioFocus);
         if (mAudioFocus == AUDIO_NO_FOCUS_NO_DUCK) {
             // If we don't have audio focus and can't duck, we have to pause,
-            if (mState == PlaybackState.STATE_PLAYING) {
+            if (mState == PlaybackStateCompat.STATE_PLAYING) {
                 pause();
             }
         } else {  // we have audio focus:
@@ -304,10 +306,10 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
                             mCurrentPosition);
                     if (mCurrentPosition == mMediaPlayer.getCurrentPosition()) {
                         mMediaPlayer.start();
-                        mState = PlaybackState.STATE_PLAYING;
+                        mState = PlaybackStateCompat.STATE_PLAYING;
                     } else {
                         mMediaPlayer.seekTo(mCurrentPosition);
-                        mState = PlaybackState.STATE_BUFFERING;
+                        mState = PlaybackStateCompat.STATE_BUFFERING;
                     }
                 }
                 mPlayOnFocusGain = false;
@@ -339,7 +341,7 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
 
             // If we are playing, we need to reset media player by calling configMediaPlayerState
             // with mAudioFocus properly set.
-            if (mState == PlaybackState.STATE_PLAYING && !canDuck) {
+            if (mState == PlaybackStateCompat.STATE_PLAYING && !canDuck) {
                 // If we don't have audio focus and can't duck, we save the information that
                 // we were playing, so that we can resume playback once we get the focus back.
                 mPlayOnFocusGain = true;
@@ -359,9 +361,9 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
     public void onSeekComplete(MediaPlayer mp) {
         LogUtils.d(TAG, "onSeekComplete from MediaPlayer:", mp.getCurrentPosition());
         mCurrentPosition = mp.getCurrentPosition();
-        if (mState == PlaybackState.STATE_BUFFERING) {
+        if (mState == PlaybackStateCompat.STATE_BUFFERING) {
             mMediaPlayer.start();
-            mState = PlaybackState.STATE_PLAYING;
+            mState = PlaybackStateCompat.STATE_PLAYING;
         }
         if (mCallback != null) {
             mCallback.onPlaybackStatusChanged(mState);

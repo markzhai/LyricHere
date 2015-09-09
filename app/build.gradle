@@ -64,4 +64,5 @@ dependencies {
     compile 'com.hannesdorfmann.mosby:core:1.2.0'
     compile 'com.hannesdorfmann.mosby:mvp:1.2.0'
     apt 'frankiesardo:icepick-processor:3.0.2'
+    compile 'com.chrisanderson.mediabrowsercompat:library:0.0.2'
 }

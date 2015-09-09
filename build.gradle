@@ -15,11 +15,11 @@ allprojects {
         // Android config
         androidCompileSdkVersion = 21
         androidBuildToolsVersion = "21.1.2"
-        androidMinSdkVersion = 21
+        androidMinSdkVersion = 14
         androidTargetSdkVersion = 21
-        androidApplicationId = 'com.markzhai.lyrichere'
-        androidVersionCode = 1
-        androidVersionName = '1.0'
+        androidApplicationId = 'markzhai.lyrichere.app'
+        androidVersionCode = 3
+        androidVersionName = '2.0'
 
         // Libraries
         libAppCompat = 'com.android.support:appcompat-v7:22.2.1'
@@ -28,10 +28,6 @@ allprojects {
         libMediaRouter = 'com.android.support:mediarouter-v7:22.2.1'
 
         libButterknife = 'com.jakewharton:butterknife:7.0.1'
-        libDagger = 'com.google.dagger:dagger:2.0.1'
-        libDaggerCompiler = 'com.google.dagger:dagger-compiler:2.0.1'
-        libAnnotations = 'org.glassfish:javax.annotation:10.0-b28'
-
         libDBFlowCompiler = 'com.raizlabs.android:DBFlow-Compiler:2.2.1'
         libDBFlowCore = 'com.raizlabs.android:DBFlow-Core:2.2.1'
         libDBFlow = 'com.raizlabs.android:DBFlow:2.2.1'

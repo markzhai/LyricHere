@@ -1,6 +1,6 @@
 package com.markzhai.lyrichere;
 
-import static android.media.session.MediaSession.QueueItem;
+import static android.support.v4.media.session.MediaSessionCompat.QueueItem;
 
 /**
  * Interface representing either Local or Remote Playback. The {@link MusicService} works

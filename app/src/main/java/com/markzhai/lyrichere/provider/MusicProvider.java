@@ -1,12 +1,10 @@
 package com.markzhai.lyrichere.provider;
 
 
-import android.annotation.TargetApi;
 import android.database.Cursor;
-import android.media.MediaMetadata;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.provider.MediaStore;
+import android.support.v4.media.MediaMetadataCompat;
 
 import com.markzhai.lyrichere.LHApplication;
 import com.markzhai.lyrichere.model.MutableMediaMetadata;
@@ -50,7 +48,7 @@ public class MusicProvider {
     private static final String JSON_DURATION = "duration";
 
     // Categorized caches for music track data:
-    private ConcurrentMap<String, List<MediaMetadata>> mMusicListByGenre;
+    private ConcurrentMap<String, List<MediaMetadataCompat>> mMusicListByGenre;
     private final ConcurrentMap<String, MutableMediaMetadata> mMusicListById;
 
     private final Set<String> mFavoriteTracks;
@@ -86,7 +84,7 @@ public class MusicProvider {
     /**
      * Get music tracks of the given genre
      */
-    public Iterable<MediaMetadata> getMusicsByGenre(String genre) {
+    public Iterable<MediaMetadataCompat> getMusicsByGenre(String genre) {
         if (mCurrentState != State.INITIALIZED || !mMusicListByGenre.containsKey(genre)) {
             return Collections.emptyList();
         }
@@ -98,31 +96,31 @@ public class MusicProvider {
      * Very basic implementation of a search that filter music tracks with title containing
      * the given query.
      */
-    public Iterable<MediaMetadata> searchMusicBySongTitle(String query) {
-        return searchMusic(MediaMetadata.METADATA_KEY_TITLE, query);
+    public Iterable<MediaMetadataCompat> searchMusicBySongTitle(String query) {
+        return searchMusic(MediaMetadataCompat.METADATA_KEY_TITLE, query);
     }
 
     /**
      * Very basic implementation of a search that filter music tracks with album containing
      * the given query.
      */
-    public Iterable<MediaMetadata> searchMusicByAlbum(String query) {
-        return searchMusic(MediaMetadata.METADATA_KEY_ALBUM, query);
+    public Iterable<MediaMetadataCompat> searchMusicByAlbum(String query) {
+        return searchMusic(MediaMetadataCompat.METADATA_KEY_ALBUM, query);
     }
 
     /**
      * Very basic implementation of a search that filter music tracks with artist containing
      * the given query.
      */
-    public Iterable<MediaMetadata> searchMusicByArtist(String query) {
-        return searchMusic(MediaMetadata.METADATA_KEY_ARTIST, query);
+    public Iterable<MediaMetadataCompat> searchMusicByArtist(String query) {
+        return searchMusic(MediaMetadataCompat.METADATA_KEY_ARTIST, query);
     }
 
-    Iterable<MediaMetadata> searchMusic(String metadataField, String query) {
+    Iterable<MediaMetadataCompat> searchMusic(String metadataField, String query) {
         if (mCurrentState != State.INITIALIZED) {
             return Collections.emptyList();
         }
-        ArrayList<MediaMetadata> result = new ArrayList<>();
+        ArrayList<MediaMetadataCompat> result = new ArrayList<>();
         query = query.toLowerCase(Locale.US);
         for (MutableMediaMetadata track : mMusicListById.values()) {
             if (track.metadata.getString(metadataField).toLowerCase(Locale.US).contains(query)) {
@@ -137,19 +135,18 @@ public class MusicProvider {
      *
      * @param musicId The unique, non-hierarchical music ID.
      */
-    public MediaMetadata getMusic(String musicId) {
+    public MediaMetadataCompat getMusic(String musicId) {
         return mMusicListById.containsKey(musicId) ? mMusicListById.get(musicId).metadata : null;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public synchronized void updateMusic(String musicId, MediaMetadata metadata) {
+    public synchronized void updateMusic(String musicId, MediaMetadataCompat metadata) {
         MutableMediaMetadata track = mMusicListById.get(musicId);
         if (track == null) {
             return;
         }
 
-        String oldGenre = track.metadata.getString(MediaMetadata.METADATA_KEY_GENRE);
-        String newGenre = metadata.getString(MediaMetadata.METADATA_KEY_GENRE);
+        String oldGenre = track.metadata.getString(MediaMetadataCompat.METADATA_KEY_GENRE);
+        String newGenre = metadata.getString(MediaMetadataCompat.METADATA_KEY_GENRE);
 
         track.metadata = metadata;
 
@@ -204,13 +201,12 @@ public class MusicProvider {
         }.execute();
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private synchronized void buildListsByGenre() {
-        ConcurrentMap<String, List<MediaMetadata>> newMusicListByGenre = new ConcurrentHashMap<>();
+        ConcurrentMap<String, List<MediaMetadataCompat>> newMusicListByGenre = new ConcurrentHashMap<>();
 
         for (MutableMediaMetadata m : mMusicListById.values()) {
-            String genre = m.metadata.getString(MediaMetadata.METADATA_KEY_GENRE);
-            List<MediaMetadata> list = newMusicListByGenre.get(genre);
+            String genre = m.metadata.getString(MediaMetadataCompat.METADATA_KEY_GENRE);
+            List<MediaMetadataCompat> list = newMusicListByGenre.get(genre);
             if (list == null) {
                 list = new ArrayList<>();
                 newMusicListByGenre.put(genre, list);
@@ -228,8 +224,8 @@ public class MusicProvider {
                 if (cursor != null && cursor.getCount() > 0) {
                     cursor.moveToFirst();
                     do {
-                        MediaMetadata item = buildFromCursor(cursor);
-                        String musicId = item.getString(MediaMetadata.METADATA_KEY_MEDIA_ID);
+                        MediaMetadataCompat item = buildFromCursor(cursor);
+                        String musicId = item.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID);
                         mMusicListById.put(musicId, new MutableMediaMetadata(musicId, item));
                     } while (cursor.moveToNext());
                     buildListsByGenre();
@@ -264,7 +260,7 @@ public class MusicProvider {
                 MediaStore.Audio.Media.TITLE);
     }
 
-    private MediaMetadata buildFromCursor(Cursor cursor) {
+    private MediaMetadataCompat buildFromCursor(Cursor cursor) {
         String title = cursor.getString(0);
         String artist = cursor.getString(1);
         String album = cursor.getString(2);
@@ -274,17 +270,18 @@ public class MusicProvider {
         long totalTrackCount = cursor.getLong(6);
         String id = cursor.getString(7);
 
-        return new MediaMetadata.Builder()
-                .putString(MediaMetadata.METADATA_KEY_MEDIA_ID, id)
+        return new MediaMetadataCompat.Builder()
+                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, id)
                 .putString(CUSTOM_METADATA_TRACK_SOURCE, source)
-                .putString(MediaMetadata.METADATA_KEY_ALBUM, album)
-                .putString(MediaMetadata.METADATA_KEY_ARTIST, artist)
-                .putLong(MediaMetadata.METADATA_KEY_DURATION, duration)
-                .putString(MediaMetadata.METADATA_KEY_GENRE, "unknown")
-                .putString(MediaMetadata.METADATA_KEY_ALBUM_ART_URI, "https://avatars2.githubusercontent.com/u/1106500?v=3&s=460")
-                .putString(MediaMetadata.METADATA_KEY_TITLE, title)
-                .putLong(MediaMetadata.METADATA_KEY_TRACK_NUMBER, trackNumber)
-                .putLong(MediaMetadata.METADATA_KEY_NUM_TRACKS, totalTrackCount)
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, album)
+                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, artist)
+                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration)
+                .putString(MediaMetadataCompat.METADATA_KEY_GENRE, "unknown")
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, "https://avatars2.githubusercontent.com/u/1106500?v=3&s=460")
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title)
+                .putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, trackNumber)
+                // TODO Note: With MediaMetadataCompat we seem to crash when setting the total track count.
+                .putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, totalTrackCount)
                 .build();
     }
 
@@ -301,8 +298,8 @@ public class MusicProvider {
                 JSONArray tracks = jsonObj.getJSONArray(JSON_MUSIC);
                 if (tracks != null) {
                     for (int j = 0; j < tracks.length(); j++) {
-                        MediaMetadata item = buildFromJSON(tracks.getJSONObject(j), path);
-                        String musicId = item.getString(MediaMetadata.METADATA_KEY_MEDIA_ID);
+                        MediaMetadataCompat item = buildFromJSON(tracks.getJSONObject(j), path);
+                        String musicId = item.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID);
                         mMusicListById.put(musicId, new MutableMediaMetadata(musicId, item));
                     }
                     buildListsByGenre();
@@ -320,7 +317,7 @@ public class MusicProvider {
         }
     }
 
-    private MediaMetadata buildFromJSON(JSONObject json, String basePath) throws JSONException {
+    private MediaMetadataCompat buildFromJSON(JSONObject json, String basePath) throws JSONException {
         String title = json.getString(JSON_TITLE);
         String album = json.getString(JSON_ALBUM);
         String artist = json.getString(JSON_ARTIST);
@@ -348,17 +345,17 @@ public class MusicProvider {
         // mediaSession.setMetadata) is not a good idea for a real world music app, because
         // the session metadata can be accessed by notification listeners. This is done in this
         // sample for convenience only.
-        return new MediaMetadata.Builder()
-                .putString(MediaMetadata.METADATA_KEY_MEDIA_ID, id)
+        return new MediaMetadataCompat.Builder()
+                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, id)
                 .putString(CUSTOM_METADATA_TRACK_SOURCE, source)
-                .putString(MediaMetadata.METADATA_KEY_ALBUM, album)
-                .putString(MediaMetadata.METADATA_KEY_ARTIST, artist)
-                .putLong(MediaMetadata.METADATA_KEY_DURATION, duration)
-                .putString(MediaMetadata.METADATA_KEY_GENRE, genre)
-                .putString(MediaMetadata.METADATA_KEY_ALBUM_ART_URI, iconUrl)
-                .putString(MediaMetadata.METADATA_KEY_TITLE, title)
-                .putLong(MediaMetadata.METADATA_KEY_TRACK_NUMBER, trackNumber)
-                .putLong(MediaMetadata.METADATA_KEY_NUM_TRACKS, totalTrackCount)
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, album)
+                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, artist)
+                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration)
+                .putString(MediaMetadataCompat.METADATA_KEY_GENRE, genre)
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, iconUrl)
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title)
+                .putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, trackNumber)
+                .putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, totalTrackCount)
                 .build();
     }
 

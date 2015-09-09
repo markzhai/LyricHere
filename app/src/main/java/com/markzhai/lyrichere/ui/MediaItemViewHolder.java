@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.AnimationDrawable;
-import android.media.MediaDescription;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.media.MediaDescriptionCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.markzhai.lyrichere.R;
+import com.markzhai.lyrichere.utils.LollipopUtils;
 
 public class MediaItemViewHolder {
 
@@ -29,7 +31,7 @@ public class MediaItemViewHolder {
     TextView mDescriptionView;
 
     static View setupView(Activity activity, View convertView, ViewGroup parent,
-                          MediaDescription description, int state) {
+                          MediaDescriptionCompat description, int state) {
 
         if (sColorStateNotPlaying == null || sColorStatePlaying == null) {
             initializeColorStateLists(activity);
@@ -61,22 +63,22 @@ public class MediaItemViewHolder {
             switch (state) {
                 case STATE_PLAYABLE:
                     holder.mImageView.setImageDrawable(
-                            activity.getDrawable(R.drawable.ic_play_arrow_black_36dp));
-                    holder.mImageView.setImageTintList(sColorStateNotPlaying);
+                            ActivityCompat.getDrawable(activity, R.drawable.ic_play_arrow_black_36dp));
+                    LollipopUtils.setImageTintList(holder.mImageView, sColorStateNotPlaying);
                     holder.mImageView.setVisibility(View.VISIBLE);
                     break;
                 case STATE_PLAYING:
                     AnimationDrawable animation = (AnimationDrawable)
-                            activity.getDrawable(R.drawable.ic_equalizer_white_36dp);
+                            ActivityCompat.getDrawable(activity, R.drawable.ic_equalizer_white_36dp);
                     holder.mImageView.setImageDrawable(animation);
-                    holder.mImageView.setImageTintList(sColorStatePlaying);
+                    LollipopUtils.setImageTintList(holder.mImageView, sColorStatePlaying);
                     holder.mImageView.setVisibility(View.VISIBLE);
-                    if (animation != null) animation.start();
+                    animation.start();
                     break;
                 case STATE_PAUSED:
                     holder.mImageView.setImageDrawable(
-                            activity.getDrawable(R.drawable.ic_equalizer1_white_36dp));
-                    holder.mImageView.setImageTintList(sColorStateNotPlaying);
+                            ActivityCompat.getDrawable(activity,R.drawable.ic_equalizer1_white_36dp));
+                    LollipopUtils.setImageTintList(holder.mImageView, sColorStateNotPlaying);
                     holder.mImageView.setVisibility(View.VISIBLE);
                     break;
                 default:

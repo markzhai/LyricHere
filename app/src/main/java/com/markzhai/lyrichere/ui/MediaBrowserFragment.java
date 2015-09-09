@@ -1,18 +1,18 @@
 package com.markzhai.lyrichere.ui;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.MediaMetadata;
-import android.media.browse.MediaBrowser;
-import android.media.session.MediaController;
-import android.media.session.PlaybackState;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.browse.MediaBrowserCompat;
+import android.support.v4.media.session.MediaControllerCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,9 +34,9 @@ import java.util.List;
  * A Fragment that lists all the various browsable queues available
  * from a {@link android.service.media.MediaBrowserService}.
  * <p/>
- * It uses a {@link MediaBrowser} to connect to the {@link com.markzhai.lyrichere.MusicService}.
+ * It uses a {@link MediaBrowserCompat} to connect to the {@link com.markzhai.lyrichere.MusicService}.
  * Once connected, the fragment subscribes to get all the children.
- * All {@link MediaBrowser.MediaItem}'s that can be browsed are shown in a ListView.
+ * All {@link MediaBrowserCompat.MediaItem}'s that can be browsed are shown in a ListView.
  */
 public class MediaBrowserFragment extends Fragment {
 
@@ -46,7 +46,10 @@ public class MediaBrowserFragment extends Fragment {
 
     private BrowseAdapter mBrowserAdapter;
     private String mMediaId;
+
     private MediaFragmentListener mMediaFragmentListener;
+    private MediaControllerProvider mMediaControllerProvider;
+
     private View mErrorView;
     private TextView mErrorMessage;
 
@@ -72,9 +75,9 @@ public class MediaBrowserFragment extends Fragment {
 
     // Receive callbacks from the MediaController. Here we update our state such as which queue
     // is being shown, the current title and description and the PlaybackState.
-    private final MediaController.Callback mMediaControllerCallback = new MediaController.Callback() {
+    private final MediaControllerCompat.Callback mMediaControllerCallback = new MediaControllerCompat.Callback() {
         @Override
-        public void onMetadataChanged(MediaMetadata metadata) {
+        public void onMetadataChanged(MediaMetadataCompat metadata) {
             super.onMetadataChanged(metadata);
             if (metadata == null) {
                 return;
@@ -84,7 +87,7 @@ public class MediaBrowserFragment extends Fragment {
         }
 
         @Override
-        public void onPlaybackStateChanged(@NonNull PlaybackState state) {
+        public void onPlaybackStateChanged(@NonNull PlaybackStateCompat state) {
             super.onPlaybackStateChanged(state);
             LogUtils.d(TAG, "Received state change: ", state);
             checkForUserVisibleErrors(false);
@@ -92,17 +95,17 @@ public class MediaBrowserFragment extends Fragment {
         }
     };
 
-    private final MediaBrowser.SubscriptionCallback mSubscriptionCallback =
-            new MediaBrowser.SubscriptionCallback() {
+    private final MediaBrowserCompat.SubscriptionCallback mSubscriptionCallback =
+            new MediaBrowserCompat.SubscriptionCallback() {
                 @Override
                 public void onChildrenLoaded(@NonNull String parentId,
-                                             @NonNull List<MediaBrowser.MediaItem> children) {
+                                             @NonNull List<MediaBrowserCompat.MediaItem> children) {
                     try {
                         LogUtils.d(TAG, "fragment onChildrenLoaded, parentId=" + parentId +
                                 "  count=" + children.size());
                         checkForUserVisibleErrors(children.isEmpty());
                         mBrowserAdapter.clear();
-                        for (MediaBrowser.MediaItem item : children) {
+                        for (MediaBrowserCompat.MediaItem item : children) {
                             mBrowserAdapter.add(item);
                         }
                         mBrowserAdapter.notifyDataSetChanged();
@@ -125,6 +128,7 @@ public class MediaBrowserFragment extends Fragment {
         // If used on an activity that doesn't implement MediaFragmentListener, it
         // will throw an exception as expected:
         mMediaFragmentListener = (MediaFragmentListener) activity;
+        mMediaControllerProvider = (MediaControllerProvider) activity;
     }
 
     @Override
@@ -136,7 +140,7 @@ public class MediaBrowserFragment extends Fragment {
         mErrorView = rootView.findViewById(R.id.playback_error);
         mErrorMessage = (TextView) mErrorView.findViewById(R.id.error_message);
 
-        mBrowserAdapter = new BrowseAdapter(getActivity());
+        mBrowserAdapter = new BrowseAdapter(getActivity(), (MediaControllerProvider) getActivity());
 
         ListView listView = (ListView) rootView.findViewById(R.id.list_view);
         listView.setAdapter(mBrowserAdapter);
@@ -144,7 +148,7 @@ public class MediaBrowserFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 checkForUserVisibleErrors(false);
-                MediaBrowser.MediaItem item = mBrowserAdapter.getItem(position);
+                MediaBrowserCompat.MediaItem item = mBrowserAdapter.getItem(position);
                 mMediaFragmentListener.onMediaItemSelected(item);
             }
         });
@@ -157,37 +161,40 @@ public class MediaBrowserFragment extends Fragment {
         super.onStart();
 
         // fetch browsing information to fill the listview:
-        MediaBrowser mediaBrowser = mMediaFragmentListener.getMediaBrowser();
+        MediaBrowserCompat mediaBrowser = mMediaFragmentListener.getMediaBrowser();
 
         LogUtils.d(TAG, "fragment.onStart, mediaId=", mMediaId,
                 "  onConnected=" + mediaBrowser.isConnected());
 
-        if (mediaBrowser.isConnected()) {
+        if (mediaBrowser != null && mediaBrowser.isConnected()) {
             onConnected();
         }
 
         // Registers BroadcastReceiver to track network connection changes.
-        this.getActivity().registerReceiver(mConnectivityChangeReceiver,
+        getActivity().registerReceiver(mConnectivityChangeReceiver,
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        MediaBrowser mediaBrowser = mMediaFragmentListener.getMediaBrowser();
+
+        MediaBrowserCompat mediaBrowser = mMediaFragmentListener.getMediaBrowser();
         if (mediaBrowser != null && mediaBrowser.isConnected() && mMediaId != null) {
             mediaBrowser.unsubscribe(mMediaId);
         }
-        if (getActivity().getMediaController() != null) {
-            getActivity().getMediaController().unregisterCallback(mMediaControllerCallback);
+        if (mMediaControllerProvider.getSupportMediaController() != null) {
+            mMediaControllerProvider.getSupportMediaController().unregisterCallback(mMediaControllerCallback);
         }
-        this.getActivity().unregisterReceiver(mConnectivityChangeReceiver);
+
+        getActivity().unregisterReceiver(mConnectivityChangeReceiver);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mMediaFragmentListener = null;
+        mMediaControllerProvider = null;
     }
 
     public String getMediaId() {
@@ -204,7 +211,7 @@ public class MediaBrowserFragment extends Fragment {
         setArguments(args);
     }
 
-    // Called when the MediaBrowser is connected. This method is either called by the
+    // Called when the MediaBrowserCompat is connected. This method is either called by the
     // fragment.onStart() or explicitly by the activity in the case where the connection
     // completes after the onStart()
     public void onConnected() {
@@ -218,7 +225,7 @@ public class MediaBrowserFragment extends Fragment {
         updateTitle();
 
         // Unsubscribing before subscribing is required if this mediaId already has a subscriber
-        // on this MediaBrowser instance. Subscribing to an already subscribed mediaId will replace
+        // on this MediaBrowserCompat instance. Subscribing to an already subscribed mediaId will replace
         // the callback, but won't trigger the initial callback.onChildrenLoaded.
         //
         // This is temporary: A bug is being fixed that will make subscribe
@@ -231,8 +238,8 @@ public class MediaBrowserFragment extends Fragment {
         mMediaFragmentListener.getMediaBrowser().subscribe(mMediaId, mSubscriptionCallback);
 
         // Add MediaController callback so we can redraw the list when metadata changes:
-        if (getActivity().getMediaController() != null) {
-            getActivity().getMediaController().registerCallback(mMediaControllerCallback);
+        if (mMediaControllerProvider.getSupportMediaController() != null) {
+            mMediaControllerProvider.getSupportMediaController().registerCallback(mMediaControllerCallback);
         }
     }
 
@@ -244,11 +251,11 @@ public class MediaBrowserFragment extends Fragment {
             showError = true;
         } else {
             // otherwise, if state is ERROR and metadata!=null, use playback state error message:
-            MediaController controller = getActivity().getMediaController();
+            MediaControllerCompat controller = mMediaControllerProvider.getSupportMediaController();
             if (controller != null
                     && controller.getMetadata() != null
                     && controller.getPlaybackState() != null
-                    && controller.getPlaybackState().getState() == PlaybackState.STATE_ERROR
+                    && controller.getPlaybackState().getState() == PlaybackStateCompat.STATE_ERROR
                     && controller.getPlaybackState().getErrorMessage() != null) {
                 mErrorMessage.setText(controller.getPlaybackState().getErrorMessage());
                 showError = true;
@@ -272,14 +279,14 @@ public class MediaBrowserFragment extends Fragment {
 
         final String parentId = MediaIDHelper.getParentMediaID(mMediaId);
 
-        // MediaBrowser doesn't provide metadata for a given mediaID, only for its children. Since
+        // MediaBrowserCompat doesn't provide metadata for a given mediaID, only for its children. Since
         // the mediaId contains the item's hierarchy, we know the item's parent mediaId and we can
         // fetch and iterate over it and find the proper MediaItem, from which we get the title,
         // This is temporary - a better solution (a method to get a mediaItem by its mediaID)
         // is being worked out in the platform and should be available soon.
         LogUtils.d(TAG, "on updateTitle: mediaId=", mMediaId, " parentID=", parentId);
         if (parentId != null) {
-            MediaBrowser mediaBrowser = mMediaFragmentListener.getMediaBrowser();
+            MediaBrowserCompat mediaBrowser = mMediaFragmentListener.getMediaBrowser();
             LogUtils.d(TAG, "on updateTitle: mediaBrowser is ",
                     mediaBrowser == null ? "null" : ("not null, connected=" + mediaBrowser.isConnected()));
             if (mediaBrowser != null && mediaBrowser.isConnected()) {
@@ -287,13 +294,13 @@ public class MediaBrowserFragment extends Fragment {
                 // Otherwise, if there is another callback subscribed to this mediaID, mediaBrowser
                 // will only call this callback when the media content change.
                 mediaBrowser.unsubscribe(parentId);
-                mediaBrowser.subscribe(parentId, new MediaBrowser.SubscriptionCallback() {
+                mediaBrowser.subscribe(parentId, new MediaBrowserCompat.SubscriptionCallback() {
                     @Override
                     public void onChildrenLoaded(@NonNull String parentId,
-                                                 @NonNull List<MediaBrowser.MediaItem> children) {
+                                                 @NonNull List<MediaBrowserCompat.MediaItem> children) {
                         LogUtils.d(TAG, "Got ", children.size(), " children for ", parentId,
                                 ". Looking for ", mMediaId);
-                        for (MediaBrowser.MediaItem item : children) {
+                        for (MediaBrowserCompat.MediaItem item : children) {
                             LogUtils.d(TAG, "child ", item.getMediaId());
                             if (item.getMediaId().equals(mMediaId)) {
                                 if (mMediaFragmentListener != null) {
@@ -317,28 +324,31 @@ public class MediaBrowserFragment extends Fragment {
     }
 
     // An adapter for showing the list of browsed MediaItem's
-    private static class BrowseAdapter extends ArrayAdapter<MediaBrowser.MediaItem> {
+    private static class BrowseAdapter extends ArrayAdapter<MediaBrowserCompat.MediaItem> {
 
-        public BrowseAdapter(Activity context) {
-            super(context, R.layout.media_list_item, new ArrayList<MediaBrowser.MediaItem>());
+        private MediaControllerProvider mMediaControllerProvider;
+
+        public BrowseAdapter(Activity context, MediaControllerProvider mediaControllerProvider) {
+            super(context, R.layout.media_list_item, new ArrayList<MediaBrowserCompat.MediaItem>());
+            mMediaControllerProvider = mediaControllerProvider;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            MediaBrowser.MediaItem item = getItem(position);
+            MediaBrowserCompat.MediaItem item = getItem(position);
             int itemState = MediaItemViewHolder.STATE_NONE;
             if (item.isPlayable()) {
                 itemState = MediaItemViewHolder.STATE_PLAYABLE;
-                MediaController controller = ((Activity) getContext()).getMediaController();
+                MediaControllerCompat controller = mMediaControllerProvider.getSupportMediaController();
                 if (controller != null && controller.getMetadata() != null) {
                     String currentPlaying = controller.getMetadata().getDescription().getMediaId();
                     String musicId = MediaIDHelper.extractMusicIDFromMediaID(
                             item.getDescription().getMediaId());
                     if (currentPlaying != null && currentPlaying.equals(musicId)) {
-                        PlaybackState pbState = controller.getPlaybackState();
-                        if (pbState == null || pbState.getState() == PlaybackState.STATE_ERROR) {
+                        PlaybackStateCompat pbState = controller.getPlaybackState();
+                        if (pbState == null || pbState.getState() == PlaybackStateCompat.STATE_ERROR) {
                             itemState = MediaItemViewHolder.STATE_NONE;
-                        } else if (pbState.getState() == PlaybackState.STATE_PLAYING) {
+                        } else if (pbState.getState() == PlaybackStateCompat.STATE_PLAYING) {
                             itemState = MediaItemViewHolder.STATE_PLAYING;
                         } else {
                             itemState = MediaItemViewHolder.STATE_PAUSED;
@@ -352,7 +362,7 @@ public class MediaBrowserFragment extends Fragment {
     }
 
     public interface MediaFragmentListener extends MediaBrowserProvider {
-        void onMediaItemSelected(MediaBrowser.MediaItem item);
+        void onMediaItemSelected(MediaBrowserCompat.MediaItem item);
 
         void setToolbarTitle(CharSequence title);
     }

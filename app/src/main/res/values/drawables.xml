@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="drawable" name="item_background">@drawable/abc_list_selector_holo_light</item>
+</resources>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 Copyright (C) 2014 The Android Open Source Project
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,25 +13,27 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<RelativeLayout android:id="@+id/pageView"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/black"
-                android:fitsSystemWindows="true">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pageView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:fitsSystemWindows="true">
 
     <ImageView
         android:id="@+id/background_image"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:contentDescription="@string/background_image_str"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:background="@drawable/fullscreen_bg_gradient">
 
         <TextView
@@ -46,7 +47,7 @@ limitations under the License.
             android:shadowColor="@android:color/black"
             android:shadowRadius="20"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/fullscreen_line_color"/>
+            android:textColor="@color/fullscreen_line_color" />
 
         <TextView
             android:id="@+id/line2"
@@ -60,7 +61,7 @@ limitations under the License.
             android:shadowColor="@android:color/black"
             android:shadowRadius="20"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/fullscreen_secondary_line_color"/>
+            android:textColor="@color/fullscreen_secondary_line_color" />
 
         <TextView
             android:id="@+id/line3"
@@ -74,7 +75,7 @@ limitations under the License.
             android:shadowColor="@android:color/black"
             android:shadowRadius="20"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/fullscreen_secondary_line_color"/>
+            android:textColor="@color/fullscreen_secondary_line_color" />
 
         <LinearLayout
             android:id="@+id/controllers"
@@ -92,11 +93,12 @@ limitations under the License.
                     android:id="@+id/startText"
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/text_view_margin"
                     android:layout_marginStart="@dimen/text_view_margin"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:textColor="@android:color/white"/>
+                    android:textColor="@android:color/white" />
 
                 <SeekBar
                     android:id="@+id/seekBar1"
@@ -107,19 +109,22 @@ limitations under the License.
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_toEndOf="@+id/startText"
-                    android:layout_toStartOf="@+id/endText"/>
+                    android:layout_toLeftOf="@+id/endText"
+                    android:layout_toRightOf="@+id/startText"
+                    android:layout_toStartOf="@+id/endText" />
 
                 <TextView
                     android:id="@+id/endText"
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_alignWithParentIfMissing="true"
                     android:layout_marginEnd="@dimen/end_text_margin"
+                    android:layout_marginRight="@dimen/end_text_margin"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:textColor="@android:color/white"/>
-
+                    android:textColor="@android:color/white" />
             </RelativeLayout>
 
             <LinearLayout
@@ -131,27 +136,27 @@ limitations under the License.
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:background="@drawable/item_background"
                     android:contentDescription="@string/skip_prev"
-                    android:src="@drawable/ic_skip_previous_white_48dp"/>
+                    android:src="@drawable/ic_skip_previous_white_48dp" />
 
                 <ImageView
                     android:id="@+id/play_pause"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:background="@drawable/item_background"
                     android:contentDescription="@string/play_pause"
-                    android:src="@drawable/ic_play_arrow_white_48dp"/>
+                    android:src="@drawable/ic_play_arrow_white_48dp" />
 
                 <ImageView
                     android:id="@+id/next"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:background="@drawable/item_background"
                     android:contentDescription="@string/skip_next"
-                    android:src="@drawable/ic_skip_next_white_48dp"/>
+                    android:src="@drawable/ic_skip_next_white_48dp" />
 
             </LinearLayout>
 
@@ -165,16 +170,17 @@ limitations under the License.
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/actionbar_bg_gradient_light"
         android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
 </RelativeLayout>

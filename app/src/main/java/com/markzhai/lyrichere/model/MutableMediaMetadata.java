@@ -1,6 +1,6 @@
 package com.markzhai.lyrichere.model;
 
-import android.media.MediaMetadata;
+import android.support.v4.media.MediaMetadataCompat;
 import android.text.TextUtils;
 
 /**
@@ -9,10 +9,10 @@ import android.text.TextUtils;
  */
 public class MutableMediaMetadata {
 
-    public MediaMetadata metadata;
+    public MediaMetadataCompat metadata;
     public final String trackId;
 
-    public MutableMediaMetadata(String trackId, MediaMetadata metadata) {
+    public MutableMediaMetadata(String trackId, MediaMetadataCompat metadata) {
         this.metadata = metadata;
         this.trackId = trackId;
     }

@@ -8,6 +8,7 @@ import android.media.browse.MediaBrowser;
 import android.media.session.MediaController;
 import android.media.session.MediaSession;
 import android.media.session.PlaybackState;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
@@ -30,12 +31,15 @@ public abstract class BaseActivity extends MvpActivity {
 
         LogUtils.d(GlobalConst.Log.TAG_TRACE, "onCreate:" + this.getClass().getName());
 
-        // Since our app icon has the same color as colorPrimary, our entry in the Recent Apps
-        // list gets weird. We need to change either the icon or the color of the TaskDescription.
-        ActivityManager.TaskDescription taskDesc = new ActivityManager.TaskDescription(getTitle().toString(),
-                BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_white),
-                ResourceHelper.getThemeColor(this, R.attr.colorPrimary, android.R.color.darker_gray));
-        setTaskDescription(taskDesc);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Since our app icon has the same color as colorPrimary, our entry in the Recent Apps
+            // list gets weird. We need to change either the icon or the color of the TaskDescription.
+            ActivityManager.TaskDescription taskDesc = new ActivityManager.TaskDescription(
+                    getTitle().toString(),
+                    BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_white),
+                    ResourceHelper.getThemeColor(this, R.attr.colorPrimary, android.R.color.darker_gray));
+            setTaskDescription(taskDesc);
+        }
     }
 
     @Override

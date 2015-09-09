@@ -2,6 +2,11 @@ Lyric Here
 ==========
 A music player focused on user experience of lyric.
 
+Pre-requisites
+--------------
+
+- Android SDK v14
+
 Features
 -----------
 
@@ -19,11 +24,6 @@ TODO(Pull request is welcomed)
 - Download from server(well, i myself will build the server side)
 - Add support lyric file encoding auto-recognize.
 - Use Google Data Binding and Dagger2
-
-Pre-requisites
---------------
-
-- Android SDK v14
 
 Screenshots
 -----------

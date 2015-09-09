@@ -2,10 +2,6 @@ Lyric Here
 ==========
 A music player focused on user experience of lyric.
 
-Work in progress
-----------------
-Support api 14 above!!!
-
 Features
 -----------
 
@@ -15,10 +11,19 @@ Features
 - Powerful LyricView which supports scrolling up and down to change offset.
 - Receive broadcast from popular music players and pop up lyric open notification.
 
+TODO(Pull request is welcomed)
+------------------------------
+
+- Extract artwork from local media files and show in list.
+- Better implementation for Music player.
+- Download from server(well, i myself will build the server side)
+- Add support lyric file encoding auto-recognize.
+- Use Google Data Binding and Dagger2
+
 Pre-requisites
 --------------
 
-- Android SDK v21
+- Android SDK v14
 
 Screenshots
 -----------
@@ -28,21 +33,6 @@ Screenshots
 ![Lyric explorer](screenshots/Screenshot_2015-03-20-17-09-38.jpg "Lyric explorer")
 ![Lyric player](screenshots/Screenshot_2015-03-20-17-11-09.jpg "Lyric player")
 ![Lyric encoding picker](screenshots/Screenshot_2015-03-20-17-11-28.jpg "Lyric encoding picker")
-
-Existing Music Players
--------
-
-- Poweramp.
-- Google Play Music.
-
-TODO LIST
--------
-
-- Extract artwork from local media files and show in list.
-- Better implementation for Music player.
-- Download from server(well, i myself will build the server side)
-- Add support lyric file encoding auto-recognize.
-- Use Google Data Binding and Dagger2
 
 CHANGELOG
 -------
@@ -57,4 +47,3 @@ LIBRARY
 - Butter Knife
 - DBFlow
 - base-adapter-helper
-- Google Auto

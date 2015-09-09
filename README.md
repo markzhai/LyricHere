@@ -28,11 +28,12 @@ TODO(Pull request is welcomed)
 Screenshots
 -----------
 
-![Browse local music file](screenshots/Screenshot_2015-03-20-17-07-26.jpg "Browse local music file")
-![Fullscreen music player](screenshots/Screenshot_2015-03-20-17-07-30.jpg "Fullscreen music player")
-![Lyric explorer](screenshots/Screenshot_2015-03-20-17-09-38.jpg "Lyric explorer")
-![Lyric player](screenshots/Screenshot_2015-03-20-17-11-09.jpg "Lyric player")
-![Lyric encoding picker](screenshots/Screenshot_2015-03-20-17-11-28.jpg "Lyric encoding picker")
+![Browse local music file](art/Screenshot_2015-03-20-17-07-26.jpg "Browse local music file")
+![Fullscreen music player](art/Screenshot_2015-03-20-17-07-30.jpg "Fullscreen music player")
+![Lyric explorer](art/Screenshot_2015-03-20-17-09-38.jpg "Lyric explorer")
+![Lyric player](art/Screenshot_2015-03-20-17-11-09.jpg "Lyric player")
+![Lyric encoding picker](art/Screenshot_2015-03-20-17-11-28.jpg "Lyric encoding picker")
+![Notification](art/Screenshot_2015-09-09-23-12-51.jpg "Notification")
 
 CHANGELOG
 -------

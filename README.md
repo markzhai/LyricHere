@@ -1,4 +1,5 @@
 Lyric Here
+[![GitHub release](https://img.shields.io/badge/sample%20apk-2.0.0alpha-brightgreen.svg?style=flat)](https://github.com/markzhai/LyricHere/releases/download/v2.0-alpha/app-debug.apk)
 ==========
 A music player focused on user experience of lyric.
 

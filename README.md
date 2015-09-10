@@ -25,6 +25,11 @@ TODO(Pull request is welcomed)
 - Add support lyric file encoding auto-recognize.
 - Use Google Data Binding and Dagger2
 
+Test
+----
+- Nexus 6 (5.1.1)
+- OnePlus (4.4.2)
+
 Screenshots
 -----------
 

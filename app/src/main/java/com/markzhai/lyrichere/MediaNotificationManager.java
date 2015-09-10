@@ -57,7 +57,7 @@ public class MediaNotificationManager extends BroadcastReceiver {
 
     private final PendingIntent mStopCastIntent;
 
-    private final int mNotificationColor;
+    private int mNotificationColor;
 
     private boolean mStarted = false;
 
@@ -65,8 +65,12 @@ public class MediaNotificationManager extends BroadcastReceiver {
         mService = service;
         updateSessionToken();
 
-        mNotificationColor = ResourceHelper.getThemeColor(mService,
-                android.R.attr.colorPrimary, Color.DKGRAY);
+        try {
+            mNotificationColor = ResourceHelper.getThemeColor(mService,
+                    android.R.attr.colorPrimary, Color.DKGRAY);
+        } catch (Exception e) {
+            mNotificationColor = Color.DKGRAY;
+        }
 
         mNotificationManager = (NotificationManager) mService
                 .getSystemService(Context.NOTIFICATION_SERVICE);

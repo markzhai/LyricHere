@@ -1,4 +1,4 @@
-Lyric Here [![GitHub release](https://img.shields.io/badge/sample%20apk-2.0.0alpha-brightgreen.svg?style=flat)](https://github.com/markzhai/LyricHere/releases/download/v2.0-alpha/app-debug.apk)
+Lyric Here [![GitHub release](https://img.shields.io/badge/sample%20apk-2.0.0alpha.1-brightgreen.svg?style=flat)](https://github.com/markzhai/LyricHere/releases/download/v2.0-alpha.1/app-debug.apk)
 ==========
 A music player focused on user experience of lyric.
 
@@ -19,7 +19,7 @@ Features
 TODO(Pull request is welcomed)
 ------------------------------
 
-- Extract artwork from local media files and show in list.
+- Show artwork in listview.
 - Better implementation for Music player.
 - Download from server(well, i myself will build the server side)
 - Add support lyric file encoding auto-recognize.

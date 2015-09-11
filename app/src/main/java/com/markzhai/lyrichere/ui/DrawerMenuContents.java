@@ -30,7 +30,7 @@ public class DrawerMenuContents {
                 R.drawable.ic_allmusic_black_24dp));
 
         activities[1] = LyricExplorerActivity.class;
-        items.add(populateDrawerItem(ctx.getString(R.string.drawer_playlists_title),
+        items.add(populateDrawerItem(ctx.getString(R.string.drawer_lyrics_title),
                 R.drawable.ic_playlist_music_black_24dp));
     }
 

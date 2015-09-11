@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.markzhai.lyrichere.utils.MediaIDHelper.MEDIA_ID_MUSICS_BY_ALBUM;
+import static com.markzhai.lyrichere.utils.MediaIDHelper.MEDIA_ID_MUSICS_BY_ARTIST;
 import static com.markzhai.lyrichere.utils.MediaIDHelper.MEDIA_ID_MUSICS_BY_GENRE;
 import static com.markzhai.lyrichere.utils.MediaIDHelper.MEDIA_ID_ROOT;
 import static com.markzhai.lyrichere.utils.MediaIDHelper.createBrowseCategoryMediaID;
@@ -267,6 +269,22 @@ public class MusicService extends MediaBrowserServiceCompat implements Playback.
                             .setTitle(getString(R.string.browse_genres))
                             .setIconUri(Uri.parse("android.resource://com.markzhai.lyrichere/drawable/ic_by_genre"))
                             .setSubtitle(getString(R.string.browse_genre_subtitle))
+                            .build(), MediaBrowserCompat.MediaItem.FLAG_BROWSABLE
+            ));
+            mediaItems.add(new MediaBrowserCompat.MediaItem(
+                    new MediaDescriptionCompat.Builder()
+                            .setMediaId(MEDIA_ID_MUSICS_BY_ARTIST)
+                            .setTitle(getString(R.string.browse_artists))
+                            .setIconUri(Uri.parse("android.resource://com.markzhai.lyrichere/drawable/ic_by_genre"))
+                            .setSubtitle(getString(R.string.browse_artist_subtitle))
+                            .build(), MediaBrowserCompat.MediaItem.FLAG_BROWSABLE
+            ));
+            mediaItems.add(new MediaBrowserCompat.MediaItem(
+                    new MediaDescriptionCompat.Builder()
+                            .setMediaId(MEDIA_ID_MUSICS_BY_ALBUM)
+                            .setTitle(getString(R.string.browse_albums))
+                            .setIconUri(Uri.parse("android.resource://com.markzhai.lyrichere/drawable/ic_by_genre"))
+                            .setSubtitle(getString(R.string.browse_album_subtitle))
                             .build(), MediaBrowserCompat.MediaItem.FLAG_BROWSABLE
             ));
 

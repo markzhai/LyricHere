@@ -17,6 +17,10 @@
     <string name="error_no_metadata">Unable to retrieve metadata.</string>
     <string name="browse_genres">Genres</string>
     <string name="browse_genre_subtitle">Songs by genre</string>
+    <string name="browse_artists">Artists</string>
+    <string name="browse_artist_subtitle">Songs by artist</string>
+    <string name="browse_albums">Albums</string>
+    <string name="browse_album_subtitle">Songs by album</string>
     <string name="browse_musics_by_genre_subtitle">%1$s songs</string>
     <string name="error_no_connection">Cannot connect to server. Please, check your Internet connectivity.</string>
     <string name="error_loading_media">Error Loading Media</string>
@@ -36,7 +40,7 @@
     <string name="close_content_drawer">Close the main menu</string>
     <string name="placeholder_message">This is a placeholder for your application code.</string>
     <string name="drawer_allmusic_title">All Music</string>
-    <string name="drawer_playlists_title">Playlists</string>
+    <string name="drawer_lyrics_title">Lyrics</string>
     <string name="now_playing">Now Playing</string>
     <string name="background_image_str">Background image for album art</string>
     <string name="loading">Loading…</string>

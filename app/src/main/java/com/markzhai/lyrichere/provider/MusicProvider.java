@@ -1,7 +1,9 @@
 package com.markzhai.lyrichere.provider;
 
 
+import android.content.ContentUris;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v4.media.MediaMetadataCompat;
@@ -28,7 +30,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * Utility class to get a list of MusicTrack's based on a server-side JSON configuration.
+ * Utility class to get a list of MusicTrack's based on a server-side JSON configuration or
+ * local filesystem.
  */
 public class MusicProvider {
     private static final String TAG = LogUtils.makeLogTag(MusicProvider.class);
@@ -216,20 +219,102 @@ public class MusicProvider {
         mMusicListByGenre = newMusicListByGenre;
     }
 
+    private static final Uri ART_CONTENT_URI = Uri.parse("content://media/external/audio/albumart");
+
     private synchronized void retrieveMedia() {
         try {
             if (mCurrentState == State.NON_INITIALIZED) {
                 mCurrentState = State.INITIALIZING;
+
+                int index;
+                long genreId;
+                Uri uri;
+                Cursor genreMediaCursor = null;
+
+                String[] projection1 = {MediaStore.Audio.Genres.NAME, MediaStore.Audio.Genres._ID};
+
+                String[] projection2 = {
+                        MediaStore.Audio.Media.TITLE,
+                        MediaStore.Audio.Media.ARTIST,
+                        MediaStore.Audio.Media.ALBUM,
+                        MediaStore.Audio.Media.DURATION,
+                        MediaStore.Audio.Media.DATA,
+                        MediaStore.Audio.Media.TRACK,
+                        MediaStore.Audio.Media.SIZE,
+                        MediaStore.Audio.Media._ID,
+                        MediaStore.Audio.Media.ALBUM_ID,
+                        MediaStore.Audio.Media.DISPLAY_NAME};
+                String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
+
+                Cursor genreCursor = LHApplication.getContext().getContentResolver().query(
+                        MediaStore.Audio.Genres.EXTERNAL_CONTENT_URI, projection1, null, null, null);
+
+                if (genreCursor.moveToFirst()) {
+                    do {
+                        String genre = genreCursor.getString(
+                                genreCursor.getColumnIndexOrThrow(MediaStore.Audio.Genres.NAME));
+
+                        if (genre != null && genre.trim().equals("")) {
+                            genre = "Unknown";
+                        }
+
+                        index = genreCursor.getColumnIndexOrThrow(MediaStore.Audio.Genres._ID);
+                        genreId = Long.parseLong(genreCursor.getString(index));
+                        uri = MediaStore.Audio.Genres.Members.getContentUri("external", genreId);
+
+                        genreMediaCursor = LHApplication.getContext().getContentResolver().query(uri, projection2, selection, null, null);
+
+                        if (genreMediaCursor.moveToFirst()) {
+                            do {
+                                String title = genreMediaCursor.getString(0);
+                                String artist = genreMediaCursor.getString(1);
+                                String album = genreMediaCursor.getString(2);
+                                long duration = genreMediaCursor.getLong(3);
+                                String source = genreMediaCursor.getString(4);
+                                int trackNumber = genreMediaCursor.getInt(5);
+                                long totalTrackCount = genreMediaCursor.getLong(6);
+                                String id = genreMediaCursor.getString(7);
+                                long albumId = genreMediaCursor.getLong(8);
+                                Uri albumArtUri = ContentUris.withAppendedId(ART_CONTENT_URI, albumId);
+
+                                MediaMetadataCompat item = new MediaMetadataCompat.Builder()
+                                        .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, id)
+                                        .putString(CUSTOM_METADATA_TRACK_SOURCE, source)
+                                        .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, album)
+                                        .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, artist)
+                                        .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration)
+                                        .putString(MediaMetadataCompat.METADATA_KEY_GENRE, genre)
+                                        .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, albumArtUri.toString())
+                                        .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title)
+                                        .putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, trackNumber)
+                                        .putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, totalTrackCount)
+                                        .build();
+                                String musicId = item.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID);
+                                mMusicListById.put(musicId, new MutableMediaMetadata(musicId, item));
+
+                            } while(genreMediaCursor.moveToNext());
+                        }
+                    } while(genreCursor.moveToNext());
+                }
+                genreCursor.close();
+                if (genreMediaCursor != null) {
+                    genreMediaCursor.close();
+                }
+                buildListsByGenre();
+
+                /*
                 Cursor cursor = fetchFromMediaStore();
                 if (cursor != null && cursor.getCount() > 0) {
                     cursor.moveToFirst();
                     do {
-                        MediaMetadataCompat item = buildFromCursor(cursor);
+                        MediaMetadataCompat item = buildMediaMetadata(cursor);
                         String musicId = item.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID);
                         mMusicListById.put(musicId, new MutableMediaMetadata(musicId, item));
                     } while (cursor.moveToNext());
+
                     buildListsByGenre();
-                }
+                }*/
+
                 mCurrentState = State.INITIALIZED;
             }
         } finally {
@@ -260,7 +345,7 @@ public class MusicProvider {
                 MediaStore.Audio.Media.TITLE);
     }
 
-    private MediaMetadataCompat buildFromCursor(Cursor cursor) {
+    private MediaMetadataCompat buildMediaMetadata(Cursor cursor) {
         String title = cursor.getString(0);
         String artist = cursor.getString(1);
         String album = cursor.getString(2);

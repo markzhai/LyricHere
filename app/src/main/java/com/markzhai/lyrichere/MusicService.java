@@ -318,6 +318,10 @@ public class MusicService extends MediaBrowserServiceCompat implements Playback.
                         trackCopy.getDescription(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
                 mediaItems.add(bItem);
             }
+        } else if(parentMediaId.startsWith(MEDIA_ID_MUSICS_BY_ARTIST)) {
+
+        } else if(parentMediaId.startsWith(MEDIA_ID_MUSICS_BY_ALBUM)) {
+
         } else {
             LogUtils.w(TAG, "Skipping unmatched parentMediaId: ", parentMediaId);
         }

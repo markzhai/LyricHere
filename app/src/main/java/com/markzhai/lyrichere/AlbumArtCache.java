@@ -39,7 +39,6 @@ public final class AlbumArtCache {
         return sInstance;
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     private AlbumArtCache() {
         // Holds no more than MAX_ALBUM_ART_CACHE_SIZE bytes, bounded by maxmemory/4 and
         // Integer.MAX_VALUE:

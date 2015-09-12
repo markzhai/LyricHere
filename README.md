@@ -1,4 +1,4 @@
-Lyric Here [![GitHub release](https://img.shields.io/badge/sample%20apk-2.0.0alpha.1-brightgreen.svg?style=flat)](https://github.com/markzhai/LyricHere/releases/download/v2.0-alpha.1/app-debug.apk)
+Lyric Here [![GitHub release](https://img.shields.io/badge/sample%20apk-2.0.0alpha.2-brightgreen.svg?style=flat)](https://github.com/markzhai/LyricHere/releases/download/v2.0-alpha.2/app-debug.apk)
 ==========
 A music player focused on user experience of lyric.
 
@@ -21,14 +21,14 @@ TODO(Pull request is welcomed)
 
 - Show artwork in listview.
 - Better implementation for Music player.
-- Download from server(well, i myself will build the server side)
+- Download lyric from server and upload to server.
 - Add support lyric file encoding auto-recognize.
-- Use Google Data Binding and Dagger2
+- Use Google Design Support UI.
 
 Test
 ----
 - Nexus 6 (5.1.1)
-- OnePlus (4.4.2)
+- OnePlus (4.3)
 
 Screenshots
 -----------

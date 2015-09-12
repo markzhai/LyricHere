@@ -1,6 +1,6 @@
 Lyric Here [![GitHub release](https://img.shields.io/badge/sample%20apk-2.0.0beta-brightgreen.svg?style=flat)](https://github.com/markzhai/LyricHere/releases/download/v2.0-beta/lyric-here.apk)
 ==========
-Material design music and lyric player. Using Android's new android.media.MediaMetadata series api to implement. ([中文戳这里](https://github.com/markzhai/LyricHere/blob/master/README_CN.md)
+Material design music and lyric player. Using Android's new android.media.MediaMetadata series api to implement. ([中文戳这里](https://github.com/markzhai/LyricHere/blob/master/README_CN.md))
 
 Pre-requisites
 --------------

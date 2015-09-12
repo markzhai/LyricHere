@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -24,20 +24,28 @@ import com.markzhai.lyrichere.MusicService;
 import com.markzhai.lyrichere.R;
 import com.markzhai.lyrichere.utils.LogUtils;
 
+import butterknife.Bind;
+
 /**
  * A class that shows the Media Queue to the user.
  * <p/>
  * Created by markzhai on 2015/3/19.
  */
-public class PlaybackControlsFragment extends Fragment {
+public class PlaybackControlsFragment extends BaseFragment {
 
     private static final String TAG = LogUtils.makeLogTag(PlaybackControlsFragment.class);
 
-    private ImageButton mPlayPause;
-    private TextView mTitle;
-    private TextView mSubtitle;
-    private TextView mExtraInfo;
-    private ImageView mAlbumArt;
+    @Bind(R.id.play_pause)
+    ImageButton mPlayPause;
+    @Bind(R.id.title)
+    TextView mTitle;
+    @Bind(R.id.artist)
+    TextView mSubtitle;
+    @Bind(R.id.extra_info)
+    TextView mExtraInfo;
+    @Bind(R.id.album_art)
+    ImageView mAlbumArt;
+
     private String mArtUrl;
 
     private MediaControllerProvider mMediaControllerProvider;
@@ -68,14 +76,6 @@ public class PlaybackControlsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_playback_controls, container, false);
 
-        mPlayPause = (ImageButton) rootView.findViewById(R.id.play_pause);
-        mPlayPause.setEnabled(true);
-        mPlayPause.setOnClickListener(mButtonListener);
-
-        mTitle = (TextView) rootView.findViewById(R.id.title);
-        mSubtitle = (TextView) rootView.findViewById(R.id.artist);
-        mExtraInfo = (TextView) rootView.findViewById(R.id.extra_info);
-        mAlbumArt = (ImageView) rootView.findViewById(R.id.album_art);
         rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +91,13 @@ public class PlaybackControlsFragment extends Fragment {
             }
         });
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mPlayPause.setEnabled(true);
+        mPlayPause.setOnClickListener(mButtonListener);
     }
 
     @Override

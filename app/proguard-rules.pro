@@ -26,3 +26,12 @@
 -keepclasseswithmembernames class * {
     @butterknife.* <methods>;
 }
+
+-dontwarn com.squareup.okhttp.**
+
+-dontwarn icepick.**
+-keep class **$$Icepick { *; }
+-keepnames class * { @icepick.State *; }
+-keepclasseswithmembernames class * {
+    @icepick.* <fields>;
+}

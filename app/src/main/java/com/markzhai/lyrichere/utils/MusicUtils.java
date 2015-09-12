@@ -500,6 +500,10 @@ public class MusicUtils {
     // get album art for specified file
     private static final String sExternalMediaUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI.toString();
 
+    public static Uri getAlbumArtworkUri(long albumId) {
+        return ContentUris.withAppendedId(sArtworkUri, albumId);
+    }
+
     private static Bitmap getArtworkFromFile(Context context, long songid, long albumid) {
         Bitmap bm = null;
         byte[] art = null;

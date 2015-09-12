@@ -27,6 +27,7 @@ import com.markzhai.lyrichere.provider.MusicProvider;
 import com.markzhai.lyrichere.ui.MusicPlayerActivity;
 import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.utils.MediaIDHelper;
+import com.markzhai.lyrichere.utils.MusicUtils;
 import com.markzhai.lyrichere.utils.QueueHelper;
 
 import java.lang.ref.WeakReference;
@@ -302,6 +303,7 @@ public class MusicService extends MediaBrowserServiceCompat implements Playback.
                         new MediaDescriptionCompat.Builder()
                                 .setMediaId(createBrowseCategoryMediaID(MEDIA_ID_MUSICS_BY_ALBUM, album))
                                 .setTitle(album)
+                                .setIconUri(Uri.parse(mMusicProvider.getAlbumArt(album)))
                                 .setSubtitle(getString(R.string.browse_musics_by_genre_subtitle, album))
                                 .build(), MediaBrowserCompat.MediaItem.FLAG_BROWSABLE
                 );

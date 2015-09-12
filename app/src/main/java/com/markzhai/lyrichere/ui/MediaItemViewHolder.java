@@ -3,17 +3,19 @@ package com.markzhai.lyrichere.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.media.MediaDescriptionCompat;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.markzhai.lyrichere.AlbumArtCache;
 import com.markzhai.lyrichere.R;
+import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.utils.LollipopUtils;
 
 public class MediaItemViewHolder {
@@ -38,7 +40,7 @@ public class MediaItemViewHolder {
             initializeColorStateLists(activity);
         }
 
-        MediaItemViewHolder holder;
+        final MediaItemViewHolder holder;
 
         Integer cachedState = STATE_INVALID;
 
@@ -78,14 +80,31 @@ public class MediaItemViewHolder {
                     break;
                 case STATE_PAUSED:
                     holder.mImageView.setImageDrawable(
-                            ActivityCompat.getDrawable(activity,R.drawable.ic_equalizer1_white_36dp));
+                            ActivityCompat.getDrawable(activity, R.drawable.ic_equalizer1_white_36dp));
                     LollipopUtils.setImageTintList(holder.mImageView, sColorStateNotPlaying);
                     holder.mImageView.setVisibility(View.VISIBLE);
                     break;
                 default:
                     if (description.getIconUri() != null) {
-                        holder.mImageView.setImageURI(description.getIconUri());
-                        holder.mImageView.setVisibility(View.VISIBLE);
+                        String artUrl = description.getIconUri().toString();
+                        Bitmap art = description.getIconBitmap();
+                        AlbumArtCache cache = AlbumArtCache.getInstance();
+                        if (art == null) {
+                            art = cache.getIconImage(artUrl);
+                        }
+                        if (art != null) {
+                            holder.mImageView.setImageBitmap(art);
+                        } else {
+                            cache.fetch(artUrl, new AlbumArtCache.FetchListener() {
+                                        @Override
+                                        public void onFetched(String artUrl, Bitmap bitmap, Bitmap icon) {
+                                            if (icon != null) {
+                                                holder.mImageView.setImageBitmap(icon);
+                                            }
+                                        }
+                                    }
+                            );
+                        }
                     } else {
                         holder.mImageView.setVisibility(View.GONE);
                     }

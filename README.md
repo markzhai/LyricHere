@@ -19,26 +19,26 @@ Features
 TODO(Pull request is welcomed)
 ------------------------------
 
-- Show artwork in listview.
-- Better implementation for Music player.
+- Use Google Design Support UI.
+- Better implementation for Music player, show lyric directly.
 - Download lyric from server and upload to server.
 - Add support lyric file encoding auto-recognize.
-- Use Google Design Support UI.
 
-Test
-----
+Tested
+------
 - Nexus 6 (5.1.1)
 - OnePlus (4.3)
 
 Screenshots
 -----------
 
-![Browse local music file](art/Screenshot_2015-03-20-17-07-26.jpg "Browse local music file")
-![Fullscreen music player](art/Screenshot_2015-03-20-17-07-30.jpg "Fullscreen music player")
-![Lyric explorer](art/Screenshot_2015-03-20-17-09-38.jpg "Lyric explorer")
+![Browse local music file](art/Screenshot_2015-09-12-23-14-37.jpg "Browse local music file")
+![Fullscreen music player](art/Screenshot_2015-09-12-21-13-22.jpg "Fullscreen music player")
+![Lyric explorer](art/Screenshot_2015-09-12-21-13-40.jpg "Lyric explorer")
 ![Lyric player](art/Screenshot_2015-03-20-17-11-09.jpg "Lyric player")
 ![Lyric encoding picker](art/Screenshot_2015-03-20-17-11-28.jpg "Lyric encoding picker")
 ![Notification](art/Screenshot_2015-09-09-23-12-51.jpg "Notification")
+![Lock Screen Background](art/Screenshot_2015-09-12-22-43-59.jpg "Lock Screen Background")
 
 CHANGELOG
 -------

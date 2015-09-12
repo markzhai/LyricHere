@@ -93,9 +93,9 @@ public class MusicProvider {
     }
 
     /**
-     * Get an iterator over the list of genres
+     * Get an iterator over the list of albums
      *
-     * @return genres
+     * @return albums
      */
     public Iterable<String> getAlbums() {
         if (mCurrentState != State.INITIALIZED) {
@@ -104,10 +104,22 @@ public class MusicProvider {
         return mMusicListByAlbum.keySet();
     }
 
+    public String getAlbumArt(String album) {
+        if (mCurrentState != State.INITIALIZED) {
+            return "";
+        }
+        List<MediaMetadataCompat> list = mMusicListByAlbum.get(album);
+        if (list == null || list.size() == 0) {
+            return "";
+        }
+
+        return list.get(0).getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI);
+    }
+
     /**
-     * Get an iterator over the list of genres
+     * Get an iterator over the list of artists
      *
-     * @return genres
+     * @return artists
      */
     public Iterable<String> getArtists() {
         if (mCurrentState != State.INITIALIZED) {
@@ -365,7 +377,6 @@ public class MusicProvider {
                                 long totalTrackCount = genreMediaCursor.getLong(6);
                                 String musicId = genreMediaCursor.getString(7);
                                 long albumId = genreMediaCursor.getLong(8);
-                                Uri albumArtUri = ContentUris.withAppendedId(ART_CONTENT_URI, albumId);
 
                                 MediaMetadataCompat item = new MediaMetadataCompat.Builder()
                                         .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, musicId)
@@ -374,7 +385,7 @@ public class MusicProvider {
                                         .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, artist)
                                         .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration)
                                         .putString(MediaMetadataCompat.METADATA_KEY_GENRE, genre)
-                                        .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, albumArtUri.toString())
+                                        .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, MusicUtils.getAlbumArtworkUri(albumId).toString())
                                         .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title)
                                         .putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, trackNumber)
                                         .putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, totalTrackCount)
@@ -403,7 +414,6 @@ public class MusicProvider {
                             long totalTrackCount = allSongCursor.getLong(6);
                             String musicId = allSongCursor.getString(7);
                             long albumId = allSongCursor.getLong(8);
-                            Uri albumArtUri = ContentUris.withAppendedId(ART_CONTENT_URI, albumId);
 
                             if (mMusicListById.containsKey(musicId)) {
                                 continue;
@@ -416,7 +426,7 @@ public class MusicProvider {
                                     .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, artist)
                                     .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration)
                                     .putString(MediaMetadataCompat.METADATA_KEY_GENRE, UNKNOWN_TAG)
-                                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, albumArtUri.toString())
+                                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, MusicUtils.getAlbumArtworkUri(albumId).toString())
                                     .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title)
                                     .putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, trackNumber)
                                     .putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, totalTrackCount)

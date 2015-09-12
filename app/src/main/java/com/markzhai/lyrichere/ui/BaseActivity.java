@@ -20,6 +20,9 @@ import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.utils.NetworkHelper;
 import com.markzhai.lyrichere.utils.ResourceHelper;
 
+import butterknife.ButterKnife;
+import icepick.Icepick;
+
 /**
  * Application base activity.
  */
@@ -40,6 +43,19 @@ public abstract class BaseActivity extends MvpActivity {
                     ResourceHelper.getThemeColor(this, R.attr.colorPrimary, android.R.color.darker_gray));
             setTaskDescription(taskDesc);
         }
+        Icepick.restoreInstanceState(this, savedInstanceState);
+    }
+
+
+    @Override public void onContentChanged() {
+        super.onContentChanged();
+        ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
     }
 
     @Override

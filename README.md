@@ -1,6 +1,6 @@
 Lyric Here [![GitHub release](https://img.shields.io/badge/sample%20apk-2.0.0beta-brightgreen.svg?style=flat)](https://github.com/markzhai/LyricHere/releases/download/v2.0-beta/lyric-here.apk)
 ==========
-A music player focused on user experience of lyric.
+Material design music and lyric player. Using Android's new android.media.MediaMetadata series api to implement.
 
 Pre-requisites
 --------------

@@ -40,16 +40,11 @@ Screenshots
 ![Notification](art/Screenshot_2015-09-09-23-12-51.jpg "Notification")
 ![Lock Screen Background](art/Screenshot_2015-09-12-22-43-59.jpg "Lock Screen Background")
 
-CHANGELOG
--------
-
-- Add music player, refactor UI to material design.
-- Add recent played lyric feature.
-- A lyric player which can play local lrc files.
-
 LIBRARY
 -------
 
+- Android Support Library
 - Butter Knife
 - DBFlow
-- base-adapter-helper
+- IcePick
+- Mosby

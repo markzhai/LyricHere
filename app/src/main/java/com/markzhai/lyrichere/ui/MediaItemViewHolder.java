@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.media.MediaDescriptionCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,7 +83,12 @@ public class MediaItemViewHolder {
                     holder.mImageView.setVisibility(View.VISIBLE);
                     break;
                 default:
-                    holder.mImageView.setVisibility(View.GONE);
+                    if (description.getIconUri() != null) {
+                        holder.mImageView.setImageURI(description.getIconUri());
+                        holder.mImageView.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.mImageView.setVisibility(View.GONE);
+                    }
             }
             convertView.setTag(R.id.tag_mediaitem_state_cache, state);
         }

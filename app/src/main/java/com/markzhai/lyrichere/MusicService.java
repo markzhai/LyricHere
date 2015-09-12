@@ -50,9 +50,7 @@ import static com.markzhai.lyrichere.utils.MediaIDHelper.createBrowseCategoryMed
  * experience to the user.
  * <p/>
  * To implement a MediaBrowserService, you need to:
- * <p/>
  * <ul>
- * <p/>
  * <li> Extend {@link android.service.media.MediaBrowserService}, implementing the media browsing
  * related methods {@link android.service.media.MediaBrowserService#onGetRoot} and
  * {@link android.service.media.MediaBrowserService#onLoadChildren};
@@ -75,25 +73,6 @@ import static com.markzhai.lyrichere.utils.MediaIDHelper.createBrowseCategoryMed
  * android.media.browse.MediaBrowserService
  * <p/>
  * </ul>
- * <p/>
- * To make your app compatible with Android Auto, you also need to:
- * <p/>
- * <ul>
- * <p/>
- * <li> Declare a meta-data tag in AndroidManifest.xml linking to a xml resource
- * with a &lt;automotiveApp&gt; root element. For a media app, this must include
- * an &lt;uses name="media"/&gt; element as a child.
- * For example, in AndroidManifest.xml:
- * &lt;meta-data android:name="com.google.android.gms.car.application"
- * android:resource="@xml/automotive_app_desc"/&gt;
- * And in res/values/automotive_app_desc.xml:
- * &lt;automotiveApp&gt;
- * &lt;uses name="media"/&gt;
- * &lt;/automotiveApp&gt;
- * <p/>
- * </ul>
- *
- * @see <a href="README.md">README.md</a> for more details.
  */
 public class MusicService extends MediaBrowserServiceCompat implements Playback.Callback {
 
@@ -267,7 +246,7 @@ public class MusicService extends MediaBrowserServiceCompat implements Playback.
                     new MediaDescriptionCompat.Builder()
                             .setMediaId(MEDIA_ID_MUSICS_BY_GENRE)
                             .setTitle(getString(R.string.browse_genres))
-                            .setIconUri(Uri.parse("android.resource://com.markzhai.lyrichere/drawable/ic_by_genre"))
+                            .setIconUri(Uri.parse("android.resource://markzhai.lyrichere.app/drawable/ic_by_genre"))
                             .setSubtitle(getString(R.string.browse_genre_subtitle))
                             .build(), MediaBrowserCompat.MediaItem.FLAG_BROWSABLE
             ));
@@ -275,7 +254,8 @@ public class MusicService extends MediaBrowserServiceCompat implements Playback.
                     new MediaDescriptionCompat.Builder()
                             .setMediaId(MEDIA_ID_MUSICS_BY_ARTIST)
                             .setTitle(getString(R.string.browse_artists))
-                            .setIconUri(Uri.parse("android.resource://com.markzhai.lyrichere/drawable/ic_by_genre"))
+                                    // TODO find icon for artists
+                            .setIconUri(Uri.parse("android.resource://markzhai.lyrichere.app/drawable/ic_by_genre"))
                             .setSubtitle(getString(R.string.browse_artist_subtitle))
                             .build(), MediaBrowserCompat.MediaItem.FLAG_BROWSABLE
             ));
@@ -283,7 +263,8 @@ public class MusicService extends MediaBrowserServiceCompat implements Playback.
                     new MediaDescriptionCompat.Builder()
                             .setMediaId(MEDIA_ID_MUSICS_BY_ALBUM)
                             .setTitle(getString(R.string.browse_albums))
-                            .setIconUri(Uri.parse("android.resource://com.markzhai.lyrichere/drawable/ic_by_genre"))
+                                    // TODO find icon for albums
+                            .setIconUri(Uri.parse("android.resource://markzhai.lyrichere.app/drawable/ic_by_genre"))
                             .setSubtitle(getString(R.string.browse_album_subtitle))
                             .build(), MediaBrowserCompat.MediaItem.FLAG_BROWSABLE
             ));
@@ -296,6 +277,32 @@ public class MusicService extends MediaBrowserServiceCompat implements Playback.
                                 .setMediaId(createBrowseCategoryMediaID(MEDIA_ID_MUSICS_BY_GENRE, genre))
                                 .setTitle(genre)
                                 .setSubtitle(getString(R.string.browse_musics_by_genre_subtitle, genre))
+                                .build(), MediaBrowserCompat.MediaItem.FLAG_BROWSABLE
+                );
+                mediaItems.add(item);
+            }
+
+        } else if (MEDIA_ID_MUSICS_BY_ARTIST.equals(parentMediaId)) {
+            LogUtils.d(TAG, "OnLoadChildren.ARTISTS");
+            for (String artist : mMusicProvider.getArtists()) {
+                MediaBrowserCompat.MediaItem item = new MediaBrowserCompat.MediaItem(
+                        new MediaDescriptionCompat.Builder()
+                                .setMediaId(createBrowseCategoryMediaID(MEDIA_ID_MUSICS_BY_ARTIST, artist))
+                                .setTitle(artist)
+                                .setSubtitle(getString(R.string.browse_musics_by_genre_subtitle, artist))
+                                .build(), MediaBrowserCompat.MediaItem.FLAG_BROWSABLE
+                );
+                mediaItems.add(item);
+            }
+
+        } else if (MEDIA_ID_MUSICS_BY_ALBUM.equals(parentMediaId)) {
+            LogUtils.d(TAG, "OnLoadChildren.ALBUMS");
+            for (String album : mMusicProvider.getAlbums()) {
+                MediaBrowserCompat.MediaItem item = new MediaBrowserCompat.MediaItem(
+                        new MediaDescriptionCompat.Builder()
+                                .setMediaId(createBrowseCategoryMediaID(MEDIA_ID_MUSICS_BY_ALBUM, album))
+                                .setTitle(album)
+                                .setSubtitle(getString(R.string.browse_musics_by_genre_subtitle, album))
                                 .build(), MediaBrowserCompat.MediaItem.FLAG_BROWSABLE
                 );
                 mediaItems.add(item);
@@ -318,13 +325,36 @@ public class MusicService extends MediaBrowserServiceCompat implements Playback.
                         trackCopy.getDescription(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
                 mediaItems.add(bItem);
             }
-        } else if(parentMediaId.startsWith(MEDIA_ID_MUSICS_BY_ARTIST)) {
-
-        } else if(parentMediaId.startsWith(MEDIA_ID_MUSICS_BY_ALBUM)) {
-
+        } else if (parentMediaId.startsWith(MEDIA_ID_MUSICS_BY_ARTIST)) {
+            String artist = MediaIDHelper.getHierarchy(parentMediaId)[1];
+            LogUtils.d(TAG, "OnLoadChildren.SONGS_BY_ARTIST  artist=", artist);
+            for (MediaMetadataCompat track : mMusicProvider.getMusicsByArtist(artist)) {
+                String hierarchyAwareMediaID = MediaIDHelper.createMediaID(
+                        track.getDescription().getMediaId(), MEDIA_ID_MUSICS_BY_ARTIST, artist);
+                MediaMetadataCompat trackCopy = new MediaMetadataCompat.Builder(track)
+                        .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, hierarchyAwareMediaID)
+                        .build();
+                MediaBrowserCompat.MediaItem bItem = new MediaBrowserCompat.MediaItem(
+                        trackCopy.getDescription(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
+                mediaItems.add(bItem);
+            }
+        } else if (parentMediaId.startsWith(MEDIA_ID_MUSICS_BY_ALBUM)) {
+            String album = MediaIDHelper.getHierarchy(parentMediaId)[1];
+            LogUtils.d(TAG, "OnLoadChildren.SONGS_BY_ALBUM  album=", album);
+            for (MediaMetadataCompat track : mMusicProvider.getMusicsByAlbum(album)) {
+                String hierarchyAwareMediaID = MediaIDHelper.createMediaID(
+                        track.getDescription().getMediaId(), MEDIA_ID_MUSICS_BY_ALBUM, album);
+                MediaMetadataCompat trackCopy = new MediaMetadataCompat.Builder(track)
+                        .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, hierarchyAwareMediaID)
+                        .build();
+                MediaBrowserCompat.MediaItem bItem = new MediaBrowserCompat.MediaItem(
+                        trackCopy.getDescription(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
+                mediaItems.add(bItem);
+            }
         } else {
             LogUtils.w(TAG, "Skipping unmatched parentMediaId: ", parentMediaId);
         }
+
         LogUtils.d(TAG, "OnLoadChildren sending ", mediaItems.size(), " results for ", parentMediaId);
         result.sendResult(mediaItems);
     }

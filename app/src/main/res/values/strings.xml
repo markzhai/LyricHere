@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name" translatable="false">Lyric Here</string>
 
@@ -129,4 +130,18 @@
     <string name="about_support_email" translatable="false">kaibarashin@outlook.com</string>
 
     <string name="tag_not_found">Unknown</string>
+    <string name="ringtone_set">\"<xliff:g example="Alarm Bell" id="name">%s</xliff:g>\" set as phone ringtone.</string>
+    <!-- Toasts after adding song(s) to playlists -->
+    <plurals name="NNNtrackstoplaylist">
+        <!-- message shown when one song was added -->
+        <item quantity="one">1 song added to playlist.</item>
+        <!-- message shown when zero or more than one song was added -->
+        <item quantity="other"><xliff:g example="27" id="number">%d</xliff:g> songs added to playlist.</item>
+    </plurals>
+    <!-- Context menu item -->
+    <string name="add_to_playlist">Add to playlist</string>
+    <!-- Context menu item -->
+    <string name="queue">Current playlist</string>
+    <!-- Context menu item -->
+    <string name="new_playlist">New</string>
 </resources>

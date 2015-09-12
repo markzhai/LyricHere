@@ -9,8 +9,10 @@ import android.provider.MediaStore;
 import android.support.v4.media.MediaMetadataCompat;
 
 import com.markzhai.lyrichere.LHApplication;
+import com.markzhai.lyrichere.R;
 import com.markzhai.lyrichere.model.MutableMediaMetadata;
 import com.markzhai.lyrichere.utils.LogUtils;
+import com.markzhai.lyrichere.utils.MusicUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,8 +52,12 @@ public class MusicProvider {
     private static final String JSON_TOTAL_TRACK_COUNT = "totalTrackCount";
     private static final String JSON_DURATION = "duration";
 
+    private static final Uri ART_CONTENT_URI = Uri.parse("content://media/external/audio/albumart");
+
     // Categorized caches for music track data:
     private ConcurrentMap<String, List<MediaMetadataCompat>> mMusicListByGenre;
+    private ConcurrentMap<String, List<MediaMetadataCompat>> mMusicListByArtist;
+    private ConcurrentMap<String, List<MediaMetadataCompat>> mMusicListByAlbum;
     private final ConcurrentMap<String, MutableMediaMetadata> mMusicListById;
 
     private final Set<String> mFavoriteTracks;
@@ -68,6 +74,8 @@ public class MusicProvider {
 
     public MusicProvider() {
         mMusicListByGenre = new ConcurrentHashMap<>();
+        mMusicListByArtist = new ConcurrentHashMap<>();
+        mMusicListByAlbum = new ConcurrentHashMap<>();
         mMusicListById = new ConcurrentHashMap<>();
         mFavoriteTracks = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
     }
@@ -85,6 +93,30 @@ public class MusicProvider {
     }
 
     /**
+     * Get an iterator over the list of genres
+     *
+     * @return genres
+     */
+    public Iterable<String> getAlbums() {
+        if (mCurrentState != State.INITIALIZED) {
+            return Collections.emptyList();
+        }
+        return mMusicListByAlbum.keySet();
+    }
+
+    /**
+     * Get an iterator over the list of genres
+     *
+     * @return genres
+     */
+    public Iterable<String> getArtists() {
+        if (mCurrentState != State.INITIALIZED) {
+            return Collections.emptyList();
+        }
+        return mMusicListByArtist.keySet();
+    }
+
+    /**
      * Get music tracks of the given genre
      */
     public Iterable<MediaMetadataCompat> getMusicsByGenre(String genre) {
@@ -93,6 +125,28 @@ public class MusicProvider {
         }
         return mMusicListByGenre.get(genre);
     }
+
+    /**
+     * Get music tracks of the given genre
+     */
+    public Iterable<MediaMetadataCompat> getMusicsByArtist(String artist) {
+        if (mCurrentState != State.INITIALIZED || !mMusicListByArtist.containsKey(artist)) {
+            return Collections.emptyList();
+        }
+        return mMusicListByArtist.get(artist);
+    }
+
+
+    /**
+     * Get music tracks of the given genre
+     */
+    public Iterable<MediaMetadataCompat> getMusicsByAlbum(String album) {
+        if (mCurrentState != State.INITIALIZED || !mMusicListByAlbum.containsKey(album)) {
+            return Collections.emptyList();
+        }
+        return mMusicListByAlbum.get(album);
+    }
+
 
 
     /**
@@ -209,17 +263,53 @@ public class MusicProvider {
 
         for (MutableMediaMetadata m : mMusicListById.values()) {
             String genre = m.metadata.getString(MediaMetadataCompat.METADATA_KEY_GENRE);
+
             List<MediaMetadataCompat> list = newMusicListByGenre.get(genre);
             if (list == null) {
                 list = new ArrayList<>();
                 newMusicListByGenre.put(genre, list);
             }
+
             list.add(m.metadata);
         }
         mMusicListByGenre = newMusicListByGenre;
     }
 
-    private static final Uri ART_CONTENT_URI = Uri.parse("content://media/external/audio/albumart");
+    private synchronized void buildListsByAlbum() {
+        ConcurrentMap<String, List<MediaMetadataCompat>> newMusicListByAlbum = new ConcurrentHashMap<>();
+
+        for (MutableMediaMetadata m : mMusicListById.values()) {
+            String album = m.metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM);
+
+            List<MediaMetadataCompat> list = newMusicListByAlbum.get(album);
+            if (list == null) {
+                list = new ArrayList<>();
+                newMusicListByAlbum.put(album, list);
+            }
+
+            list.add(m.metadata);
+        }
+        mMusicListByAlbum = newMusicListByAlbum;
+    }
+
+    private synchronized void buildListsByArtist() {
+        ConcurrentMap<String, List<MediaMetadataCompat>> newMusicListByArtist = new ConcurrentHashMap<>();
+
+        for (MutableMediaMetadata m : mMusicListById.values()) {
+            String artist = m.metadata.getString(MediaMetadataCompat.METADATA_KEY_ARTIST);
+
+            List<MediaMetadataCompat> list = newMusicListByArtist.get(artist);
+            if (list == null) {
+                list = new ArrayList<>();
+                newMusicListByArtist.put(artist, list);
+            }
+
+            list.add(m.metadata);
+        }
+        mMusicListByArtist = newMusicListByArtist;
+    }
+
+    private static final String UNKNOWN_TAG = LHApplication.getResource().getString(R.string.tag_not_found);
 
     private synchronized void retrieveMedia() {
         try {
@@ -255,7 +345,7 @@ public class MusicProvider {
                                 genreCursor.getColumnIndexOrThrow(MediaStore.Audio.Genres.NAME));
 
                         if (genre != null && genre.trim().equals("")) {
-                            genre = "Unknown";
+                            genre = UNKNOWN_TAG;
                         }
 
                         index = genreCursor.getColumnIndexOrThrow(MediaStore.Audio.Genres._ID);
@@ -273,12 +363,12 @@ public class MusicProvider {
                                 String source = genreMediaCursor.getString(4);
                                 int trackNumber = genreMediaCursor.getInt(5);
                                 long totalTrackCount = genreMediaCursor.getLong(6);
-                                String id = genreMediaCursor.getString(7);
+                                String musicId = genreMediaCursor.getString(7);
                                 long albumId = genreMediaCursor.getLong(8);
                                 Uri albumArtUri = ContentUris.withAppendedId(ART_CONTENT_URI, albumId);
 
                                 MediaMetadataCompat item = new MediaMetadataCompat.Builder()
-                                        .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, id)
+                                        .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, musicId)
                                         .putString(CUSTOM_METADATA_TRACK_SOURCE, source)
                                         .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, album)
                                         .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, artist)
@@ -289,7 +379,6 @@ public class MusicProvider {
                                         .putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, trackNumber)
                                         .putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, totalTrackCount)
                                         .build();
-                                String musicId = item.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID);
                                 mMusicListById.put(musicId, new MutableMediaMetadata(musicId, item));
 
                             } while(genreMediaCursor.moveToNext());
@@ -300,20 +389,51 @@ public class MusicProvider {
                 if (genreMediaCursor != null) {
                     genreMediaCursor.close();
                 }
+
+                Cursor allSongCursor = MusicUtils.getAllSongsCursor(LHApplication.getContext());
+                try {
+                    if (allSongCursor.moveToFirst()) {
+                        do {
+                            String title = allSongCursor.getString(0);
+                            String artist = allSongCursor.getString(1);
+                            String album = allSongCursor.getString(2);
+                            long duration = allSongCursor.getLong(3);
+                            String source = allSongCursor.getString(4);
+                            int trackNumber = allSongCursor.getInt(5);
+                            long totalTrackCount = allSongCursor.getLong(6);
+                            String musicId = allSongCursor.getString(7);
+                            long albumId = allSongCursor.getLong(8);
+                            Uri albumArtUri = ContentUris.withAppendedId(ART_CONTENT_URI, albumId);
+
+                            if (mMusicListById.containsKey(musicId)) {
+                                continue;
+                            }
+
+                            MediaMetadataCompat item = new MediaMetadataCompat.Builder()
+                                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, musicId)
+                                    .putString(CUSTOM_METADATA_TRACK_SOURCE, source)
+                                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, album)
+                                    .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, artist)
+                                    .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration)
+                                    .putString(MediaMetadataCompat.METADATA_KEY_GENRE, UNKNOWN_TAG)
+                                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, albumArtUri.toString())
+                                    .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title)
+                                    .putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, trackNumber)
+                                    .putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, totalTrackCount)
+                                    .build();
+                            mMusicListById.put(musicId, new MutableMediaMetadata(musicId, item));
+
+                        } while(allSongCursor.moveToNext());
+                    }
+                } finally {
+                    if (allSongCursor != null) {
+                        allSongCursor.close();
+                    }
+                }
+
                 buildListsByGenre();
-
-                /*
-                Cursor cursor = fetchFromMediaStore();
-                if (cursor != null && cursor.getCount() > 0) {
-                    cursor.moveToFirst();
-                    do {
-                        MediaMetadataCompat item = buildMediaMetadata(cursor);
-                        String musicId = item.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID);
-                        mMusicListById.put(musicId, new MutableMediaMetadata(musicId, item));
-                    } while (cursor.moveToNext());
-
-                    buildListsByGenre();
-                }*/
+                buildListsByArtist();
+                buildListsByAlbum();
 
                 mCurrentState = State.INITIALIZED;
             }
@@ -324,50 +444,6 @@ public class MusicProvider {
                 mCurrentState = State.NON_INITIALIZED;
             }
         }
-    }
-
-    private Cursor fetchFromMediaStore() {
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
-        String[] projection = {
-                MediaStore.Audio.Media.TITLE,
-                MediaStore.Audio.Media.ARTIST,
-                MediaStore.Audio.Media.ALBUM,
-                MediaStore.Audio.Media.DURATION,
-                MediaStore.Audio.Media.DATA,
-                MediaStore.Audio.Media.TRACK,
-                MediaStore.Audio.Media.SIZE,
-                MediaStore.Audio.Media._ID,     // context id/ uri id of the file
-        };
-        return LHApplication.getContext().getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                projection,
-                selection,
-                null,
-                MediaStore.Audio.Media.TITLE);
-    }
-
-    private MediaMetadataCompat buildMediaMetadata(Cursor cursor) {
-        String title = cursor.getString(0);
-        String artist = cursor.getString(1);
-        String album = cursor.getString(2);
-        long duration = cursor.getLong(3);
-        String source = cursor.getString(4);
-        int trackNumber = cursor.getInt(5);
-        long totalTrackCount = cursor.getLong(6);
-        String id = cursor.getString(7);
-
-        return new MediaMetadataCompat.Builder()
-                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, id)
-                .putString(CUSTOM_METADATA_TRACK_SOURCE, source)
-                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, album)
-                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, artist)
-                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration)
-                .putString(MediaMetadataCompat.METADATA_KEY_GENRE, "unknown")
-                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, "https://avatars2.githubusercontent.com/u/1106500?v=3&s=460")
-                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title)
-                .putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, trackNumber)
-                // TODO Note: With MediaMetadataCompat we seem to crash when setting the total track count.
-                .putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, totalTrackCount)
-                .build();
     }
 
     private synchronized void retrieveMediaFromGoogle() {

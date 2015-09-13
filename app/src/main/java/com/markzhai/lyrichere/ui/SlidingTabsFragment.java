@@ -1,6 +1,7 @@
 package com.markzhai.lyrichere.ui;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -10,16 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.markzhai.lyrichere.R;
-import com.markzhai.lyrichere.widget.SlidingTabLayout;
 
 import java.util.Locale;
 
-/**
- * Created by markzhai on 2015/3/19.
- */
 public class SlidingTabsFragment extends Fragment {
 
-    private SlidingTabLayout mSlidingTabLayout;
+    protected TabLayout mTabLayout;
     private ViewPager mViewPager;
 
     @Override
@@ -31,8 +28,8 @@ public class SlidingTabsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
         mViewPager.setAdapter(new SectionsPagerAdapter(getActivity().getSupportFragmentManager()));
-        mSlidingTabLayout = (SlidingTabLayout) view.findViewById(R.id.sliding_tabs);
-        mSlidingTabLayout.setViewPager(mViewPager);
+        mTabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs_layout);
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

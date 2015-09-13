@@ -10,8 +10,8 @@
         <item name="colorPrimaryDark">@color/material_blue_700</item>
         <item name="colorAccent">@color/material_green_A200</item>
         -->
-        <item name="colorPrimary">#ffff5722</item>
-        <item name="colorPrimaryDark">#ffbf360c</item>
-        <item name="colorAccent">#ffff5722</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorAccent">@color/accent</item>
     </style>
 </resources>

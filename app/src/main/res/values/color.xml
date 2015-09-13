@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="primaryDark">#ffbf360c</color>
+    <color name="primary">#ffff5722</color>
+    <color name="accent">#ffff5722</color>
+
     <color name="bt_accent">#00B8D4</color>
     <color name="media_item_icon_playing">@color/bt_accent</color>
     <color name="media_item_icon_not_playing">#ccc</color>

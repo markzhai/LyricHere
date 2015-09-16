@@ -12,7 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.RemoteException;
-import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.NotificationCompat;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
@@ -283,19 +283,18 @@ public class MediaNotificationManager extends BroadcastReceiver {
         }
 
         notificationBuilder
-                // TODO need support MediaStyle
-                //.setStyle(new Notification.MediaStyle()
-                //        .setShowActionsInCompactView(
-                //                new int[]{playPauseButtonPosition})  // show only play/pause in compact view
-                //        .setMediaSession(mSessionToken))
-                .setColor(mNotificationColor)
-                .setSmallIcon(R.drawable.ic_notification)
-                .setVisibility(Notification.VISIBILITY_PUBLIC)
-                .setUsesChronometer(true)
-                .setContentIntent(createContentIntent(description))
-                .setContentTitle(description.getTitle())
-                .setContentText(description.getSubtitle())
-                .setLargeIcon(art);
+                .setStyle(new NotificationCompat.MediaStyle()
+                        .setShowActionsInCompactView(
+                                new int[]{playPauseButtonPosition})  // show only play/pause in compact view
+                        .setMediaSession(mSessionToken))
+                        .setColor(mNotificationColor)
+                        .setSmallIcon(R.drawable.ic_notification)
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                        .setUsesChronometer(true)
+                        .setContentIntent(createContentIntent(description))
+                        .setContentTitle(description.getTitle())
+                        .setContentText(description.getSubtitle())
+                        .setLargeIcon(art);
 
         if (mController != null && mController.getExtras() != null) {
             String castName = mController.getExtras().getString(MusicService.EXTRA_CONNECTED_CAST);

@@ -49,3 +49,4 @@ LIBRARY
 - [Icepick](https://github.com/frankiesardo/icepick)
 - [mosby](https://github.com/sockeqwe/mosby)
 - [android-ColorPickerPreference](https://github.com/attenzione/android-ColorPickerPreference)
+- [LyricView](https://github.com/markzhai/LyricView)

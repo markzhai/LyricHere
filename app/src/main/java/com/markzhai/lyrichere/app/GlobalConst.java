@@ -1,4 +1,4 @@
-package com.markzhai.lyrichere.global;
+package com.markzhai.lyrichere.app;
 
 /**
  * Global constants definition.

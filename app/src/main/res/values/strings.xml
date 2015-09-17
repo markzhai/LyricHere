@@ -93,7 +93,7 @@
     <string name="press_color_to_apply">Press on Color to apply</string>
 
     <!-- Application Usage -->
-    <string name="querying_filesys">Querying file system...</string>
+    <string name="querying_filesys">Querying file system…</string>
     <string name="menu_encoding_title">Encoding</string>
     <string name="menu_encoding_utf_8" translatable="false">UTF-8</string>
     <string name="menu_encoding_gbk" translatable="false">GBK</string>
@@ -123,11 +123,11 @@
     <string name="about_version">Version </string>
     <string name="about_license" translatable="false">Licensed by lyrichere</string>
     <string name="about_developed_by" translatable="false">Developed by</string>
-    <string name="about_developer" translatable="false">ZHAI Yifan</string>
-    <string name="about_developer_website" translatable="false">weibo.com/zhayaofen</string>
+    <string name="about_developer" translatable="false">Mark Zhai</string>
+    <string name="about_developer_website" translatable="false">https://github.com/markzhai</string>
     <string name="about_support">Info and Support</string>
-    <string name="about_support_website" translatable="false">zhaiyifan.cn/wordpress/?p=160</string>
-    <string name="about_support_email" translatable="false">kaibarashin@outlook.com</string>
+    <string name="about_support_website" translatable="false">http://blog.zhaiyifan.cn/2015/09/13/LyricHere/</string>
+    <string name="about_support_email" translatable="false">zhaiyifan56@gmail.com</string>
 
     <string name="tag_not_found">Unknown</string>
     <string name="ringtone_set">\"<xliff:g example="Alarm Bell" id="name">%s</xliff:g>\" set as phone ringtone.</string>

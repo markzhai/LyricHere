@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import com.markzhai.lyrichere.Constants;
+import com.markzhai.lyrichere.app.Constants;
 import com.markzhai.lyrichere.R;
 import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.utils.LyricProvider;

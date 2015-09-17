@@ -1,16 +1,15 @@
 package com.markzhai.lyrichere.provider;
 
 
-import android.content.ContentUris;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v4.media.MediaMetadataCompat;
 
-import com.markzhai.lyrichere.LHApplication;
+import com.markzhai.lyrichere.app.LHApplication;
 import com.markzhai.lyrichere.R;
-import com.markzhai.lyrichere.model.MutableMediaMetadata;
+import com.markzhai.lyrichere.data.MutableMediaMetadata;
 import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.utils.MusicUtils;
 

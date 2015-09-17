@@ -1,6 +1,5 @@
-package com.markzhai.lyrichere.model;
+package com.markzhai.lyrichere.data;
 
-import com.markzhai.lyrichere.AppDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;

@@ -1,4 +1,4 @@
-package com.markzhai.lyrichere;
+package com.markzhai.lyrichere.data;
 
 import com.raizlabs.android.dbflow.annotation.Database;
 

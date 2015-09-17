@@ -1,4 +1,4 @@
-package com.markzhai.lyrichere.prefs;
+package com.markzhai.lyrichere.ui;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;

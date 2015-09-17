@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryDark">#ffbf360c</color>
-    <color name="primary">#ffff5722</color>
-    <color name="accent">#ffff5722</color>
+    <color name="colorPrimary">#E74C3C</color>
+    <color name="colorPrimaryDark">#B83c30</color>
+    <color name="divider">#644d4d4d</color>
+    <color name="titleTextColor">@android:color/white</color>
+    <color name="colorAccent">#23ff9a</color>
 
     <color name="bt_accent">#00B8D4</color>
     <color name="media_item_icon_playing">@color/bt_accent</color>

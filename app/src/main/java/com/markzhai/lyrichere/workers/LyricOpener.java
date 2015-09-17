@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.markzhai.lyrichere.Constants;
+import com.markzhai.lyrichere.app.Constants;
 import com.markzhai.lyrichere.R;
 import com.markzhai.lyrichere.ui.LyricPlayerActivity;
 import com.markzhai.lyrichere.utils.DbUtils;

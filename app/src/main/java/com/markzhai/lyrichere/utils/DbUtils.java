@@ -5,7 +5,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.text.TextUtils;
 
-import com.markzhai.lyrichere.Constants;
+import com.markzhai.lyrichere.app.Constants;
 
 import java.io.File;
 import java.util.HashMap;

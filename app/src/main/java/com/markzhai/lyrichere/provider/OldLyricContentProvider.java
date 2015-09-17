@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.markzhai.lyrichere.Constants;
+import com.markzhai.lyrichere.app.Constants;
 import com.markzhai.lyrichere.utils.DbHelper;
 import com.markzhai.lyrichere.utils.LogUtils;
 

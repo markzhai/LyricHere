@@ -12,12 +12,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.RemoteException;
-import android.support.v7.app.NotificationCompat;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.v7.app.NotificationCompat;
 
 import com.markzhai.lyrichere.ui.MusicPlayerActivity;
 import com.markzhai.lyrichere.utils.LogUtils;
@@ -287,14 +287,14 @@ public class MediaNotificationManager extends BroadcastReceiver {
                         .setShowActionsInCompactView(
                                 new int[]{playPauseButtonPosition})  // show only play/pause in compact view
                         .setMediaSession(mSessionToken))
-                        .setColor(mNotificationColor)
-                        .setSmallIcon(R.drawable.ic_notification)
-                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                        .setUsesChronometer(true)
-                        .setContentIntent(createContentIntent(description))
-                        .setContentTitle(description.getTitle())
-                        .setContentText(description.getSubtitle())
-                        .setLargeIcon(art);
+                .setColor(mNotificationColor)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setUsesChronometer(true)
+                .setContentIntent(createContentIntent(description))
+                .setContentTitle(description.getTitle())
+                .setContentText(description.getSubtitle())
+                .setLargeIcon(art);
 
         if (mController != null && mController.getExtras() != null) {
             String castName = mController.getExtras().getString(MusicService.EXTRA_CONNECTED_CAST);
@@ -368,7 +368,7 @@ public class MediaNotificationManager extends BroadcastReceiver {
                         artUrl.equals(mMetadata.getDescription().getIconUri().toString())) {
                     // If the media is still the same, update the notification:
                     LogUtils.d(TAG, "fetchBitmapFromURLAsync: set bitmap to ", artUrl);
-                    if (bitmap != null && ! bitmap.isRecycled()) {
+                    if (bitmap != null && !bitmap.isRecycled()) {
                         builder.setLargeIcon(bitmap);
                     }
                     mNotificationManager.notify(NOTIFICATION_ID, builder.build());

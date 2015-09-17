@@ -1,16 +1,13 @@
 package com.markzhai.lyrichere.ui;
 
 import android.content.Intent;
-import android.media.browse.MediaBrowser;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.MvpView;
-import com.markzhai.lyrichere.Constants;
+import com.markzhai.lyrichere.app.Constants;
 import com.markzhai.lyrichere.R;
 
 public class LyricPlayerActivity extends BaseActivity {

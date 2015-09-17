@@ -1,4 +1,4 @@
-package com.markzhai.lyrichere.prefs;
+package com.markzhai.lyrichere.ui;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;

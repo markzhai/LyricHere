@@ -1,1 +1,3 @@
-include ':app', ':lib_lyricview'
+include ':app', ':ColorPickerPreference', ':lib_lyricview'
+project(':ColorPickerPreference').projectDir = new File('app/libs/ColorPickerPreference')
+project(':lib_lyricview').projectDir = new File('app/libs/LyricView')

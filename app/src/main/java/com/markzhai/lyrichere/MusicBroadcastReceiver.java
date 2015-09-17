@@ -8,12 +8,13 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
+import com.markzhai.lyrichere.app.Constants;
 import com.markzhai.lyrichere.ui.LyricExplorerActivity;
 import com.markzhai.lyrichere.utils.LogUtils;
 
 /**
  * Receive broadcast from music player apps and pop lyric notifications.
- * <p>
+ * <p/>
  * Created by yifan on 6/21/14.
  */
 public class MusicBroadcastReceiver extends BroadcastReceiver {

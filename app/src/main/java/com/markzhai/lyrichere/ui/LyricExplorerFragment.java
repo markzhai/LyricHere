@@ -23,7 +23,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 
-import com.markzhai.lyrichere.Constants;
+import com.markzhai.lyrichere.app.Constants;
 import com.markzhai.lyrichere.R;
 import com.markzhai.lyrichere.adapters.LyricCursorAdapter;
 import com.markzhai.lyrichere.utils.LogUtils;

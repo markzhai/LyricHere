@@ -27,7 +27,6 @@ import com.markzhai.lyrichere.provider.MusicProvider;
 import com.markzhai.lyrichere.ui.MusicPlayerActivity;
 import com.markzhai.lyrichere.utils.LogUtils;
 import com.markzhai.lyrichere.utils.MediaIDHelper;
-import com.markzhai.lyrichere.utils.MusicUtils;
 import com.markzhai.lyrichere.utils.QueueHelper;
 
 import java.lang.ref.WeakReference;

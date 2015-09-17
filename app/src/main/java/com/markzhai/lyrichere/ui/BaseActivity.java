@@ -1,23 +1,14 @@
 package com.markzhai.lyrichere.ui;
 
 import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.graphics.BitmapFactory;
-import android.media.MediaMetadata;
-import android.media.browse.MediaBrowser;
-import android.media.session.MediaController;
-import android.media.session.MediaSession;
-import android.media.session.PlaybackState;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
-import com.markzhai.lyrichere.MusicService;
 import com.markzhai.lyrichere.R;
-import com.markzhai.lyrichere.global.GlobalConst;
+import com.markzhai.lyrichere.app.GlobalConst;
 import com.markzhai.lyrichere.utils.LogUtils;
-import com.markzhai.lyrichere.utils.NetworkHelper;
 import com.markzhai.lyrichere.utils.ResourceHelper;
 
 import butterknife.ButterKnife;

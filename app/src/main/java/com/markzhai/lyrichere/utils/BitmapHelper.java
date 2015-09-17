@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 
-import com.markzhai.lyrichere.LHApplication;
+import com.markzhai.lyrichere.app.LHApplication;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package com.markzhai.lyrichere;
+package com.markzhai.lyrichere.app;
 
 import android.app.Application;
 import android.content.Context;

@@ -22,7 +22,7 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
         android:singleLine="true"
-        android:text="Title"
+        android:text="@string/meta_title"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <com.markzhai.lyrichere.widget.ListScrollTextView
@@ -37,7 +37,7 @@
         android:marqueeRepeatLimit="1"
         android:scrollHorizontally="true"
         android:singleLine="true"
-        android:text="Album"
+        android:text="@string/meta_album"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/secondary_text_light" />
 
@@ -49,6 +49,6 @@
         android:layout_below="@+id/listview_item_right"
         android:focusable="false"
         android:singleLine="true"
-        android:text="Artist"
+        android:text="@string/meta_artist"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.markzhai.lyrichere.model;
+package com.markzhai.lyrichere.data;
 
 import android.support.v4.media.MediaMetadataCompat;
 import android.text.TextUtils;

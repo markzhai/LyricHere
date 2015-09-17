@@ -1,4 +1,4 @@
-package com.markzhai.lyrichere.model;
+package com.markzhai.lyrichere.data;
 
 /**
  * Created by markzhai on 2015/4/9.

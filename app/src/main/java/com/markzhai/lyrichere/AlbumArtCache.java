@@ -1,9 +1,7 @@
 package com.markzhai.lyrichere;
 
-import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.support.v4.util.LruCache;
 
 import com.markzhai.lyrichere.utils.BitmapHelper;
@@ -17,7 +15,7 @@ import java.io.IOException;
 public final class AlbumArtCache {
     private static final String TAG = LogUtils.makeLogTag(AlbumArtCache.class);
 
-    private static final int MAX_ALBUM_ART_CACHE_SIZE = 12*1024*1024;  // 12 MB
+    private static final int MAX_ALBUM_ART_CACHE_SIZE = 12 * 1024 * 1024;  // 12 MB
     private static final int MAX_ART_WIDTH = 800;  // pixels
     private static final int MAX_ART_HEIGHT = 480;  // pixels
 
@@ -43,7 +41,7 @@ public final class AlbumArtCache {
         // Holds no more than MAX_ALBUM_ART_CACHE_SIZE bytes, bounded by maxmemory/4 and
         // Integer.MAX_VALUE:
         int maxSize = Math.min(MAX_ALBUM_ART_CACHE_SIZE,
-                (int) (Math.min(Integer.MAX_VALUE, Runtime.getRuntime().maxMemory()/4)));
+                (int) (Math.min(Integer.MAX_VALUE, Runtime.getRuntime().maxMemory() / 4)));
         mCache = new LruCache<String, Bitmap[]>(maxSize) {
             @Override
             protected int sizeOf(String key, Bitmap[] value) {
@@ -85,7 +83,7 @@ public final class AlbumArtCache {
                             MAX_ART_WIDTH, MAX_ART_HEIGHT);
                     Bitmap icon = BitmapHelper.scaleBitmap(bitmap,
                             MAX_ART_WIDTH_ICON, MAX_ART_HEIGHT_ICON);
-                    bitmaps = new Bitmap[] {bitmap, icon};
+                    bitmaps = new Bitmap[]{bitmap, icon};
                     mCache.put(artUrl, bitmaps);
                 } catch (IOException e) {
                     return null;
@@ -109,6 +107,7 @@ public final class AlbumArtCache {
 
     public static abstract class FetchListener {
         public abstract void onFetched(String artUrl, Bitmap bigImage, Bitmap iconImage);
+
         public void onError(String artUrl, Exception e) {
             LogUtils.e(TAG, e, "AlbumArtFetchListener: error while downloading " + artUrl);
         }

@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.net.wifi.WifiManager;
 import android.os.PowerManager;
+import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
 
 import com.markzhai.lyrichere.provider.MusicProvider;
@@ -48,7 +48,9 @@ public class LocalPlayback implements Playback, AudioManager.OnAudioFocusChangeL
     private final MusicService mService;
     private final WifiManager.WifiLock mWifiLock;
 
-    /** The current PlaybackStateCompat **/
+    /**
+     * The current PlaybackStateCompat
+     **/
     private int mState;
     private boolean mPlayOnFocusGain;
     private Callback mCallback;

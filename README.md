@@ -44,7 +44,8 @@ LIBRARY
 -------
 
 - Android Support Library (cardview, appcompat, design, mediarouter)
-- Butter Knife
-- DBFlow
-- IcePick
-- Mosby
+- [Butter Knife](https://github.com/JakeWharton/butterknife)
+- [DBFlow](https://github.com/Raizlabs/DBFlow)
+- [Icepick](https://github.com/frankiesardo/icepick)
+- [mosby](https://github.com/sockeqwe/mosby)
+- [android-ColorPickerPreference](https://github.com/attenzione/android-ColorPickerPreference)

@@ -4,10 +4,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
-/**
- * For more information about voice search parameters,
- * check https://developer.android.com/guide/components/intents-common.html#PlaySearch
- */
 public final class VoiceSearchParams {
 
     public final String query;

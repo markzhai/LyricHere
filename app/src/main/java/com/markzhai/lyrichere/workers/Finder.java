@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
-import com.markzhai.lyrichere.Constants;
+import com.markzhai.lyrichere.app.Constants;
 import com.markzhai.lyrichere.R;
 import com.markzhai.lyrichere.utils.DbUtils;
 import com.markzhai.lyrichere.utils.FileUtils;

@@ -78,6 +78,6 @@ public class DownloadFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(String hint);
+        void onFragmentInteraction(String hint);
     }
 }

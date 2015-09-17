@@ -89,11 +89,12 @@ public class LyricExplorerActivity extends PlaybackControlBaseActivity implement
             transaction.replace(R.id.fragment_container, fragment);
             transaction.commit();
         }
-
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.lyric_explorer, menu);
         return true;
     }

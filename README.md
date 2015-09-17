@@ -43,7 +43,7 @@ Screenshots
 LIBRARY
 -------
 
-- Android Support Library
+- Android Support Library (cardview, appcompat, design, mediarouter)
 - Butter Knife
 - DBFlow
 - IcePick

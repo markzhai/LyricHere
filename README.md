@@ -1,15 +1,13 @@
 Lyric Here [![GitHub release](https://img.shields.io/badge/sample%20apk-2.0.0beta-brightgreen.svg?style=flat)](https://github.com/markzhai/LyricHere/releases/download/v2.0-beta/lyric-here.apk)
 ==========
-Material design music and lyric player. Using Android's new android.media.MediaMetadata series api to implement. ([中文戳这里](https://github.com/markzhai/LyricHere/blob/master/README_CN.md))
+Material design music and lyric player. Using Android's new android.media.MediaMetadata series api to implement. ([For Chinese 中文戳这里](https://github.com/markzhai/LyricHere/blob/master/README_CN.md))
 
 Pre-requisites
 --------------
-
 - Android SDK v14
 
 Features
 -----------
-
 - Local music browser and player.
 - Music player widget, notification widget.
 - Lyric directly refresh on notification, see it whenever you want.
@@ -19,7 +17,8 @@ Features
 TODO(Pull request is welcomed)
 ------------------------------
 
-- Use Google Design Support UI.
+- Find some nice icons to replace currect genre, artist, album icon.
+- Use Google Design Support UI (AppBar, CoordinatorLayout, etc.)
 - Better implementation for Music player, show lyric directly.
 - Download lyric from server and upload to server.
 - Add support lyric file encoding auto-recognize.
@@ -31,7 +30,6 @@ Tested
 
 Screenshots
 -----------
-
 ![Browse local music file](art/Screenshot_2015-09-12-23-14-37.jpg "Browse local music file")
 ![Fullscreen music player](art/Screenshot_2015-09-12-21-13-22.jpg "Fullscreen music player")
 ![Lyric explorer](art/Screenshot_2015-09-12-21-13-40.jpg "Lyric explorer")
@@ -42,7 +40,6 @@ Screenshots
 
 LIBRARY
 -------
-
 - Android Support Library (cardview, appcompat, design, mediarouter)
 - [Butter Knife](https://github.com/JakeWharton/butterknife)
 - [DBFlow](https://github.com/Raizlabs/DBFlow)

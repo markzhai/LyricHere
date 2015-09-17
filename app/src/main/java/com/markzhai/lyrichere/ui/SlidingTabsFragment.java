@@ -30,6 +30,12 @@ public class SlidingTabsFragment extends Fragment {
         mViewPager.setAdapter(new SectionsPagerAdapter(getActivity().getSupportFragmentManager()));
         mTabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs_layout);
         mTabLayout.setupWithViewPager(mViewPager);
+        setupTabTextColor();
+    }
+
+    private void setupTabTextColor() {
+        int tabTextColor = getResources().getColor(R.color.titleTextColor);
+        mTabLayout.setTabTextColors(tabTextColor, tabTextColor);
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

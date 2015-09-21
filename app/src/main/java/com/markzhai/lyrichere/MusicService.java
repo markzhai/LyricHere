@@ -254,8 +254,7 @@ public class MusicService extends MediaBrowserServiceCompat implements Playback.
                     new MediaDescriptionCompat.Builder()
                             .setMediaId(MEDIA_ID_MUSICS_BY_ARTIST)
                             .setTitle(getString(R.string.browse_artists))
-                                    // TODO find icon for artists
-                            .setIconUri(Uri.parse("android.resource://markzhai.lyrichere.app/drawable/ic_by_genre"))
+                            .setIconUri(Uri.parse("android.resource://markzhai.lyrichere.app/drawable/ic_by_artist"))
                             .setSubtitle(getString(R.string.browse_artist_subtitle))
                             .build(), MediaBrowserCompat.MediaItem.FLAG_BROWSABLE
             ));
@@ -263,8 +262,7 @@ public class MusicService extends MediaBrowserServiceCompat implements Playback.
                     new MediaDescriptionCompat.Builder()
                             .setMediaId(MEDIA_ID_MUSICS_BY_ALBUM)
                             .setTitle(getString(R.string.browse_albums))
-                                    // TODO find icon for albums
-                            .setIconUri(Uri.parse("android.resource://markzhai.lyrichere.app/drawable/ic_by_genre"))
+                            .setIconUri(Uri.parse("android.resource://markzhai.lyrichere.app/drawable/ic_by_album"))
                             .setSubtitle(getString(R.string.browse_album_subtitle))
                             .build(), MediaBrowserCompat.MediaItem.FLAG_BROWSABLE
             ));

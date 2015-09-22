@@ -16,8 +16,7 @@ Features
 
 TODO(Pull request is welcomed)
 ------------------------------
-
-- Find some nice icons to replace currect genre, artist, album icon.
+- Upgrade LyricView to more powerful.
 - Use Google Design Support UI (AppBar, CoordinatorLayout, etc.)
 - Better implementation for Music player, show lyric directly.
 - Download lyric from server and upload to server.
